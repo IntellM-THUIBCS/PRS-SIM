@@ -4,12 +4,13 @@
   {% include head.html %}
 
   <body>
-    <nav class="nav-main" style="z-index: 999;">
-      <ul style="margin-bottom: 0rem;">
-		<li class="hvr-underline-reveal"><a href="{{ site.baseurl }}/Tutorial/">Main page</a></li>
-        <li class="hvr-underline-reveal"><a href="{{ site.baseurl }}/Tutorial/">Principle</a></li>
-        <li class="hvr-underline-reveal"><a href="{{ site.baseurl }}/Datasets/">Results</a></li>
-        <li class="hvr-underline-reveal"><a href="{{ site.baseurl }}/Gallery/">Data</a></li>
+    <nav class="nav-main">
+      <ul>
+        <li class="hvr-underline-reveal"><a href="{{ site.baseurl }}/About/">About</a></li>
+        <li class="hvr-underline-reveal"><a href="{{ site.baseurl }}/Tutorial/">Tutorial</a></li>
+        <li class="logo"><a class="hvr-ripple-out" href="{{ site.baseurl }}/">D</a></li>
+        <li class="hvr-underline-reveal"><a href="{{ site.baseurl }}/Datasets/">Datasets</a></li>
+        <li class="hvr-underline-reveal"><a href="{{ site.baseurl }}/Gallery/">Gallery</a></li>
       </ul>
     </nav>
 
@@ -17,14 +18,13 @@
       <main>
         {{ content }}
       </main>
-	/*
+
       <footer class="footer">
         </small>
         <div class="ftr-links">
           <a href="https://github.com/cabooster/DeepCAD-RT"><i class="fa fa-github-alt"></i></a>
         </div>
       </footer>
-	*/
     </div>
 
   </body>
