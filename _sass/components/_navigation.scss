@@ -45,7 +45,7 @@
 }
 */
 .nav-main {
-  font-size: 15; // override mobile media query
+  font-size: 25; // override mobile media query
   text-align: right;
   margin-bottom: 5rem;
   border-bottom-style: solid;
@@ -66,7 +66,7 @@
     border-bottom-color: $nav-bottom-border-color;
     border-bottom-width: 0px;
     border-bottom-style: solid;
-    background-color: #393939
+    background-color: #f0e6e6
   }
 
   li {
