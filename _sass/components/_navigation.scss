@@ -3,6 +3,7 @@
   * Styles for the main navigation bar on top of the page.
   */
 
+/*
 .nav-main {
   font-size: $font-size; // override mobile media query
   text-align: center;
@@ -41,4 +42,50 @@
     margin: 0 1rem;
     padding: 0;
   }
+}
+*/
+.nav-main {
+  font-size: 15; // override mobile media query
+  text-align: center;
+  margin-bottom: 5rem;
+  border-bottom-style: solid;
+  border-color: $nav-bottom-border-color;
+  border-bottom-width: 2px;
+  top: 0rem;
+  width: 100%;
+  position: fixed;
+  z-index: 999;
+
+  @media (max-width: 38em) {
+    margin-bottom: 0rem;
+  }
+
+  ul {
+    padding: 0;
+    margin-bottom: 0rem;
+    border-bottom-color: $nav-bottom-border-color;
+    border-bottom-width: 0px;
+    border-bottom-style: solid;
+    background-color: #393939
+  }
+
+  li {
+    display: inline-block;
+    vertical-align: middle;
+
+    a {
+      color: $nav-link-color;
+      display: block;
+      text-decoration: none;
+      padding: $nav-link-padding-y $nav-link-padding-x;
+    }
+  }
+  li.main-page a {
+    font-weight: bold;
+    color: $nav-link-color;
+      display: block;
+      text-decoration: none;
+      padding: $nav-link-padding-y $nav-link-padding-x;
+  }
+
 }
