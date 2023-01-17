@@ -4,20 +4,214 @@ title: Home
 ---
 
 <div class="page">
-  
+	<center><img src="images/RES-SIM.png" width="300" align="middle" /></center>
 	<header>
 		<h1 class="landing-title">RES-SIM: image re-corruption based self-supervised reconstruction for structured illumination microscopy </h1>
 	</header>
   
 	<p>
-		<center><h1>1. Basic principle </h1></center>
-		<b>RES-SIM</b>  is a self-supervised denoising method for structured illumination microscopy. 
+		<center><h1>1. About RES-SIM </h1></center>
+		&emsp;<b>RES-SIM</b>  is a self-supervised deep-learning denoising method for structured illumination microscopy, which utilized only the low signal-to-noise
+		ratio (SNR) data to train the neural network and inferenced the super-resolution image from the noisy input. The main advantages of RES-SIM are summaried as:<br><br>
+		&emsp;1. Only snap-shot low-SNR data is used to constructed the training dataset. <br>
+		&emsp;2. The super-resolution information in RES-SIM image is physically guaranteed, instead of the data-driven inference (such as via supervised learning).<br>
+		&emsp;3. RES-SIM is compitable with multiple SIM modality, such as TIRF-SIM, 3D-SIM and LLS-SIM (Lattice light-sheet SIM), for 2D imaging and volumetric imaging.<br>
+		&emsp;4. RES-SIM is cacaple to work in offline mode to process the time-lapsing data.<br>
+		For more detailed information, please visit our manuscript (will be linked after the publication).
 		<br><br>
-		/*
+		
+		
+		<center><h1>2. Principle of RES-SIM</h1></center>
+		
+		<center>
+		<img src="images/principle.png" width="1050" align="middle" />
+		<b>Figure 1</b> | The training and inference scheme of RES-SIM.
+		</center>
+		<br><br>
+		
+		&emsp; The main strategy of RES-SIM is to apply image re-corruption to generate an image pair to train the denoiseing network<sup>[2]</sup>, as schemed in Figure 1. 
+		To construct the training dataset, a series of noisy low-resolution SIM raw image stack is captured. For each image stack <b>x</b>, 
+		we created two corrupted image stack pair <b>y<sub>A</sub></b> and <b><sub>B</sub></b>  
+		based on the noise-control matrix <b>D</b> and a randomly variable <b>z</b> as 
+		<center><b>y<sub>A</sub></b>=<b>x</b>+D<b>z</b></center> <br>
+		<center><b>y<sub>B</sub></b>=<b>x</b>+D<sup>-1</sup><b>z</b></center> <br>
+		&emsp; The conventional SIM algorithm is then applied to each stack to generate a corrupted SR image pair <b>Y<sub>A</sub></b> and <b>Y<sub>B</sub></b>, 
+		which is arranged as the input and target. To enrich the dataset, the aforementioned step is repeated 3~5 times to each raw image stack, 
+		the final training dataset consists of a series corrupted image pairs. <br>
+		
+		&emsp; The training processing of RES-SIM is to random choose one image in the corrupted image pair as the input image, and the another one as the target. 
+		Random cropping, flipping, and rotation operations are applied to each the training set to avoid the overfitting.
+		By iteratively optimization the L2-norm loss function, the network parameter will final convengent and acquire the denoising ability. 
+		During the inference phase, we first applied conventional SIM algorithm to the noisy raw SIM images to generate a artifact-induced SR SIM image, then
+		employed the well-trained model to output the final denoised SR image.<br>
+		
+		&emsp;In RES-SIM, only a series of independently captured low-SNR raw SIM image stacks are used for training, so it is regarded as "self-supervised denoising".
+		The underlying mechanism for RES-SIM is that the re-corrupted image pair statisfying the "independent" creteria (the requirement of N2N training), 
+		so the key for a successful image re-corruption is to the properly setting of noise-controlling parameter &alpha;, the Poisson noise factor &beta;<sub>1</sub>, 
+		and the Gaussian noise factor &beta;<sub>2</sub>. 
+		The theoretical derivation of RES-SIM and the typical setting of the re-corruption parameter is detailed in our manuscript.
+		<br><br>
+		
+		
+		<center><h1>3. Experimental result </h1></center>
+		&emsp;We firsty validated RES-SIM on open-source SIM dataset bioSR. The noisy data of signal level from 1 to 10 (low to high) accompanined with the 
+		corresponding ground-truth data is inclued in the data. Here for RES-SIM, the raw data of signal level from 1 to 4 was employed for network training.
+		We compored the performance of RES-SIM with conventional SIM algorithm, Sparsed-deconvolution SIM, and both the visualization result (Figure 2) and the 
+		quantitative ananlysis shown that RES-SIM is capable to remove most artifact and acquire the comparable resoltuion and quality as GT-SIM images.<br>
+		
+		<center>
+		<div id="slider1" class="beer-slider" data-beer-label="Conv. SIM" data-start="50">
+		  <img src="images/Microtubules_R_l-crop.png?raw=true" width="500">
+		  <div class="beer-reveal" data-beer-label="RES-SIM">
+			  <img src="images/Microtubules_E_l-crop.png?raw=true" width="500">
+		  </div>
+		</div>
+		<br>
+		<b>Figure 2</b> | Demonstration of the denoising power of RES-SIM on TIRF-SIM data. The training dataset utlized only the low-SNR data from bioSR<sup>[3]</sup> dataset.
+		<br><br>
+		</center>
+		
+		&emsp;Due to the similar data-processing framework, RES-SIM is also compitable with 3D-SIM and LLS-SIM system for volumetric SR imaging. 
+		We imaged on Lampl-labelled lysosome in COS7 cell via 3D-SIM and TOMM20-labelled mitochondira via LLS-SIM. 
+		For each cell, we firstly captured low-SNR raw SIM data with low excitation power and then captured the high-SNR data with the max power as the referred GT data.
+		For RES-SIM result, we can conclude that RES-SIM outperformed the conventional SIM result substantially in both axial dimension and later dimensions. (Figure 3)<br>
+		
+		<center>
+		<div id="slider2" class="beer-slider" data-beer-label="Conv. SIM" data-start="50">
+		  <img src="images/3D_demo_R_fixed_mip.png?raw=true" width="500">
+		  <div class="beer-reveal" data-beer-label="RES-SIM">
+			  <img src="images/3D_demo_E_fixed_mip.png?raw=true" width="500">
+		  </div>
+		</div>
+		<br>
+		<b>Figure 3</b> | Demonstration of the denoising power of RES-SIM on volumetric data. (MIP view)
+		<br><br>
+		</center>	
+
+		
+		&emsp;We then applied RES-SIM on long-term time-lapsing of live cell. In conventional SIM imaging, to avoid the artifact, we have to maintain comparable high excitation power 
+		to gurantee the adequate collected photons. However, this will induce high photo-toxicity and cause the malfunction of the live cells, epecially when the time durance is long.
+		With RES-SIM, we performed the cell imaging with 10-fold excitation power than used for normal image. 
+		As shown in Video 1, the ring-shape CCPs and the filament-shape F-actin can hardly be recongnized in conventional SIM images, 
+		while in RES-SIM image, both of them are resolved with a high defination. 
+		Benefitting from on the removal of the artifact, semi-automated segmentation algorithm can successfully extract the single filament. 
+		We calculated the Mander's overlap coefficient during the cell growth process based on this segmentation,
+		and found that CCPs are proned to locate in the gap of actin filament, which is consistent with the visual result (as shown in zoom-in region in Video 1). 
+		<br>
+		
+		<!--
+		<center>
+		<div id="slider3" class="beer-slider" data-beer-label="Conv. SIM" data-start="50">
+		  <img src="images/R_composite-125.png?raw=true" width="400">
+		  <div class="beer-reveal" data-beer-label="RES-SIM">
+			  <img src="images/E_composite-125.png?raw=true" width="400">
+		  </div>
+		</div>
+		<div id="slider4" class="beer-slider" data-beer-label="Conv. SIM" data-start="50">
+		  <img src="images/R_composite-125-crop.png?raw=true" width="400">
+		  <div class="beer-reveal" data-beer-label="RES-SIM">
+			  <img src="images/E_composite-125-crop.png?raw=true" width="400">
+		  </div>
+		</div>
+		<br>
+		<b>Figure 4</b> | Demonstration of RES-SIM in long-term time-lapsing TIRF-SIM imaging under extremely low excitation power.
+		-->
+		
+		<center><video src="images/CCPs-Factin-TIRFSIM.mp4?raw=true" controls="controls" width="100%" height="auto"/></center>
+		<center><b>Video 1</b> | RES-SIM enhanced live-cell imaging with ultra low excitation power. </center>
+		<br><br>
+		</center>
+		&emsp; Benefitting from the the super-resolution denoised image provided by RES-SIM, both the inner hollow of CCP partical (green) and individual actin filament can be resolved at high defination,
+		while the noise-induced artifact overwhelmed the effective sample information in conventional SIM result.
+		
+		&emsp; We then applied RES-SIM long-term time-lapsing volumetric image via 3D-SIM and LLS-SIM system. For 3D-SIM, we imaged the COS7 cell expressing 
+		3xmEmerald-Ensconsin and Lamp1-Halo, with extremely low excitation power. The conventional SIM result is overwhelmed with the artifact and both structures are hardly to resolve.
+		While in RES-SIM, since the images are clear, and the interaction between Lysosome bubbles and the Microtubule filaments can be observed, 
+		e.g., the lysosome bubble moving along the microtubule filment and the forced deformation microtubule filment of extruded by the lysosome bubble. (Video 2) <br>
+		
+
+		<!--
+		<center>
+		<div id="slider5" class="beer-slider" data-beer-label="Conv. SIM" data-start="50">
+		  <img src="images/3D_demo_R_mip.png?raw=true" width="500">
+		  <div class="beer-reveal" data-beer-label="RES-SIM">
+			  <img src="images/3D_demo_E_mip.png?raw=true" width="500">
+		  </div>
+		</div>
+		<br>
+		<b>Figure 5</b> | Demonstration of the RES-SIM on 3D-SIM system with extremely low excitation power. 
+		<br><br>
+		</center>
+		-->
+		<center><video src="images/MT-lyso-3DSIM.avi?raw=true" controls="controls" width="100%" height="auto"/></center>
+		<center><b>Video 2</b> | RES-SIM enhanced long-term super-resolution live-cell volumetric imaging via 3D-SIM system. </center>
+		<br><br>
+		
+		&emsp; For LLS-SIM, we applied offline RES-SIM in the COS7 cell expressing TOMM20-2xmEmerald and 3xmCherry-Ensconsin. (Video 3) Since the cell is in health status 
+		and celluar organelles are of rapid motion. From the RES-SIM enhanced results, the fission and fusion phenomenon can be clearly observed, which is an indicator of the cell activity.
+		<!--
+		<center>
+		<div id="slider6" class="beer-slider" data-beer-label="Conv. SIM" data-start="50">
+		  <img src="images/LLS_tl_demo_R.png?raw=true" width="500">
+		  <div class="beer-reveal" data-beer-label="RES-SIM">
+			  <img src="images/LLS_tl_demo_E.png?raw=true" width="500">
+		  </div>
+		</div>
+
+		<br>
+		<b>Figure 6</b> | Demonstration of the RES-SIM on LLS-SIM system for volumetric imaging.
+		<br><br>
+		</center>
+		-->
+		<center><video src="images/Mito-MTs-TIRFSIM.avi?raw=true" controls="controls" width="100%" height="auto"/></center>
+		<center><b>Video 3</b> | RES-SIM enhanced volumetric imaging of fast-moving sample via LLS-SIM system. </center>
+		<br><br>
+		
+		
+		&emsp; The excitaion power used in all the aforementioned live-cell experiment is at least 10-folder lower that used in conventional imaging so that very low photo-damaged is introduced to the sample.
+		Although severe artifact exists in Convention SIM result, RES-SIM substantially removed the artifact and enhanced the contrast, providing a high-defination of different type of organelles. 
+		Benefitting from RES-SIM, the partical tracking and structural segmentation algorithm can be applied, enabling the further study of biological insight.
+	
+		
+		<center><h1>4. Our team </h1></center>
+		&emsp; Our research team is co-established with the Department of Automation, Tsinghua University and the National Laboratory of Biomacromolecules, Institute of Biophysics, Chinese Academy of Sciences.
+		The members are of multi-disciplinary background, including control theory, computation science, optics, biophysics, biological engineering, etc. 
+		Our scope is to integrate artificial intelligence into current microscope to create a high-performance, multi-functional, bio-friendly microscopy system,
+		and reveal the unseen biological insight.
+
+		
+		<center><h1>Reference </h1></center>
+		<br>
+		[1]Pang, Tongyao, et al. "Recorrupted-to-recorrupted: unsupervised deep learning for image denoising." Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. 2021.<br>
+		[2]Qiao C, Li D, Guo Y, et al. Evaluation and development of deep neural networks for image super-resolution in optical microscopy[J]. Nature Methods, 2021, 18(2): 194-202.<br>
+		
+		<!--
 		<center><img src="https://github.com/cabooster/DeepCAD-RT/blob/page/images/deepcad1.png?raw=true" width="1050" align="middle" /></center>
-		*/
+		&nbsp;
+		&ensp;
+		&emsp;
+		-->
     </p>
+	<script src="{{ site.baseurl }}/css/BeerSlider.js"></script>
+	<script>
+	  var slider = new BeerSlider( document.getElementById( "slider1" ) );
+	  var slider = new BeerSlider( document.getElementById( "slider2" ) );
+	  var slider = new BeerSlider( document.getElementById( "slider3" ) );
+	  var slider = new BeerSlider( document.getElementById( "slider4" ) );
+	  var slider = new BeerSlider( document.getElementById( "slider5" ) );
+	  var slider = new BeerSlider( document.getElementById( "slider6" ) );
+	  var slider = new BeerSlider( document.getElementById( "slider7" ) );
+	</script>
+	
  
 </div>
 
 
+
+
+<!--
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br><br>
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br><br>
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br><br>
+<center><video src="https://github.com/TristaZeng/ZS-DeconvNet/blob/master/video/SuppVideo5_Mitosis_Mito_HeLa.mp4?raw=true" controls="controls" width="100%" height="auto"/></center>
+-->

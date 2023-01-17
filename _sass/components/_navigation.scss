@@ -4,8 +4,8 @@
   */
 
 .nav-main {
-  font-size: 20; // override mobile media query
-  text-align: right;
+  font-size: 40; // override mobile media query
+  text-align: center;
   margin-bottom: 4rem;
 
   @media (max-width: 38em) {
@@ -42,4 +42,5 @@
     margin: 0 1rem;
     padding: 0;
   }
+  
 }

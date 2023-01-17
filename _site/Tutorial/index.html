@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Tutorial &middot; RES-SIM
+    
+  </title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Source+Code+Pro:400,700" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <link rel="stylesheet" href="/css/BeerSlider.css">
+  
+</head>
+
+
+  <body>
+    <nav class="nav-main">
+      <ul style="margin-bottom: 0rem;">
+		<!--
+        <li class="hvr-underline-reveal"><a href="">Main</a></li>
+		<li class="main-page"><a class="hvr-underline-reveal" href="">Main</a></li>
+		-->
+		<li class="hvr-underline-reveal"><a href="/About/">About</a></li>
+        <li class="hvr-underline-reveal"><a href="/Tutorial/">Tutorial</a></li>
+		<li class="logo"><a class="hvr-ripple-out" href="/">H</a></li>
+        <li class="hvr-underline-reveal"><a href="/Dataset/">Dataset</a></li>
+        <li class="hvr-underline-reveal"><a href="/Team/">Team</a></li>
+      </ul>
+    </nav>
+
+    <div class="container content">
+      <main>
+        <article class="page">
+  <h1 class="page-title">Tutorial</h1>
+  <p><em>** We will release the related code and plugin once our manuscirpt is accepted. **</em></p>
+<h2 id="content">content</h2>
+
+<ul>
+  <li><a href="#1-matlab-source-code">1. Matlab code for image re-corruption and SIM reconstruction</a></li>
+  <li><a href="#2-python-source-code">2. Python code for network training and inference</a></li>
+  <li><a href="#3-fiji-plugin">3. Fiji plugin</a></li>
+</ul>
+
+<h2 id="1-matlab-source-code">1. Matlab source code</h2>
+<h3 id="create-the-training-dataset">Create the training dataset</h3>
+<p>The training dataset of RES-SIM is generated with a series of low-SNR raw image stacks (3*3 for a 2D/TIRF-SIM image, 3*5*z for a 3D-SIM volume, and 1*3 for a LLS-SIM slice). 
+For each raw image stack, we first employ the image re-corruptiont strategy form a corrupted image stack pair, then apply convention SIM algorithm to form a corrupted image (volume) pair,
+ and final arrange them as the input data and target data, respectively.
+By repeating this operations to each image stack, the final training dataset is formulated. Typically, 30~50 individual image stacks is adequate for a successful training.</p>
+
+<p><br />
+To create the training dataset, please execute the file “Create_training_dataset.m” in the Matlab command window as</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>run('Create_training_dataset.m');
+</code></pre></div></div>
+<p>Several parameters need to assign in the file “Create_training_dataset.m”, including:
+<br />
+The parameter for file io:
+<br /></p>
+<table border="1">
+	<tr>
+		<td>Parameter name</td>
+		<td>Description</td>
+	</tr>
+	<tr>
+		<td>Smpl_name</td>
+		<td>The name of the smple.</td>
+	</tr>
+	<tr>
+		<td>File_dir</td>
+		<td>The directory to load the raw data, default is the 'data' folder in current directory. </td>
+	</tr>
+	<tr>
+		<td>Save_file_dir</td>
+		<td>The directory to save the data, default is the 'data' folder in current directory. </td>
+	</tr>
+	<tr>
+		<td>Save_file_format</td>
+		<td>The format for saving the re-corrupted data. The format of '.npy' (recommended for fast IO during the training), '.tif', and '.mat' is supported by now. Please note that if the '.tif' format is selected, please make sure the 
+		data is save in 'double' mode, otherwise the negative value will be discarded and the denoising performance will be degraded.</td>
+	</tr>
+</table>
+
+<!--
+A complex number list representing the illumination pattern in Fourier field. Each invidual number denotes the information for the corresponding direction.
+		The absolute value denotes the period of the spatial Moore Fringe (the inverse of its period),
+		and the phase value denotes the direction of the pattern. For 2D/TIRF/3D-SIM modality, 3 directions are employed, and for LLS-SIM modality, 1 direction is employed</td>
+		<td>For TIRF-SIM system<br>Absolute value: [5.5456,5.5389,5.5497] <br> 
+		Direction: [ 0.4712*&pi;, 0.8051*&pi;, -0.8613]<br>
+		For 3D-SIM system<br>Absolute value: [ 2.3308, 2.3219, 2.3368] <br> 
+		Direction: [ 0.4711*&pi;, 0.8060*&pi;, -0.8605*&pi;]
+-->
+
+<p>The parameters for SIM modulation:
+<br /></p>
+<table border="1">
+	<tr>
+		<td>Parameter name</td>
+		<td>Description</td>
+		<td>Typical value (based on our optical system)</td>
+	</tr>
+	<tr>
+		<td>k0</td>
+		<td>A complex number list representing the illumination pattern in Fourier field. Each invidual number denotes the information for the corresponding direction.
+		The absolute value denotes the period of the spatial Moore Fringe (the inverse of its period),
+		and the phase value denotes the direction of the pattern. For 2D/TIRF/3D-SIM modality, 3 directions are employed, and for LLS-SIM modality, 1 direction is employed</td>
+		<td> Noted in the code file.</td>
+	</tr>
+
+	<tr>
+		<td>mod_factor</td>
+		<td>A complex number list representing the modolation factor for each pattern. Each invidual number denotes the information for the corresponding pattern. 
+		The absolute value denotes the modulation depth (the intensity ratio of the corresponding order to 0-order), 
+		and the phase value denotes the spatial shift. For 2D/TIRF/LLS-SIM modality, 3 patterns are employed, and for 3D-SIM modality 5 patterns are employed.</td>
+		<td>Noted in the code file.</td>
+	</tr>
+	<tr>
+		<td>wiener_param</td>
+		<td>Paramamter used for Wiener filter. The proper setting of its value is related to the SNR of the raw images, as the low <b>wiener_param</b> value should be used for low SNR inputs.</td>
+		<td>From 0.001 to 0.05</td>
+	</tr>
+	<tr>
+		<td>otf_path</td>
+		<td>The path where the otf file is saved. For commercial SIM system, the otf file should be located in the configuration folder. 
+		If it is not available, it can also be estimated by open-source package <a href="https://www.fairsim.org/">fairSIM<sup>[1]</sup></a>.</td>
+		<td>-</td>
+	</tr>
+	<tr>
+		<td>NA_em</td>
+		<td>The effective detection NA of the microscopy system. This parameter is used for precise estimation of the system OTF.</td>
+		<td>1.3</td>
+	</tr>
+	<tr>
+		<td>lambda_em</td>
+		<td>The wavelength of the emission light (in nm). This parameter is used for precise estimation of the system OTF.</td>
+		<td>525/609/705</td>
+	</tr>
+	<tr>
+		<td>n_imm</td>
+		<td>The refractive index of the immersion oil. This parameter is used for precise estimation of the system OTF.</td>
+		<td>1.78 for TIRF-SIM, 1.51 for 3D-SIM and 0.5 for LLS-SIM</td>
+	</tr>
+</table>
+
+<p>The parameters for image re-corruption:
+<br /></p>
+<table border="1">
+	<tr>
+		<td>Parameter name</td>
+		<td>Description</td>
+		<td>Typical value range ([min, max])</td>
+	</tr>
+	<tr>
+		<td>&alpha;</td>
+		<td>Noise control factor: to adjust the re-corruption intensity</td>
+		<td>[2, 5]</td>
+	</tr>
+	<tr>
+		<td>&beta;<sub>1</sub></td>
+		<td>Poisson factor: to represent the intensity of signal-related noise (e.g. shot noise)</td>
+		<td>[0.8, 3]</td>		
+	</tr>
+	<tr>
+		<td>&beta;<sub>2</sub></td>
+		<td>Gaussian factor: to represent the intensity of Gaussian white noise (e.g. readout noise)</td>
+		<td>[0.4, 6]</td>
+	</tr>
+	<tr>
+		<td>repeat_time</td>
+		<td>The number of re-corruption operations applied for each image stack. (For the purpose of enriching the training dataset)</td>
+		<td>3</td>
+	</tr>
+</table>
+<p><br /><br /></p>
+
+<h3 id="pre-process-the-noisy-data-for-inference">Pre-process the noisy data for inference</h3>
+<p>During the inference phase, the noisy raw data is first reconstructed by conventional SIM algorithm to generated the noisy SIM SR images (volumes), then fed into the pre-trained model to output the final denoised images (volumes).
+To generated the data for network input, please run the code in Matlab command window as:<br /></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>run('SIM_reconstruction.m');
+</code></pre></div></div>
+<p>Similar to create the training dataset, the file Io parameters and the SIM modulation parameter need to be assigned in the code. <br />
+The conventional SIM reconstruction algorithm can also be replaced with your own code,
+ e.g. the open-source package fairSIM<sup>[1]</sup>, Hifi-SIM<sup>[2]</sup>, and OpenSIM<sup>[3]</sup>.</p>
+
+<h2 id="2-python-source-code">2. Python source code</h2>
+
+<p>The python code is set for network training and denoising implementation. To accelerate the training process, a GPU equipped computer is required.</p>
+
+<h3 id="environment-installation">Environment installation</h3>
+<p>To avoid the version incompatible problem. We highly recommend to install RES-SIM in a CONDA vitual environment as</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conda create -n ressim python=3.7
+</code></pre></div></div>
+<p>The packages required for RES-SIM are listed in file ‘requirements.txt’, which can be installed by pip or conda package management command. 
+Pleased note that the suggested version information is only validated on our working station, and possibly need to be changed to adjust your specific environment. 
+<br /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conda install pytorch torchvision torchaudio pytorch-cuda==11.6 -c pytorch -c nvidia
+pip install tifffile
+pip install tensorboardX
+</code></pre></div></div>
+
+<p>To begin the training or inference processing, just activate the vitual environment and the excecute the corresponding code.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd ./
+conda activate ressim
+</code></pre></div></div>
+
+<h3 id="network-training">Network training</h3>
+
+<p>Before the training, we need to organize the folder saving the training dataset in the following mode (if the dataset is generated with aforementioned Matlab code, this requirement will be already satisfied):</p>
+<ul>
+  <li>root_dir
+    <ul>
+      <li>input       — to save the input data for training</li>
+      <li>target      — to save the target data for training</li>
+      <li>val_raw     — to save the input data for validation</li>
+      <li>infer_raw   — to save the input data for denoising inference
+<br /></li>
+    </ul>
+  </li>
+</ul>
+
+<p>Please note that the files in <em>input</em> folder and <em>target</em> folder should be strictly paired (We highly recommended to name the paired files with the same name as ‘000001.npy’ to avoid the mismatching), 
+otherwise a warning window will appear. If your want to change the dataset archetecture, please re-write the related data IO code in ‘dataset.py’. <br /></p>
+
+<p>Our code is developed based on open source architecture KAIR (<a href="https://github.com/cszn/KAIR">https://github.com/cszn/KAIR</a>), in which the interface for multiple network, model and dataset is provided. 
+The training condition is defined in the ‘.json’ file located in folder ‘options’. To change the training condition, just modify the parameters in the corresponding file. 
+The main tubable parameters for training are listed in the following table, and other customized parameters can be added for the specific use. <br /></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Parameter name</th>
+      <th style="text-align: center">default</th>
+      <th style="text-align: center">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">optimizer type</td>
+      <td style="text-align: center">adam</td>
+      <td style="text-align: center">The type of optimizer used to train the network</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">initial learning rate</td>
+      <td style="text-align: center">1e-4</td>
+      <td style="text-align: center">The initial learning rate</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">scheduler type</td>
+      <td style="text-align: center">adam</td>
+      <td style="text-align: center">The type of scheduler used to train the network</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">scheduler milestones</td>
+      <td style="text-align: center">1e-4</td>
+      <td style="text-align: center">The time point to decrease the learning rate</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">scheduler gamma</td>
+      <td style="text-align: center">1e-4</td>
+      <td style="text-align: center">The decay ratio of initial learning at each scheduler point</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">checkpoints</td>
+      <td style="text-align: center">1e-4</td>
+      <td style="text-align: center">The time point to perform the validation</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+Although we only used U-net as the network backbone in this work, it is usable to employ other network archetecture, such as RCAN and RDN. We also provided the interfaces for these network. 
+If your want to employed other network, 
+just created a new ‘.py’ file for network and a ‘.json’ file for training condition, and then create a link by adding a selection in ‘select_model.py’. <br /></p>
+
+<p>To run the training script, the following parameters need to be assigned as:<br /></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Parameter name</th>
+      <th style="text-align: center">type</th>
+      <th style="text-align: center">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">smpl_dir</td>
+      <td style="text-align: center">str</td>
+      <td style="text-align: center">The local directory saving the dataset, default is the folder ‘./dataset’ in current directory</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">smpl_name</td>
+      <td style="text-align: center">str</td>
+      <td style="text-align: center">The name of the sub folder saving the sample data</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">data_format</td>
+      <td style="text-align: center">str</td>
+      <td style="text-align: center">The format of the raw data file, e.g. ‘npy’, ‘mat’, ‘tif’, default is ‘npy’</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">network_type</td>
+      <td style="text-align: center">str</td>
+      <td style="text-align: center">The type of network used in the model, e.g. ‘unet’, ‘rcan’, ‘rdn’</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">gpu_id</td>
+      <td style="text-align: center">str</td>
+      <td style="text-align: center">The specific gpu device assigned for training, default is 0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">save_suffix</td>
+      <td style="text-align: center">str</td>
+      <td style="text-align: center">The suffix of the saving model</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">preload_data_flag</td>
+      <td style="text-align: center">bool</td>
+      <td style="text-align: center">The logial variable indicating whether to pre-load all data in memory to accerlate the training, default is False</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">load_model_iter</td>
+      <td style="text-align: center">int</td>
+      <td style="text-align: center">The iteration of the pre-trained model to load, default is 0 (to train a new model)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+The example code for training is :</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python Main_train.py --smpl_dir dataset --smpl_name microtubules --data_format npy  --network_type unet --gpu_id 0 --save_suffix _1  --preload_data_flag --load_model_iter 0
+</code></pre></div></div>
+
+<h3 id="denoising">Denoising</h3>
+
+<p>To implement the denoising with the pre-trained model, just run the following command:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Parameter nane</th>
+      <th style="text-align: center">type</th>
+      <th style="text-align: center">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">smpl_dir</td>
+      <td style="text-align: center">str</td>
+      <td style="text-align: center">The local directory saving the dataset, default is the folder ‘./dataset’ in current directory</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">smpl_name</td>
+      <td style="text-align: center">str</td>
+      <td style="text-align: center">The name of the sub folder saving the sample data</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">model_suffix</td>
+      <td style="text-align: center">str</td>
+      <td style="text-align: center">The suffix of the pre-trained model</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">data_format</td>
+      <td style="text-align: center">str</td>
+      <td style="text-align: center">The format of the raw data file, e.g. ‘npy’, ‘mat’, ‘tif’, default is ‘npy’</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">network_type</td>
+      <td style="text-align: center">str</td>
+      <td style="text-align: center">The type of network used in the model, e.g. ‘unet’, ‘rcan’, ‘rdn’</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">gpu_id</td>
+      <td style="text-align: center">str</td>
+      <td style="text-align: center">The specific gpu device assigned for training, default is 0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">load_model_iter</td>
+      <td style="text-align: center">int</td>
+      <td style="text-align: center">The iteration of the specific model to load, default -1 (indicating the last iteration)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">test_patch_size</td>
+      <td style="text-align: center">int</td>
+      <td style="text-align: center">The size of the cropped region of the test images, default is 1000.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">model_patch_size</td>
+      <td style="text-align: center">int</td>
+      <td style="text-align: center">The size of the mini image patch input to the network, default is 128</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python Main_test.py --smpl_dir data --smpl_name Microtubules --model_suffix _1 --data_format npy --network_type unet --gpu_id 0 --load_model_iter -1 
+</code></pre></div></div>
+
+<h3 id="examples">Examples</h3>
+<p>A representative training dataset and inference dataset are located in the ‘dataset’ of current repository. To provide a intuitive view of our software, 
+we also uploaded the corresponding pre-trained for this dataset. The example training image and denoised are shown in the following figure.</p>
+
+<center><img src="../images/Demo-website-training.png?raw=true" width="1000" align="middle" /></center>
+<center> Figure 1 | The example training and inference images of RES-SIM</center>
+
+<h2 id="3-fiji-plugin">3. Fiji plugin</h2>
+<p>To make our work convenient for more biological researchers, we also provided a ready-to-use Fiji plugin for SIM denoising. The detailed instruction of our plugin is provided in the following section.<br /></p>
+
+<!--
+The layout of our plugin is demostrated in Figure 2. The noisy SIM SR image (after reconstruction) and the pre-trained model are needed.
+The SR image can be reconstructed by either the open-source software (e.g. fairSIM) or home-built code. 
+To further improve the convenience, the interface between fairSIM and our plugin are under developing. 
+To perform the denoising, just open the noisy images and designate the path of the model package, then the denoise SR images will be displayed in a new window.
+To validate our plugin, the example data of different type of organlles and their corresponding models have been uploaded in the repository. 
+
+<center> Figure 2 | The layout and example of our Fiji plugin.</center>
+-->
+
+<h3 id="install">Install</h3>
+
+<ol>
+  <li>Copy all the files in folder <code class="language-plaintext highlighter-rouge">./jars</code> <code class="language-plaintext highlighter-rouge">./plugins</code> to the corresponding folder in <code class="language-plaintext highlighter-rouge">/$YourPath/Fiji.app/</code></li>
+  <li>Restart Fiji</li>
+  <li>
+    <p>Access to RES-SIM plugin is as “Fiji menu -&gt; plugins -&gt; RES-SIM”:</p>
+
+    <p><img src="../images/access.png" alt="&quot;Access to RES-SIM Fiji Plugin&quot;" title="Access to RES-SIM Fiji Plugin" /></p>
+  </li>
+</ol>
+
+<hr />
+
+<h3 id="denoised-with-res-sim-plugin">Denoised with RES-SIM plugin</h3>
+
+<ol>
+  <li>Open Fiji.</li>
+  <li>Open/Choose an image.</li>
+  <li>Find the corresponding model in ‘./models’, or you can export your model as <strong>ZIP file</strong> following
+<a href="https://gist.github.com/asimshankar/000b8d276f211f972168afa138eb3cc7">this gist</a> in python code 
+and Tensorflow &lt;= 1.15.0 environment.</li>
+  <li>Run the plugin via <code class="language-plaintext highlighter-rouge">Plugins &gt; RES-SIM &gt; Predict</code>.</li>
+  <li>
+    <p>Designate the following parameters for predicting image:</p>
+
+    <p><img src="../images/predict.png" alt="Predict Parameter" title="Predict Parameter" /></p>
+  </li>
+</ol>
+
+<blockquote>
+  <p><strong>Number of tiles</strong>: Part the large input image to several small images while predicting, 
+to avoid out of memory error, and to accelerate the progress of predicting.</p>
+
+  <p><strong>Overlap between tiles</strong>: The percentage of the pixels in the edge overlapped between the adjacent tiles.
+Since the edge regions in each tile is lack of effection information, less overlapped ratio will introduce more stitching seam artifact.
+<u>The typically setting of the overlapped ration of 32% is adequate to mininize this effect.</u></p>
+
+  <p><strong>Batch size</strong>: The number of image predicted at one time, to accelerate the progress of predicting
+for large GPU/CPU memory.</p>
+
+  <p><strong>Import model (.zip)</strong>: Press <code class="language-plaintext highlighter-rouge">Browse</code> to load the saved model.</p>
+
+  <p><strong>Adjust mapping of TF network input</strong>: Press <code class="language-plaintext highlighter-rouge">Adjust mapping of TF network input</code> button, and adjust the match of 
+dimensions of image and dimensions of input in the model. <u>When using RES-SIM 3D model, please check the third
+dimension of image is matched with `3[153]` dimension of model.</u></p>
+
+  <p><strong>Show progress dialog</strong>: Show log information in predict progress.</p>
+</blockquote>
+
+<p>After the aformentioned setting is done, by pressing <code class="language-plaintext highlighter-rouge">Ok</code>, the predicting progress will begin and the following UI will be shown:<br />
+	<img src="../images/predict progress.png" alt="UI of Predict" title="UI of Predict" /></p>
+
+<hr />
+<h3 id="train-with-res-sim-plugin">Train with RES-SIM plugin</h3>
+
+<ol>
+  <li>Open input and target data as two separated stack files with Fiji.</li>
+  <li>Run the plugin via <code class="language-plaintext highlighter-rouge">Plugin &gt; RES-SIM &gt; train</code>.</li>
+  <li>
+    <p>Adjust the following parameters for training:</p>
+
+    <p><img src="../images/train.png" alt="Train Parameter" title="Train Parameter" /></p>
+
+    <blockquote>
+      <p><strong>Input image for training</strong>: Choose the input images of dataset.</p>
+
+      <p><strong>GT image for training</strong>: Choose the ground truth images of dataset.</p>
+
+      <p><strong>Total epochs</strong>: How many times of dataset performing during training.</p>
+
+      <p><strong>Iteration number per epoch</strong>: Iteration number of model in one times of dataset performed during training.</p>
+
+      <p><strong>Batch size</strong>: the number of input images batched in one iteration of model.</p>
+
+      <p><strong>Initial learning rate</strong>: The learning rate at start of training.</p>
+
+    </blockquote>
+  </li>
+  <li>
+    <p>Run the plugin by pressing <code class="language-plaintext highlighter-rouge">Ok</code>.</p>
+  </li>
+  <li>During Training, You can track the training progress via UI showed below:
+    <ol>
+      <li>
+        <p>Train preview window shows the input image and output image of the current 
+training status.</p>
+
+        <p><img src="../images/train preview.png" alt="Train preview" title="Train preview" /></p>
+      </li>
+      <li>You can see the training loss and validation loss ploted below.
+<img src="../images/train progress.png" alt="Train progress" title="Train progress" />
+        <blockquote>
+          <ol>
+            <li>Press <code class="language-plaintext highlighter-rouge">Cancel &gt; Close</code> to dispose training progress.</li>
+            <li>Press <code class="language-plaintext highlighter-rouge">Finish</code> to finish training progress and save model following instructions below.</li>
+            <li>Press <code class="language-plaintext highlighter-rouge">Export Model</code> to export the lastest save model at current status following instructions below without disposing
+training progress.</li>
+          </ol>
+        </blockquote>
+      </li>
+      <li>When pressing <code class="language-plaintext highlighter-rouge">Finish</code> or <code class="language-plaintext highlighter-rouge">Export Model</code>, you will see the information of the saved model.
+        <ol>
+          <li>In <code class="language-plaintext highlighter-rouge">Overview</code> <code class="language-plaintext highlighter-rouge">Metadata</code> <code class="language-plaintext highlighter-rouge">inputs &amp; outputs</code> <code class="language-plaintext highlighter-rouge">Training</code>, you will see the parameters of trained model.</li>
+          <li>Press <code class="language-plaintext highlighter-rouge">File actions &gt; Save to..</code> to save the file of trained model.</li>
+          <li>Extract the file of trained model, <code class="language-plaintext highlighter-rouge">./tf_saved_model_bundle.zip</code> is used for model file(.zip) in <code class="language-plaintext highlighter-rouge">Plugin &gt;
+Plugin &gt; RES-SIM &gt; Predict</code>.</li>
+        </ol>
+
+        <p><img src="../images/save model.png" alt="Save model" title="Save model" /></p>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+<hr />
+
+<h3 id="switching-the-tensorflow-version">Switching the TensorFlow version</h3>
+
+<p>By default, RES-SIM Fiji Plugin ships with TensorFlow 1.15.0 which is compatible to CUDA 10.0 and cuDNN &gt;= 7.4.1.
+For supporting a model trained with a specific TensorFlow version or for GPU support:</p>
+
+<ol>
+  <li>Open <code class="language-plaintext highlighter-rouge">Edit &gt; Options &gt; TensorFlow...</code></li>
+  <li>Choose the version matching your system / model.</li>
+  <li>For GPU support, install CUDA and cuDNN matching the TensorFlow version you choose, and make sure Fiji knows about 
+the installation paths.</li>
+  <li>Wait until a message opens telling you that the library was installed.</li>
+  <li>Restart Fiji.</li>
+</ol>
+
+<p><img src="../images/tensorflow.png" alt="Edit &gt; Option &gt; Tensorflow" /></p>
+
+<p><strong><em>(More functions, e.g. the 3D model training with RES-SIM plugin is under developing, and will be released in the further).</em></strong><br /></p>
+
+<h3 id="reference">Reference</h3>
+<p>[1] Müller M, Mönkemöller V, Hennig S, et al. Open-source image reconstruction of super-resolution structured illumination microscopy data in ImageJ[J]. Nature communications, 2016, 7(1): 1-6.<br />
+[2] Wen G, Li S, Wang L, et al. High-fidelity structured illumination microscopy by point-spread-function engineering[J]. Light: Science &amp; Applications, 2021, 10(1): 1-12.<br />
+[3] Lal A, Shan C, Xi P. Structured illumination microscopy image reconstruction algorithm[J]. IEEE Journal of Selected Topics in Quantum Electronics, 2016, 22(4): 50-63.<br /></p>
+
+<p><br /></p>
+
+<!--
+## Content
+
+- [1. Python source code](#1-python-source-code)
+- [2. Jupyter notebook](#2-jupyter-notebook)
+- [3. Colab notebook](#3-colab-notebook)
+- [4. Matlab implementation for real-time processing](#4-matlab-implementation-for-real-time-processing)
+
+## 1. Python source code
+
+### UPDATE v0.7 (June 2022) 
+
+We replaced 12-fold data augmentation with 16-fold data augmentation for more stable results. 
+
+Denoising performance (SNR) with the increase of training epochs on simulatedc calcium imaging data:
+<center><img src="https://github.com/cabooster/DeepCAD-RT/blob/main/images/16aug.png?raw=true" width="600" align="middle" /></center>
+
+### 1.1 Our environment 
+
+* Ubuntu 16.04 
+* Python 3.6
+* Pytorch 1.8.0
+* NVIDIA GPU (GeForce RTX 3090) + CUDA (11.1)
+
+### 1.2 Environment configuration
+
+1. Create a virtual environment and install PyTorch. In the 3rd step, please select the correct Pytorch version that matches your CUDA version from [https://pytorch.org/get-started/previous-versions/](https://pytorch.org/get-started/previous-versions/). 
+
+   ```
+   $ conda create -n deepcadrt python=3.6
+   $ conda activate deepcadrt
+   $ pip install torch==1.8.0+cu111 torchvision==0.9.0+cu111 torchaudio==0.8.0 -f https://download.pytorch.org/whl/torch_stable.html
+   ```
+
+2. We made a installable pip release of DeepCAD-RT [[pypi](https://pypi.org/project/deepcad/)]. You can install it by entering the following command:
+
+   ```
+   $ pip install deepcad
+   ```
+
+### 1.3 Download the source code
+
+```
+$ git clone https://github.com/cabooster/DeepCAD-RT
+$ cd DeepCAD-RT/DeepCAD_RT_pytorch/
+```
+
+### 1.4 Demos
+
+To try out the Python code, please activate the `deepcadrt` environment first:
+
+```
+$ conda activate deepcadrt
+$ cd DeepCAD-RT/DeepCAD_RT_pytorch/
+```
+
+**Example training**
+
+To train a DeepCAD-RT model, we recommend starting with the demo script `demo_train_pipeline.py`. One demo dataset will be downloaded to the `DeepCAD_RT_pytorch/datasets` folder automatically. You can also download other data from [the companion webpage](https://cabooster.github.io/DeepCAD-RT/Datasets/) or use your own data by changing the training parameter `datasets_path`. 
+
+
+```
+python demo_train_pipeline.py
+```
+
+**Example testing**
+
+To test the denoising performance with pre-trained models, you can run the demo script `demo_test_pipeline.py` . A demo dataset and its denoising model will be automatically downloaded to `DeepCAD_RT_pytorch/datasets` and `DeepCAD_RT_pytorch/pth`, respectively. You can change the dataset and the model by changing the parameters `datasets_path` and `denoise_model`.
+
+```
+python demo_test_pipeline.py
+```
+
+## 2. Jupyter notebook
+
+We provide simple and user-friendly Jupyter notebooks to implement DeepCAD-RT. They are in the `DeepCAD_RT_pytorch/notebooks` folder. Before you launch the notebooks, please configure an environment following the instruction in [Environment configuration](#12-environment-configuration) . And then, you can launch the notebooks through the following commands:
+
+```
+$ conda activate deepcadrt
+$ cd DeepCAD-RT/DeepCAD_RT_pytorch/notebooks
+$ jupyter notebook
+```
+
+<center><img src="https://github.com/cabooster/DeepCAD-RT/blob/page/images/deepcad8.png?raw=true" width="900" align="middle"></center> 
+
+## 3. Colab notebook
+
+We also provide a cloud-based notebook implemented with Google Colab. You can run DeepCAD-RT directly in your browser using a cloud GPU without configuring the environment. [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/cabooster/DeepCAD-RT/blob/main/DeepCAD_RT_pytorch/notebooks/DeepCAD_RT_demo_colab.ipynb)
+
+*Note: Colab notebook needs longer time to train and test because of the limited GPU performance offered by Colab.*
+
+<center><img src="https://github.com/cabooster/DeepCAD-RT/blob/page/images/deepcad7.png?raw=true" width="700" align="middle"></center> 
+
+## 4. Matlab implementation for real-time processing
+
+To achieve real-time denoising, DeepCAD-RT was optimally deployed on GPU using TensorRT (Nvidia) for further acceleration and memory reduction. We also designed a sophisticated time schedule for multi-thread processing. Based on a two-photon microscope, real-time denoising has been achieved with our Matlab GUI of DeepCAD-RT (tested on a Windows desktop with Intel i9 CPU and 128 GB RAM).
+
+<center><img src="https://github.com/cabooster/DeepCAD-RT/blob/page/images/GUI2.png?raw=true" width="950" align="middle"></center> 
+
+
+
+### 4.1 Required environment
+
+- Windows 10
+- CUDA 11.0
+- CUDNN 8.0.5
+- Matlab 2018a (or newer version)
+- Visual Studio 2017
+
+### 4.2 File description
+
+`deepcad_trt.m`: Matlab script that calls fast processing and tiff saving function programmed in C++
+
+`deepcad_trt_nosave.m`: Matlab script that calls fast processing function programmed in C++ and save tiff in Matlab
+
+`realtime_core.m`: Realtime simulation in Matlab & C++ and save tiff
+
+`DeepCAD-RT-v2.x.x/DeepCAD-RT-v2/deepcad/+deepcadSession`: Real-time inference with data flow from ScanImage
+
+`DeepCAD-RT-v2.x.x/DeepCAD-RT-v2/results`: Path to save result images
+
+`DeepCAD-RT-v2.x.x/DeepCAD-RT-v2/engine_file`: Path for the engine file
+
+### 4.3 Instructions for use
+
+#### Install
+
+1. Download the `.exe` file from [here](https://doi.org/10.5281/zenodo.6352526). When you double click this self-extracting file, the relevant files of DeepCAD-RT will unzip to the location that you choose.
+
+2. Copy the `.dll` files from `<installpath>/DeepCAD-RT-v2.x.x/dll` to your CUDA installation directory, for example `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.0\bin`. The CUDA installer should have already added the CUDA path to your system PATH (from [TensorRT installation guide](https://docs.nvidia.com/deeplearning/tensorrt/archives/tensorrt-601/tensorrt-install-guide/index.html#installing-zip)).
+
+#### Model preparation
+
+   After [training](https://github.com/cabooster/DeepCAD-RT#demos), the ONNX files will be saved in `DeepCAD-RT/DeepCAD_RT_pytorch/onnx`. In order to reduce latency, `patch_t` should be decreased. **The recommended training patch size is 200x200x40 pixels.**
+
+   We provide two pre-trained ONNX models in `DeepCAD-RT-v2.x.x/DeepCAD-RT-v2` . The patch size of `cal_mouse_mean_200_40_full.onnx` and `cal_mouse_mean_200_80_full.onnx` are 200x200x40 pixels and 200x200x80 pixels, respectively. The calcium imaging data used for training these model were captured by our customized two-photon microscope.
+
+
+#### Realtime inference with ScanImage
+
+<center><img src="https://github.com/cabooster/DeepCAD-RT/blob/page/images/GUI.png?raw=true" width="600" align="middle"></center> 
+
+Matlab configuration:
+
+1. Open Matlab.
+
+2. Change file path to `<installpath>/DeepCAD-RT-v2.x.x/DeepCAD-RT-v2`.
+
+3. Configure the environment:
+
+   ```
+   mex -setup C++
+   
+   installDeepCADRT
+   ```
+
+4. Open ScanImage and DeepCAD_RT GUI:
+
+   ```
+   scanimage
+   
+   DeepCAD_RT 
+   ```
+
+5. Set the parameters in GUI:
+
+   `Model file`: The path of the ONNX file.  Click `...` to open the file browser and choose the file used for inference.
+
+   `Save path`:The path to save denoised images. Click `...` to open the file browser and choose the path
+
+   `Frames number`: How many frames to acquire. It is equal to the value set in ScanImage. This parameter will update automatically when you click `Configure`. 
+
+   <center><img src="https://github.com/cabooster/DeepCAD-RT/blob/page/images/scanimage_parameter.png?raw=true" width="250" align="middle"></center>
+
+   **Attention: You should set the frame number before clicking `Configure`.**
+
+   `Display setting`: 
+
+   `Manual` mode: You can set the minimum and maximum intensity for image display.
+
+   `Auto` mode: The contrast will be set automatically but slightly slower than `Manual` mode.
+
+   `Advanced`: Advanced settings.
+
+   `Patch size (x,y,t)`: The three parameters depend on the patch size you set when you convert Pytorch model to ONNX model.
+
+   `Overlap factor`: The overlap factor between two adjacent patches. The recommended number is between 0.125 and 0.4. Larger overlap factor means better performance but lower inference speed.
+
+   `Input batch size`: The number of frames per batch. The recommended value is between 50 and 100. It should be larger than the patch size in t dimension.
+
+   `Overlap frames between batches`: The number of overlapping slices between two adjacent batches. The recommended value is between 5 and 10. More overlapping frames lead to better performance but lower inference speed.
+
+6. After set all parameters, please click `Configure`. If you click `Configure` for the first time, the initialization program will execute automatically.
+
+7. You can click `GRAB` in ScanImage and start imaging.
+
+8. Before each imaging session, you should click  `Configure`.
+
+
+### GUI demo
+
+<center><iframe width="800" height="500" src="https://www.youtube.com/embed/u1ejSaVvWiY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> </center>
+
+-->
+
+</article>
+
+      </main>
+
+      <footer class="footer">
+        </small>
+        <div class="ftr-links">
+          <a href="https://github.com/cabooster/DeepCAD-RT"><i class="fa fa-github-alt"></i></a>
+        </div>
+      </footer>
+    </div>
+
+  </body>
+</html>
