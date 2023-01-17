@@ -25,7 +25,7 @@ since the SIM algorithm consist of the separation and re-combination of the low-
 This artifact will overwhelm the effective sample information in low-SNR situation, and strictly limits SIM application in long-term observation of the cellular organelles and dynamics.
 
 
-<center><img src="../images/Demo-website-artifact.png?raw=true" width="1000" align="middle" /></center>
+<center><img src="../images/Demo-website-artifact.png?raw=true" width="800" align="middle" /></center>
 <center>Figure 1 | Detection noise significantly degrades the SIM quality.</center>
 
 
@@ -49,7 +49,7 @@ denoised super-resolution image.<br>
 Compared to other deep-learning based denoising method such as N2N, no repeated acquisition is required, making RES-SIM suitable for fast-moving samples.
 For time-lapsing videos with enough frames, RES-SIM is capable to train the model and perform the denoising with only the collected data itself, enabling the potential discovery of the novel structure.
 
-<center><img src="../images/principle.png?raw=true" width="1000" align="middle" /></center>
+<center><img src="../images/principle.png?raw=true" width="800" align="middle" /></center>
 <center>Figure 2 | Diagram of RES-SIM</center>
 
 ### Our Contribution
