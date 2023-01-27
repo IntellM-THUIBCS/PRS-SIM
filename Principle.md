@@ -6,6 +6,12 @@ title: Principle
 ### [GitHub](https://github.com/cabooster/DeepCAD-RT) | [Paper](https://www.nature.com/articles/s41587-022-01450-8)
 -->
 
+$$
+\mathbf{y_A} = \mathbf{y}+D \cdot\mathbf{z},
+\mathbf{y_B} = \mathbf{y}-D^{-1}\cdot\mathbf{z}, \tag{1}
+$$
+
+<!--
 <h2 style="color:white;" id="Method">Method</h2>
 <p>
 The key of RES-SIM is to apply image recorruption strategy<sup>[1]</sup> to create an input-target super-resolution (SR) image pair
@@ -177,3 +183,5 @@ Therefore, the recorrupted SR image $\mathbf{Y_A}$ and $\mathbf{Y_B}$ still meet
 [3] Gustafsson, M. G. (2000). Surpassing the lateral resolution limit by a factor of two using structured illumination microscopy. Journal of microscopy, 198(2), 82-87.<br>
 [4] Gustafsson, M. G., Shao, L., Carlton, P. M., Wang, C. R., Golubovskaya, I. N., Cande, W. Z., ... & Sedat, J. W. (2008). Three-dimensional resolution doubling in wide-field fluorescence microscopy by structured illumination. Biophysical journal, 94(12), 4957-4970.<br>
 </p>
+
+-->
