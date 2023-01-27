@@ -174,15 +174,15 @@ $$
 $$
 </center>
 
-The covariance of their noise distribution (denoted as $\mathbf{n_A} and \mathbf{n_B}$) can be represented as: 
+The covariance of their noise distribution (denoted as $\mathbf{n_A}$ and $\mathbf{n_B}$) can be represented as: 
 <center>
 $$
 cov(\mathbf{N_A},\mathbf{N_B}) = E\{\sum_{i=j}c_{ij}n_{A,i}\cdot n_{B,j}\}+E\{\sum_{i\ne j}c_{ij}n_{A,i}\cdot n_{B,j}\} \tag{12}
 $$
 </center>
 
-In Eq. 12, we have $E\{\sum_{i=j}c_{ij}n_{A,i}\cdot n_{B,j}\}=0$ due to the individual image recorruption operation 
-and $E\{\sum_{i\ne j}c_{ij}n_{A,i}\cdot n_{B,j}\}=0$ since they are from independent images. 
+In Eq. 12, we have $E(\sum_{i=j}c_{ij}n_{A,i}\cdot n_{B,j})=0$ due to the individual image recorruption operation 
+and $E(\sum_{i\ne j}c_{ij}n_{A,i}\cdot n_{B,j})=0$ since they are from independent images. 
 Therefore, the recorrupted SR image $\mathbf{Y_A}$ and $\mathbf{Y_B}$ still meets the independent criteria to training a denoising network,
  the effectiveness of RES-SIM is proved.
 
