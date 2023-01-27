@@ -17,8 +17,10 @@ under the assumption of the mixed Poisson-Gaussian noise model as:
 
 <center>
 $$
-\mathbf{y_A} = \mathbf{y}+D \cdot\mathbf{z},
-\mathbf{y_B} = \mathbf{y}-D^{-1}\cdot\mathbf{z}, \tag{1}
+\begin{align}
+\mathbf{y_A} &= \mathbf{y}+D \cdot\mathbf{z}\\
+\mathbf{y_B} &= \mathbf{y}-D^{-1}\cdot\mathbf{z}
+\end{align}\tag{1}
 $$
 </center>
 
