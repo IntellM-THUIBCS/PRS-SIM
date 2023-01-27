@@ -32,7 +32,6 @@ $$
 $$
 </center>
 
-
 The proof of the effectiveness of the denoising network trained with the SR imaging pair generated with Eq. 1 is provided in the following section.
 Briefly, the training of RES-SIM mainly takes the following steps:
 
@@ -65,7 +64,7 @@ $$
 </center>
 For a Poisson function $\mathcal{P}(\mathbf{\lambda})$, 
 it can be approximate by a Gaussian function as $\mathcal{N}(\lambda,\lambda)$ with low error when the value of $\lambda$ is not too low.
-Therefore, for a regular microscopy image with adequate photon budget, Eq. 1 can be simplified as:<br>
+Therefore, for a regular microscopy image with adequate photon budget, Eq. 3 can be simplified as:<br>
 <center>
 $$
 \mathbf{y}=\mathbf{x}+\mathcal{N}(0,\beta_1\mathbf{x}+\beta_2^2) \tag{4}
@@ -85,7 +84,7 @@ min\qquad ||\phi(\mathbf{y})-\mathbf{x}||_2^2 \tag{5}
 $$
 </center>
 Since $\mathbf{y_1}$ and $\mathbf{y_2}$ are two independently captured image, so their detected noise should be independent, 
-then mathetical expection of Eq.3 can be re-written as:
+then mathetical expection of Eq. 5 can be re-written as:
 <center>
 $$
 \begin{align}
@@ -99,7 +98,7 @@ $$
 $$
 </center>
 
-In Eq. 4, $E\{||\phi(\mathbf{y_1})-\mathbf{x}||^2_2$ is identical with the optimization function of supervised training with noise-free ground-truth, and 
+In Eq. 6, $E(||\phi(\mathbf{y_1})-\mathbf{x}||^2_2)$ is identical with the optimization function of supervised training with noise-free ground-truth, and 
 $\sigma^2$ is a constant. 
 Therefore, N2N training scheme is able to gain comparable denoising performance than supervised learning, which has been proved by previous work. 
 
@@ -108,12 +107,10 @@ From a single noisy image $\mathbf{y}$, we generated two corrupted images as:
 
 <center>
 $$
-\mathbf{y_A}=\mathbf{x}+D\sigma_n\cdot\mathbf{z}+\mathbf{n} \tag{7}
-$$
-</center>
-<center>
-$$
-\mathbf{y_B}=\mathbf{x}-D^-1\sigma_n\cdot\mathbf{z}+\mathbf{n} \tag{8}
+\begin{align}
+\mathbf{y_A} &= \mathbf{x}+D\sigma_n\cdot\mathbf{z}+\mathbf{n} \\
+\mathbf{y_B} &= \mathbf{x}-D^-1\sigma_n\cdot\mathbf{z}+\mathbf{n}
+\end{align}\tag{7}
 $$
 </center>
 where $\mathbf{z}$ follows the unit normal distribution $\mathcal{N}(0,1)$. 
@@ -126,12 +123,12 @@ $$
 \begin{align}
     cov(\mathbf{n_A},\mathbf{n_B}) &= E\{-(D\sigma_n\mathbf{z}+\mathbf{n})(D^{-1}\sigma_n\mathbf{z}+\mathbf{n})\}\\
     &= -\sigma_n^2E\{\mathbf{z^2}\}+(D-D^{-1})\sigma_nE\{\mathbf{z}\cdot\mathbf{n}\}-E\{\mathbf{n^2}\}\\
-    &= -sigma_n^2+sigma_n^2\\
+    &= -\sigma_n^2+\sigma_n^2\\
     &= 0 
-\end{align}\tag{9}
+\end{align}\tag{8}
 $$
 </center>
-Since $\mathbf{n_A}$ and $\mathbf{n_B}$ are two random variable following normal distribution and their covariance is their, 
+Since $\mathbf{n_A}$ and $\mathbf{n_B}$ are two random variable following normal distribution and their covariance is 0, 
 they are statiscally independent. 
 Therefore, $\mathbf{y_A}$ and $\mathbf{y_B}$ statisfy the N2N criteria and can be used as the input and target data to train the denoising network.
 
@@ -141,9 +138,9 @@ Summarized by Eq. 2 and Eq .7, the corrupted image pair can be finally represent
 <center>
 $$
 \begin{align}
-\mathbf{y_A} &= \alpha\sqrt{\beta_1\mathbf{x}+\beta_2}\cdot\mathbf{z}+\mathbf{y}\\
-\mathbf{y_B} &= -\alpha^{-1}\sqrt{\beta_1\mathbf{x}+\beta_2}\cdot\mathbf{z}+\mathbf{y}
-\end{align}\tag{10}
+\mathbf{y_A} &= \alpha\sqrt{\beta_1\mathbf{y}+\beta_2}\cdot\mathbf{z}+\mathbf{y}\\
+\mathbf{y_B} &= -\alpha^{-1}\sqrt{\beta_1\mathbf{y}+\beta_2}\cdot\mathbf{z}+\mathbf{y}
+\end{align}\tag{9}
 $$
 </center>
 
@@ -155,7 +152,7 @@ The basic theory of SIM imaging can be referred from [3,4]. From a series raw im
 the super-resolution recorrupted image $S(\mathbf{r})$ can be represented as:<br>
 <center>
 $$
-S(\mathbf{r})=\mathcal{F}^{-1}\frac{\sum_{p,m}\tilde{D}_{p,m}(\mathbf{k_r}-m\mathbf{p})\cdot OTF(\mathbf{k_r})}{\sum_{p,m}||OTF(\mathbf{k_r}-m\mathbf{p})||^2+\omega^2}\tag{11}
+S(\mathbf{r})=\mathcal{F}^{-1}\frac{\sum_{p,m}\tilde{D}_{p,m}(\mathbf{k_r}-m\mathbf{p})\cdot OTF(\mathbf{k_r})}{\sum_{p,m}||OTF(\mathbf{k_r}-m\mathbf{p})||^2+\omega^2}\tag{10}
 $$
 </center>
 
@@ -170,7 +167,7 @@ $$
 \alpha\sqrt{\beta_1\mathbf{x}+\beta_2}\cdot\mathbf{z_n}+\mathbf{y_n})\\
 \mathbf{Y_B} &= SIM( -\alpha^{-1}\sqrt{\beta_1\mathbf{x}+\beta_2}\cdot\mathbf{z_1}+\mathbf{y_1},\dots,
  -\alpha^{-1}\sqrt{\beta_1\mathbf{x}+\beta_2}\cdot\mathbf{z_n}+\mathbf{y_n})
-\end{align}\tag{12}
+\end{align}\tag{11}
 $$
 </center>
 
