@@ -152,7 +152,8 @@ The basic theory of SIM imaging can be referred from [3,4]. From a series raw im
 the super-resolution recorrupted image $S(\mathbf{r})$ can be represented as:<br>
 <center>
 $$
-S(\mathbf{r})=\mathcal{F}^{-1}\frac{\sum_{p,m}\tilde{D}_{p,m}(\mathbf{k_r}-m\mathbf{p})\cdot OTF(\mathbf{k_r})}{\sum_{p,m}||OTF(\mathbf{k_r}-m\mathbf{p})||^2+\omega^2}\tag{10}
+S(\mathbf{r})=\mathcal{F}^{-1}(\frac{\sum_{p,m}\tilde{D}_{p,m}(\mathbf{k_r}-m\mathbf{p})\cdot OTF(\mathbf{k_r})}{\sum_{p,m}||OTF(\mathbf{k_r}-m\mathbf{p})||^2+\omega^2})
+\tag{10}
 $$
 </center>
 
