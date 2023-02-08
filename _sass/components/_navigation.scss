@@ -3,6 +3,7 @@
   * Styles for the main navigation bar on top of the page.
   */
 
+
 .nav-main {
   font-size: 40; // override mobile media query
   text-align: center;
@@ -17,7 +18,7 @@
     border-bottom-color: $nav-bottom-border-color;
     border-bottom-width: $nav-bottom-border-width;
     border-bottom-style: solid;
-	background-color: #f0e6e6
+	background-color: #393939
   }
 
   li {
