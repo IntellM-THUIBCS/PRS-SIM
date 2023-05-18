@@ -1,2 +1,2 @@
 # RES-SIM
-Image re-corruption based self-supervised reconstruction for structured illumination microscopy
+Pixel-realignment based self-supervised reconstruction for structured illumination microscopy
