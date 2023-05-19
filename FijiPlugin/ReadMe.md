@@ -65,11 +65,11 @@ Given a pre-trained PRS-SIM model and an image or stack to be processed, the Fij
 For PRS-SIM model training, we provide realigned images dataset which can directly be used for training, and code to process raw SIM images to realigned images. In the latter method, please organize directory structure of your data as below.
 
 >dataset_for_training  
->├─ cell01  
->│    ├─ cell01-view-1.tif  
->│    ├─ cell01-view-2.tif  
->│    ├─ cell01-view-3.tif  
->│    └─ cell01-view-4.tif  
+>├─ cell X  
+>│    ├─ view1.tif  
+>│    ├─ view2.tif  
+>│    ├─ view3.tif  
+>│    └─ view4.tif  
 >...
 
 - Start the plugin by **Plugins > PRS-SIM > train** and select the folder containing reailgned images.
