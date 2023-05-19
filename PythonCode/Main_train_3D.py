@@ -33,7 +33,7 @@ print('\nprepare opt\n')
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--gpu_id', type=str, default='1', help='the id of GPU')
+parser.add_argument('--gpu_id', type=str, default='0', help='the id of GPU')
 
 parser.add_argument('--smpl_dir', type=str, default='./SIM_data', help='the folder saveing the sample data')
 parser.add_argument('--smpl_name', type=str, default='Lyso', help='the name of the sample')
