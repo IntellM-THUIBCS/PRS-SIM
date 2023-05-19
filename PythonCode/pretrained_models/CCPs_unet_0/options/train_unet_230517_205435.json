@@ -1,0 +1,81 @@
+{
+  "task": "CCPs_unet_0",
+  "model": "plain",
+  "gpu_ids": [
+    1
+  ],
+  "epoch_num": 10002,
+  "sleep_time": 0,
+  "n_channels_in": 1,
+  "n_channels_out": 1,
+  "dataroot": "X",
+  "path": {
+    "root": "/home/bbnc/Documents/harddrive4/Materials-s2s/ReleaseCode/PythonCode/pretrained_models",
+    "pretrained_netG": null,
+    "task": "/home/bbnc/Documents/harddrive4/Materials-s2s/ReleaseCode/PythonCode/pretrained_models/CCPs_unet_0",
+    "log": "/home/bbnc/Documents/harddrive4/Materials-s2s/ReleaseCode/PythonCode/pretrained_models/CCPs_unet_0/logs",
+    "options": "/home/bbnc/Documents/harddrive4/Materials-s2s/ReleaseCode/PythonCode/pretrained_models/CCPs_unet_0/options",
+    "models": "/home/bbnc/Documents/harddrive4/Materials-s2s/ReleaseCode/PythonCode/pretrained_models/CCPs_unet_0/models",
+    "images": "/home/bbnc/Documents/harddrive4/Materials-s2s/ReleaseCode/PythonCode/pretrained_models/CCPs_unet_0/images"
+  },
+  "datasets": {
+    "train": {
+      "name": "train_dataset",
+      "dataset_type": "2d",
+      "H_size": 128,
+      "dataloader_shuffle": true,
+      "dataloader_num_workers": 4,
+      "dataloader_batch_size": 4,
+      "phase": "train",
+      "n_channels_in": 1,
+      "n_channels_out": 1,
+      "dataroot": "./SIM_data/CCPs",
+      "preload_data_flag": true
+    },
+    "test": {
+      "name": "test_dataset",
+      "dataset_type": "2d",
+      "phase": "test",
+      "n_channels_in": 1,
+      "n_channels_out": 1,
+      "dataroot": "./SIM_data/CCPs",
+      "preload_data_flag": false,
+      "test_cell_count": 1
+    }
+  },
+  "netG": {
+    "net_type": "unet",
+    "in_nc": 1,
+    "out_nc": 1,
+    "patch_size": 128,
+    "init_type": "kaiming_uniform",
+    "init_bn_type": "uniform",
+    "init_gain": 0.2,
+    "scale": 1
+  },
+  "train": {
+    "G_lossfn_type": "mse",
+    "G_lossfn_weight": 1.0,
+    "G_optimizer_type": "adam",
+    "G_optimizer_lr": 0.0001,
+    "G_optimizer_clipgrad": null,
+    "G_scheduler_type": "MultiStepLR",
+    "G_scheduler_milestones": [
+      30000,
+      40000,
+      50000,
+      60000
+    ],
+    "G_scheduler_gamma": 0.5,
+    "G_regularizer_orthstep": null,
+    "G_regularizer_clipstep": null,
+    "checkpoint_test": 50000,
+    "checkpoint_save": 2000,
+    "checkpoint_print": 100
+  },
+  "opt_path": "options/train_unet.json",
+  "is_train": true,
+  "merge_bn": false,
+  "merge_bn_startpoint": -1,
+  "scale": 1
+}

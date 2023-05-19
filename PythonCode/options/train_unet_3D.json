@@ -1,0 +1,67 @@
+{
+    "task": "X"  //  root/task/images-models-options
+    , "model": "plain" // "plain"
+    , "gpu_ids": [1]
+    , "epoch_num": 10002 // 40k / (160//4) = 1000
+    , "sleep_time": 0 // (215s) * 40 <= 9000
+    , "n_channels_in": 1  // raw data
+    , "n_channels_out": 1  // SR image
+    , "dataroot": "X"
+    ,
+    "path": {
+      "root": "/home/bbnc/Documents/harddrive4/Materials-s2s/ReleaseCode/PythonCode/pretrained_models" 
+      , "pretrained_netG": null      // path of pretrained model
+    }
+  
+    , "datasets": {
+      "train": {
+        "name": "train_dataset"           // just name
+        , "dataset_type": "3d"         // "plain for all" "plain"  
+        , "H_size": 64                    // patch size 256 for unet
+        , "z_size": 8
+        , "dataloader_shuffle": true
+        , "dataloader_num_workers": 4
+        , "dataloader_batch_size": 4     // batch size 1 | 16 | 32 | 48 | 64 | 128
+      }
+      ,
+    "test": {
+        "name": "test_dataset"            // just name
+        , "dataset_type": "3d"        // "plain" | "plainpatch" "plain" 
+        , "H_size" : 64
+        , "z_size" : 8
+      }
+    }
+  
+    , "netG": {
+      "net_type": "unet3D" // "bf_unet" |
+      , "in_nc": 1        // input channel number
+      , "out_nc": 1       // ouput channel number
+      , "patch_size": 64
+      , "z_size": 8
+      
+      , "init_type": "kaiming_uniform"         // "orthogonal" | "normal" | "uniform" | "xavier_normal" | "xavier_uniform" | "kaiming_normal" | "kaiming_uniform"
+      , "init_bn_type": "uniform"         // "uniform" | "constant"
+      , "init_gain": 0.2
+    }
+  
+    , "train": {
+      "G_lossfn_type": "mse"               // "mse" | "l1" | charbonnierlossedge0.05
+      , "G_lossfn_weight": 1.0            // default
+  
+      , "G_optimizer_type": "adam"        // fixed, adam is enough
+      , "G_optimizer_lr": 1e-4            // learning rate
+      , "G_optimizer_clipgrad": null      // unused
+  
+      , "G_scheduler_type": "MultiStepLR" // "MultiStepLR" is enough
+      , "G_scheduler_milestones": [30000, 40000, 50000, 60000]  //  unet 30k*1e-4 and 10k*1e-5
+      , "G_scheduler_gamma": 0.5
+  
+      , "G_regularizer_orthstep": null    // unused
+      , "G_regularizer_clipstep": null    // unused
+  
+      , "checkpoint_test": 100000           // for testing
+      , "checkpoint_save": 10000           // for saving model
+      , "checkpoint_print": 100           // for print
+    }
+  }
+  

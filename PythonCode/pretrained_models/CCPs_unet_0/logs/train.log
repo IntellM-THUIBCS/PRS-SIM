@@ -1,0 +1,1398 @@
+23-05-17 20:53:49.554 :   task: CCPs_unet_0
+  model: plain
+  gpu_ids: [1]
+  epoch_num: 10002
+  sleep_time: 0
+  n_channels_in: 1
+  n_channels_out: 1
+  dataroot: X
+  path:[
+    root: /home/bbnc/Documents/harddrive4/Materials-s2s/ReleaseCode/PythonCode/pretrained_models
+    pretrained_netG: None
+    task: /home/bbnc/Documents/harddrive4/Materials-s2s/ReleaseCode/PythonCode/pretrained_models/CCPs_unet_0
+    log: /home/bbnc/Documents/harddrive4/Materials-s2s/ReleaseCode/PythonCode/pretrained_models/CCPs_unet_0/logs
+    options: /home/bbnc/Documents/harddrive4/Materials-s2s/ReleaseCode/PythonCode/pretrained_models/CCPs_unet_0/options
+    models: /home/bbnc/Documents/harddrive4/Materials-s2s/ReleaseCode/PythonCode/pretrained_models/CCPs_unet_0/models
+    images: /home/bbnc/Documents/harddrive4/Materials-s2s/ReleaseCode/PythonCode/pretrained_models/CCPs_unet_0/images
+  ]
+  datasets:[
+    train:[
+      name: train_dataset
+      dataset_type: 2d
+      H_size: 128
+      dataloader_shuffle: True
+      dataloader_num_workers: 4
+      dataloader_batch_size: 4
+      phase: train
+      n_channels_in: 1
+      n_channels_out: 1
+      dataroot: ./SIM_data/CCPs
+      preload_data_flag: True
+    ]
+    test:[
+      name: test_dataset
+      dataset_type: 2d
+      phase: test
+      n_channels_in: 1
+      n_channels_out: 1
+      dataroot: ./SIM_data/CCPs
+      preload_data_flag: False
+      test_cell_count: 1
+    ]
+  ]
+  netG:[
+    net_type: unet
+    in_nc: 1
+    out_nc: 1
+    patch_size: 128
+    init_type: kaiming_uniform
+    init_bn_type: uniform
+    init_gain: 0.2
+    scale: 1
+  ]
+  train:[
+    G_lossfn_type: mse
+    G_lossfn_weight: 1.0
+    G_optimizer_type: adam
+    G_optimizer_lr: 0.0001
+    G_optimizer_clipgrad: None
+    G_scheduler_type: MultiStepLR
+    G_scheduler_milestones: [30000, 40000, 50000, 60000]
+    G_scheduler_gamma: 0.5
+    G_regularizer_orthstep: None
+    G_regularizer_clipstep: None
+    checkpoint_test: 50000
+    checkpoint_save: 2000
+    checkpoint_print: 100
+  ]
+  opt_path: options/train_unet.json
+  is_train: True
+  merge_bn: False
+  merge_bn_startpoint: -1
+  scale: 1
+
+23-05-17 20:53:49.556 : Random seed: 5980
+23-05-17 20:54:07.680 : Number of train images: 320, iters: 80
+23-05-17 20:54:10.487 : 
+Networks name: UNet
+Params number: 1339920
+Net structure:
+UNet(
+  (encode1): Sequential(
+    (0): Conv2d(1, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): LeakyReLU(negative_slope=0.01)
+    (2): Conv2d(48, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (3): LeakyReLU(negative_slope=0.01)
+    (4): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  )
+  (encode2): Sequential(
+    (0): Conv2d(48, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): LeakyReLU(negative_slope=0.01)
+    (2): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  )
+  (encode3): Sequential(
+    (0): Conv2d(48, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): LeakyReLU(negative_slope=0.01)
+    (2): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  )
+  (encode4): Sequential(
+    (0): Conv2d(48, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): LeakyReLU(negative_slope=0.01)
+    (2): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  )
+  (encode5): Sequential(
+    (0): Conv2d(48, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): LeakyReLU(negative_slope=0.01)
+    (2): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  )
+  (encode6): Sequential(
+    (0): Conv2d(48, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): ConvTranspose2d(48, 48, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1), bias=False)
+  )
+  (decode1): Sequential(
+    (0): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): LeakyReLU(negative_slope=0.01)
+    (2): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (3): LeakyReLU(negative_slope=0.01)
+    (4): ConvTranspose2d(96, 96, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1), bias=False)
+  )
+  (decode2): Sequential(
+    (0): Conv2d(144, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): LeakyReLU(negative_slope=0.01)
+    (2): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (3): LeakyReLU(negative_slope=0.01)
+    (4): ConvTranspose2d(96, 96, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1), bias=False)
+  )
+  (decode3): Sequential(
+    (0): Conv2d(144, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): LeakyReLU(negative_slope=0.01)
+    (2): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (3): LeakyReLU(negative_slope=0.01)
+    (4): ConvTranspose2d(96, 96, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1), bias=False)
+  )
+  (decode4): Sequential(
+    (0): Conv2d(144, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): LeakyReLU(negative_slope=0.01)
+    (2): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (3): LeakyReLU(negative_slope=0.01)
+    (4): ConvTranspose2d(96, 96, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1), bias=False)
+  )
+  (decode5): Sequential(
+    (0): Conv2d(97, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): LeakyReLU(negative_slope=0.01)
+    (2): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (3): LeakyReLU(negative_slope=0.01)
+  )
+  (output_layer): Conv2d(32, 1, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+)
+
+23-05-17 20:54:10.571 : 
+ |  mean  |  min   |  max   |  std   || shape               
+ |  0.004 | -0.162 |  0.163 |  0.095 | torch.Size([48, 1, 3, 3]) || encode1.0.weight
+ |  0.000 | -0.024 |  0.024 |  0.014 | torch.Size([48, 48, 3, 3]) || encode1.2.weight
+ | -0.000 | -0.024 |  0.024 |  0.014 | torch.Size([48, 48, 3, 3]) || encode2.0.weight
+ |  0.000 | -0.024 |  0.024 |  0.014 | torch.Size([48, 48, 3, 3]) || encode3.0.weight
+ |  0.000 | -0.024 |  0.024 |  0.014 | torch.Size([48, 48, 3, 3]) || encode4.0.weight
+ |  0.000 | -0.024 |  0.024 |  0.014 | torch.Size([48, 48, 3, 3]) || encode5.0.weight
+ |  0.000 | -0.024 |  0.024 |  0.014 | torch.Size([48, 48, 3, 3]) || encode6.0.weight
+ | -0.000 | -0.024 |  0.024 |  0.014 | torch.Size([48, 48, 3, 3]) || encode6.1.weight
+ |  0.000 | -0.017 |  0.017 |  0.010 | torch.Size([96, 96, 3, 3]) || decode1.0.weight
+ |  0.000 | -0.017 |  0.017 |  0.010 | torch.Size([96, 96, 3, 3]) || decode1.2.weight
+ |  0.000 | -0.017 |  0.017 |  0.010 | torch.Size([96, 96, 3, 3]) || decode1.4.weight
+ |  0.000 | -0.014 |  0.014 |  0.008 | torch.Size([96, 144, 3, 3]) || decode2.0.weight
+ |  0.000 | -0.017 |  0.017 |  0.010 | torch.Size([96, 96, 3, 3]) || decode2.2.weight
+ |  0.000 | -0.017 |  0.017 |  0.010 | torch.Size([96, 96, 3, 3]) || decode2.4.weight
+ |  0.000 | -0.014 |  0.014 |  0.008 | torch.Size([96, 144, 3, 3]) || decode3.0.weight
+ |  0.000 | -0.017 |  0.017 |  0.010 | torch.Size([96, 96, 3, 3]) || decode3.2.weight
+ |  0.000 | -0.017 |  0.017 |  0.010 | torch.Size([96, 96, 3, 3]) || decode3.4.weight
+ | -0.000 | -0.014 |  0.014 |  0.008 | torch.Size([96, 144, 3, 3]) || decode4.0.weight
+ |  0.000 | -0.017 |  0.017 |  0.010 | torch.Size([96, 96, 3, 3]) || decode4.2.weight
+ | -0.000 | -0.017 |  0.017 |  0.010 | torch.Size([96, 96, 3, 3]) || decode4.4.weight
+ |  0.000 | -0.017 |  0.017 |  0.010 | torch.Size([64, 97, 3, 3]) || decode5.0.weight
+ | -0.000 | -0.020 |  0.020 |  0.012 | torch.Size([32, 64, 3, 3]) || decode5.2.weight
+ |  0.001 | -0.029 |  0.029 |  0.016 | torch.Size([1, 32, 3, 3]) || output_layer.weight
+
+23-05-17 20:54:35.429 :   task: CCPs_unet_0
+  model: plain
+  gpu_ids: [1]
+  epoch_num: 10002
+  sleep_time: 0
+  n_channels_in: 1
+  n_channels_out: 1
+  dataroot: X
+  path:[
+    root: /home/bbnc/Documents/harddrive4/Materials-s2s/ReleaseCode/PythonCode/pretrained_models
+    pretrained_netG: None
+    task: /home/bbnc/Documents/harddrive4/Materials-s2s/ReleaseCode/PythonCode/pretrained_models/CCPs_unet_0
+    log: /home/bbnc/Documents/harddrive4/Materials-s2s/ReleaseCode/PythonCode/pretrained_models/CCPs_unet_0/logs
+    options: /home/bbnc/Documents/harddrive4/Materials-s2s/ReleaseCode/PythonCode/pretrained_models/CCPs_unet_0/options
+    models: /home/bbnc/Documents/harddrive4/Materials-s2s/ReleaseCode/PythonCode/pretrained_models/CCPs_unet_0/models
+    images: /home/bbnc/Documents/harddrive4/Materials-s2s/ReleaseCode/PythonCode/pretrained_models/CCPs_unet_0/images
+  ]
+  datasets:[
+    train:[
+      name: train_dataset
+      dataset_type: 2d
+      H_size: 128
+      dataloader_shuffle: True
+      dataloader_num_workers: 4
+      dataloader_batch_size: 4
+      phase: train
+      n_channels_in: 1
+      n_channels_out: 1
+      dataroot: ./SIM_data/CCPs
+      preload_data_flag: True
+    ]
+    test:[
+      name: test_dataset
+      dataset_type: 2d
+      phase: test
+      n_channels_in: 1
+      n_channels_out: 1
+      dataroot: ./SIM_data/CCPs
+      preload_data_flag: False
+      test_cell_count: 1
+    ]
+  ]
+  netG:[
+    net_type: unet
+    in_nc: 1
+    out_nc: 1
+    patch_size: 128
+    init_type: kaiming_uniform
+    init_bn_type: uniform
+    init_gain: 0.2
+    scale: 1
+  ]
+  train:[
+    G_lossfn_type: mse
+    G_lossfn_weight: 1.0
+    G_optimizer_type: adam
+    G_optimizer_lr: 0.0001
+    G_optimizer_clipgrad: None
+    G_scheduler_type: MultiStepLR
+    G_scheduler_milestones: [30000, 40000, 50000, 60000]
+    G_scheduler_gamma: 0.5
+    G_regularizer_orthstep: None
+    G_regularizer_clipstep: None
+    checkpoint_test: 50000
+    checkpoint_save: 2000
+    checkpoint_print: 100
+  ]
+  opt_path: options/train_unet.json
+  is_train: True
+  merge_bn: False
+  merge_bn_startpoint: -1
+  scale: 1
+
+23-05-17 20:54:35.431 : Random seed: 1228
+23-05-17 20:54:36.398 : Number of train images: 320, iters: 80
+23-05-17 20:54:39.269 : 
+Networks name: UNet
+Params number: 1339920
+Net structure:
+UNet(
+  (encode1): Sequential(
+    (0): Conv2d(1, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): LeakyReLU(negative_slope=0.01)
+    (2): Conv2d(48, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (3): LeakyReLU(negative_slope=0.01)
+    (4): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  )
+  (encode2): Sequential(
+    (0): Conv2d(48, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): LeakyReLU(negative_slope=0.01)
+    (2): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  )
+  (encode3): Sequential(
+    (0): Conv2d(48, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): LeakyReLU(negative_slope=0.01)
+    (2): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  )
+  (encode4): Sequential(
+    (0): Conv2d(48, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): LeakyReLU(negative_slope=0.01)
+    (2): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  )
+  (encode5): Sequential(
+    (0): Conv2d(48, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): LeakyReLU(negative_slope=0.01)
+    (2): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  )
+  (encode6): Sequential(
+    (0): Conv2d(48, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): ConvTranspose2d(48, 48, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1), bias=False)
+  )
+  (decode1): Sequential(
+    (0): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): LeakyReLU(negative_slope=0.01)
+    (2): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (3): LeakyReLU(negative_slope=0.01)
+    (4): ConvTranspose2d(96, 96, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1), bias=False)
+  )
+  (decode2): Sequential(
+    (0): Conv2d(144, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): LeakyReLU(negative_slope=0.01)
+    (2): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (3): LeakyReLU(negative_slope=0.01)
+    (4): ConvTranspose2d(96, 96, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1), bias=False)
+  )
+  (decode3): Sequential(
+    (0): Conv2d(144, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): LeakyReLU(negative_slope=0.01)
+    (2): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (3): LeakyReLU(negative_slope=0.01)
+    (4): ConvTranspose2d(96, 96, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1), bias=False)
+  )
+  (decode4): Sequential(
+    (0): Conv2d(144, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): LeakyReLU(negative_slope=0.01)
+    (2): Conv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (3): LeakyReLU(negative_slope=0.01)
+    (4): ConvTranspose2d(96, 96, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1), bias=False)
+  )
+  (decode5): Sequential(
+    (0): Conv2d(97, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (1): LeakyReLU(negative_slope=0.01)
+    (2): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (3): LeakyReLU(negative_slope=0.01)
+  )
+  (output_layer): Conv2d(32, 1, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+)
+
+23-05-17 20:54:39.319 : 
+ |  mean  |  min   |  max   |  std   || shape               
+ |  0.006 | -0.163 |  0.163 |  0.098 | torch.Size([48, 1, 3, 3]) || encode1.0.weight
+ |  0.000 | -0.024 |  0.024 |  0.014 | torch.Size([48, 48, 3, 3]) || encode1.2.weight
+ | -0.000 | -0.024 |  0.024 |  0.014 | torch.Size([48, 48, 3, 3]) || encode2.0.weight
+ |  0.000 | -0.024 |  0.024 |  0.014 | torch.Size([48, 48, 3, 3]) || encode3.0.weight
+ | -0.000 | -0.024 |  0.024 |  0.014 | torch.Size([48, 48, 3, 3]) || encode4.0.weight
+ | -0.000 | -0.024 |  0.024 |  0.014 | torch.Size([48, 48, 3, 3]) || encode5.0.weight
+ | -0.000 | -0.024 |  0.024 |  0.014 | torch.Size([48, 48, 3, 3]) || encode6.0.weight
+ |  0.000 | -0.024 |  0.024 |  0.014 | torch.Size([48, 48, 3, 3]) || encode6.1.weight
+ |  0.000 | -0.017 |  0.017 |  0.010 | torch.Size([96, 96, 3, 3]) || decode1.0.weight
+ |  0.000 | -0.017 |  0.017 |  0.010 | torch.Size([96, 96, 3, 3]) || decode1.2.weight
+ | -0.000 | -0.017 |  0.017 |  0.010 | torch.Size([96, 96, 3, 3]) || decode1.4.weight
+ | -0.000 | -0.014 |  0.014 |  0.008 | torch.Size([96, 144, 3, 3]) || decode2.0.weight
+ | -0.000 | -0.017 |  0.017 |  0.010 | torch.Size([96, 96, 3, 3]) || decode2.2.weight
+ | -0.000 | -0.017 |  0.017 |  0.010 | torch.Size([96, 96, 3, 3]) || decode2.4.weight
+ |  0.000 | -0.014 |  0.014 |  0.008 | torch.Size([96, 144, 3, 3]) || decode3.0.weight
+ | -0.000 | -0.017 |  0.017 |  0.010 | torch.Size([96, 96, 3, 3]) || decode3.2.weight
+ |  0.000 | -0.017 |  0.017 |  0.010 | torch.Size([96, 96, 3, 3]) || decode3.4.weight
+ | -0.000 | -0.014 |  0.014 |  0.008 | torch.Size([96, 144, 3, 3]) || decode4.0.weight
+ |  0.000 | -0.017 |  0.017 |  0.010 | torch.Size([96, 96, 3, 3]) || decode4.2.weight
+ | -0.000 | -0.017 |  0.017 |  0.010 | torch.Size([96, 96, 3, 3]) || decode4.4.weight
+ | -0.000 | -0.017 |  0.017 |  0.010 | torch.Size([64, 97, 3, 3]) || decode5.0.weight
+ |  0.000 | -0.020 |  0.020 |  0.012 | torch.Size([32, 64, 3, 3]) || decode5.2.weight
+ |  0.000 | -0.029 |  0.029 |  0.016 | torch.Size([1, 32, 3, 3]) || output_layer.weight
+
+23-05-17 20:54:43.620 : <epoch:  1, iter:     100, lr:1.000e-04> G_loss: 1.557e+03 
+23-05-17 20:54:46.944 : <epoch:  2, iter:     200, lr:1.000e-04> G_loss: 9.024e+02 
+23-05-17 20:54:50.741 : <epoch:  3, iter:     300, lr:1.000e-04> G_loss: 1.046e+03 
+23-05-17 20:54:54.067 : <epoch:  4, iter:     400, lr:1.000e-04> G_loss: 6.553e+02 
+23-05-17 20:54:57.611 : <epoch:  6, iter:     500, lr:1.000e-04> G_loss: 7.704e+02 
+23-05-17 20:55:01.316 : <epoch:  7, iter:     600, lr:1.000e-04> G_loss: 7.321e+02 
+23-05-17 20:55:04.636 : <epoch:  8, iter:     700, lr:1.000e-04> G_loss: 6.262e+02 
+23-05-17 20:55:07.971 : <epoch:  9, iter:     800, lr:1.000e-04> G_loss: 1.633e+03 
+23-05-17 20:55:11.961 : <epoch: 11, iter:     900, lr:1.000e-04> G_loss: 4.336e+02 
+23-05-17 20:55:15.504 : <epoch: 12, iter:   1,000, lr:1.000e-04> G_loss: 5.861e+02 
+23-05-17 20:55:19.106 : <epoch: 13, iter:   1,100, lr:1.000e-04> G_loss: 9.156e+02 
+23-05-17 20:55:22.720 : <epoch: 14, iter:   1,200, lr:1.000e-04> G_loss: 1.381e+03 
+23-05-17 20:55:27.039 : <epoch: 16, iter:   1,300, lr:1.000e-04> G_loss: 5.954e+02 
+23-05-17 20:55:32.285 : <epoch: 17, iter:   1,400, lr:1.000e-04> G_loss: 1.040e+03 
+23-05-17 20:55:37.217 : <epoch: 18, iter:   1,500, lr:1.000e-04> G_loss: 9.409e+02 
+23-05-17 20:55:42.466 : <epoch: 19, iter:   1,600, lr:1.000e-04> G_loss: 7.906e+02 
+23-05-17 20:55:47.931 : <epoch: 21, iter:   1,700, lr:1.000e-04> G_loss: 1.006e+03 
+23-05-17 20:55:53.181 : <epoch: 22, iter:   1,800, lr:1.000e-04> G_loss: 1.240e+03 
+23-05-17 20:55:58.478 : <epoch: 23, iter:   1,900, lr:1.000e-04> G_loss: 2.003e+03 
+23-05-17 20:56:03.823 : <epoch: 24, iter:   2,000, lr:1.000e-04> G_loss: 6.576e+02 
+23-05-17 20:56:03.824 : Saving the model.
+23-05-17 20:56:09.347 : <epoch: 26, iter:   2,100, lr:1.000e-04> G_loss: 2.180e+03 
+23-05-17 20:56:14.679 : <epoch: 27, iter:   2,200, lr:1.000e-04> G_loss: 7.274e+02 
+23-05-17 20:56:19.970 : <epoch: 28, iter:   2,300, lr:1.000e-04> G_loss: 3.878e+02 
+23-05-17 20:56:25.251 : <epoch: 29, iter:   2,400, lr:1.000e-04> G_loss: 8.380e+02 
+23-05-17 20:56:30.888 : <epoch: 31, iter:   2,500, lr:1.000e-04> G_loss: 1.240e+03 
+23-05-17 20:56:36.164 : <epoch: 32, iter:   2,600, lr:1.000e-04> G_loss: 1.054e+03 
+23-05-17 20:56:41.465 : <epoch: 33, iter:   2,700, lr:1.000e-04> G_loss: 6.875e+02 
+23-05-17 20:56:46.716 : <epoch: 34, iter:   2,800, lr:1.000e-04> G_loss: 1.484e+03 
+23-05-17 20:56:52.029 : <epoch: 36, iter:   2,900, lr:1.000e-04> G_loss: 1.210e+03 
+23-05-17 20:56:57.302 : <epoch: 37, iter:   3,000, lr:1.000e-04> G_loss: 4.611e+02 
+23-05-17 20:57:02.689 : <epoch: 38, iter:   3,100, lr:1.000e-04> G_loss: 1.470e+03 
+23-05-17 20:57:07.519 : <epoch: 39, iter:   3,200, lr:1.000e-04> G_loss: 4.908e+02 
+23-05-17 20:57:12.967 : <epoch: 41, iter:   3,300, lr:1.000e-04> G_loss: 1.086e+03 
+23-05-17 20:57:18.103 : <epoch: 42, iter:   3,400, lr:1.000e-04> G_loss: 1.383e+03 
+23-05-17 20:57:23.497 : <epoch: 43, iter:   3,500, lr:1.000e-04> G_loss: 5.453e+02 
+23-05-17 20:57:28.487 : <epoch: 44, iter:   3,600, lr:1.000e-04> G_loss: 6.441e+02 
+23-05-17 20:57:33.981 : <epoch: 46, iter:   3,700, lr:1.000e-04> G_loss: 5.401e+02 
+23-05-17 20:57:39.247 : <epoch: 47, iter:   3,800, lr:1.000e-04> G_loss: 1.817e+03 
+23-05-17 20:57:44.491 : <epoch: 48, iter:   3,900, lr:1.000e-04> G_loss: 1.616e+03 
+23-05-17 20:57:49.381 : <epoch: 49, iter:   4,000, lr:1.000e-04> G_loss: 1.226e+03 
+23-05-17 20:57:49.383 : Saving the model.
+23-05-17 20:57:54.880 : <epoch: 51, iter:   4,100, lr:1.000e-04> G_loss: 1.001e+03 
+23-05-17 20:58:00.321 : <epoch: 52, iter:   4,200, lr:1.000e-04> G_loss: 7.419e+02 
+23-05-17 20:58:05.480 : <epoch: 53, iter:   4,300, lr:1.000e-04> G_loss: 6.464e+02 
+23-05-17 20:58:10.375 : <epoch: 54, iter:   4,400, lr:1.000e-04> G_loss: 1.656e+03 
+23-05-17 20:58:15.981 : <epoch: 56, iter:   4,500, lr:1.000e-04> G_loss: 7.261e+02 
+23-05-17 20:58:21.252 : <epoch: 57, iter:   4,600, lr:1.000e-04> G_loss: 7.243e+02 
+23-05-17 20:58:26.439 : <epoch: 58, iter:   4,700, lr:1.000e-04> G_loss: 5.501e+02 
+23-05-17 20:58:31.475 : <epoch: 59, iter:   4,800, lr:1.000e-04> G_loss: 8.117e+02 
+23-05-17 20:58:37.110 : <epoch: 61, iter:   4,900, lr:1.000e-04> G_loss: 3.664e+02 
+23-05-17 20:58:42.396 : <epoch: 62, iter:   5,000, lr:1.000e-04> G_loss: 7.225e+02 
+23-05-17 20:58:47.623 : <epoch: 63, iter:   5,100, lr:1.000e-04> G_loss: 1.247e+03 
+23-05-17 20:58:52.568 : <epoch: 64, iter:   5,200, lr:1.000e-04> G_loss: 1.230e+03 
+23-05-17 20:58:58.077 : <epoch: 66, iter:   5,300, lr:1.000e-04> G_loss: 7.226e+02 
+23-05-17 20:59:03.350 : <epoch: 67, iter:   5,400, lr:1.000e-04> G_loss: 1.209e+03 
+23-05-17 20:59:08.675 : <epoch: 68, iter:   5,500, lr:1.000e-04> G_loss: 6.231e+02 
+23-05-17 20:59:13.859 : <epoch: 69, iter:   5,600, lr:1.000e-04> G_loss: 6.035e+02 
+23-05-17 20:59:19.432 : <epoch: 71, iter:   5,700, lr:1.000e-04> G_loss: 7.750e+02 
+23-05-17 20:59:24.751 : <epoch: 72, iter:   5,800, lr:1.000e-04> G_loss: 1.475e+03 
+23-05-17 20:59:30.092 : <epoch: 73, iter:   5,900, lr:1.000e-04> G_loss: 1.079e+03 
+23-05-17 20:59:35.358 : <epoch: 74, iter:   6,000, lr:1.000e-04> G_loss: 9.736e+02 
+23-05-17 20:59:35.360 : Saving the model.
+23-05-17 20:59:41.255 : <epoch: 76, iter:   6,100, lr:1.000e-04> G_loss: 1.079e+03 
+23-05-17 20:59:46.551 : <epoch: 77, iter:   6,200, lr:1.000e-04> G_loss: 1.233e+03 
+23-05-17 20:59:51.852 : <epoch: 78, iter:   6,300, lr:1.000e-04> G_loss: 1.014e+03 
+23-05-17 20:59:57.082 : <epoch: 79, iter:   6,400, lr:1.000e-04> G_loss: 1.040e+03 
+23-05-17 21:00:02.708 : <epoch: 81, iter:   6,500, lr:1.000e-04> G_loss: 4.417e+02 
+23-05-17 21:00:08.057 : <epoch: 82, iter:   6,600, lr:1.000e-04> G_loss: 5.443e+02 
+23-05-17 21:00:13.387 : <epoch: 83, iter:   6,700, lr:1.000e-04> G_loss: 4.678e+02 
+23-05-17 21:00:18.760 : <epoch: 84, iter:   6,800, lr:1.000e-04> G_loss: 6.905e+02 
+23-05-17 21:00:24.314 : <epoch: 86, iter:   6,900, lr:1.000e-04> G_loss: 2.333e+03 
+23-05-17 21:00:29.738 : <epoch: 87, iter:   7,000, lr:1.000e-04> G_loss: 5.928e+02 
+23-05-17 21:00:35.028 : <epoch: 88, iter:   7,100, lr:1.000e-04> G_loss: 7.188e+02 
+23-05-17 21:00:40.298 : <epoch: 89, iter:   7,200, lr:1.000e-04> G_loss: 1.208e+03 
+23-05-17 21:00:45.660 : <epoch: 91, iter:   7,300, lr:1.000e-04> G_loss: 1.176e+03 
+23-05-17 21:00:50.651 : <epoch: 92, iter:   7,400, lr:1.000e-04> G_loss: 4.090e+02 
+23-05-17 21:00:55.897 : <epoch: 93, iter:   7,500, lr:1.000e-04> G_loss: 7.759e+02 
+23-05-17 21:01:01.155 : <epoch: 94, iter:   7,600, lr:1.000e-04> G_loss: 7.709e+02 
+23-05-17 21:01:06.750 : <epoch: 96, iter:   7,700, lr:1.000e-04> G_loss: 6.983e+02 
+23-05-17 21:01:11.644 : <epoch: 97, iter:   7,800, lr:1.000e-04> G_loss: 2.071e+03 
+23-05-17 21:01:16.968 : <epoch: 98, iter:   7,900, lr:1.000e-04> G_loss: 6.826e+02 
+23-05-17 21:01:22.263 : <epoch: 99, iter:   8,000, lr:1.000e-04> G_loss: 2.053e+03 
+23-05-17 21:01:22.264 : Saving the model.
+23-05-17 21:01:27.923 : <epoch:101, iter:   8,100, lr:1.000e-04> G_loss: 9.523e+02 
+23-05-17 21:01:32.825 : <epoch:102, iter:   8,200, lr:1.000e-04> G_loss: 9.148e+02 
+23-05-17 21:01:38.137 : <epoch:103, iter:   8,300, lr:1.000e-04> G_loss: 1.814e+03 
+23-05-17 21:01:43.439 : <epoch:104, iter:   8,400, lr:1.000e-04> G_loss: 1.243e+03 
+23-05-17 21:01:48.930 : <epoch:106, iter:   8,500, lr:1.000e-04> G_loss: 2.852e+03 
+23-05-17 21:01:54.103 : <epoch:107, iter:   8,600, lr:1.000e-04> G_loss: 1.937e+03 
+23-05-17 21:01:59.293 : <epoch:108, iter:   8,700, lr:1.000e-04> G_loss: 5.751e+02 
+23-05-17 21:02:04.558 : <epoch:109, iter:   8,800, lr:1.000e-04> G_loss: 6.347e+02 
+23-05-17 21:02:10.229 : <epoch:111, iter:   8,900, lr:1.000e-04> G_loss: 1.032e+03 
+23-05-17 21:02:15.484 : <epoch:112, iter:   9,000, lr:1.000e-04> G_loss: 1.509e+03 
+23-05-17 21:02:20.414 : <epoch:113, iter:   9,100, lr:1.000e-04> G_loss: 1.195e+03 
+23-05-17 21:02:25.741 : <epoch:114, iter:   9,200, lr:1.000e-04> G_loss: 5.477e+02 
+23-05-17 21:02:31.186 : <epoch:116, iter:   9,300, lr:1.000e-04> G_loss: 7.469e+02 
+23-05-17 21:02:36.476 : <epoch:117, iter:   9,400, lr:1.000e-04> G_loss: 7.646e+02 
+23-05-17 21:02:41.335 : <epoch:118, iter:   9,500, lr:1.000e-04> G_loss: 7.703e+02 
+23-05-17 21:02:46.657 : <epoch:119, iter:   9,600, lr:1.000e-04> G_loss: 7.278e+02 
+23-05-17 21:02:52.121 : <epoch:121, iter:   9,700, lr:1.000e-04> G_loss: 1.445e+03 
+23-05-17 21:02:57.427 : <epoch:122, iter:   9,800, lr:1.000e-04> G_loss: 2.264e+03 
+23-05-17 21:03:02.489 : <epoch:123, iter:   9,900, lr:1.000e-04> G_loss: 1.269e+03 
+23-05-17 21:03:07.676 : <epoch:124, iter:  10,000, lr:1.000e-04> G_loss: 5.241e+02 
+23-05-17 21:03:07.677 : Saving the model.
+23-05-17 21:03:13.158 : <epoch:126, iter:  10,100, lr:1.000e-04> G_loss: 4.958e+02 
+23-05-17 21:03:18.453 : <epoch:127, iter:  10,200, lr:1.000e-04> G_loss: 3.891e+02 
+23-05-17 21:03:23.714 : <epoch:128, iter:  10,300, lr:1.000e-04> G_loss: 1.091e+03 
+23-05-17 21:03:28.918 : <epoch:129, iter:  10,400, lr:1.000e-04> G_loss: 6.123e+02 
+23-05-17 21:03:34.378 : <epoch:131, iter:  10,500, lr:1.000e-04> G_loss: 1.159e+03 
+23-05-17 21:03:39.730 : <epoch:132, iter:  10,600, lr:1.000e-04> G_loss: 8.094e+02 
+23-05-17 21:03:45.324 : <epoch:133, iter:  10,700, lr:1.000e-04> G_loss: 7.091e+02 
+23-05-17 21:03:50.621 : <epoch:134, iter:  10,800, lr:1.000e-04> G_loss: 2.206e+03 
+23-05-17 21:03:56.190 : <epoch:136, iter:  10,900, lr:1.000e-04> G_loss: 7.494e+02 
+23-05-17 21:04:01.509 : <epoch:137, iter:  11,000, lr:1.000e-04> G_loss: 1.698e+03 
+23-05-17 21:04:06.842 : <epoch:138, iter:  11,100, lr:1.000e-04> G_loss: 8.953e+02 
+23-05-17 21:04:12.462 : <epoch:139, iter:  11,200, lr:1.000e-04> G_loss: 1.010e+03 
+23-05-17 21:04:17.914 : <epoch:141, iter:  11,300, lr:1.000e-04> G_loss: 3.151e+03 
+23-05-17 21:04:23.208 : <epoch:142, iter:  11,400, lr:1.000e-04> G_loss: 1.624e+03 
+23-05-17 21:04:28.457 : <epoch:143, iter:  11,500, lr:1.000e-04> G_loss: 6.327e+02 
+23-05-17 21:04:33.710 : <epoch:144, iter:  11,600, lr:1.000e-04> G_loss: 4.768e+02 
+23-05-17 21:04:39.068 : <epoch:146, iter:  11,700, lr:1.000e-04> G_loss: 1.160e+03 
+23-05-17 21:04:44.280 : <epoch:147, iter:  11,800, lr:1.000e-04> G_loss: 7.329e+02 
+23-05-17 21:04:49.541 : <epoch:148, iter:  11,900, lr:1.000e-04> G_loss: 9.888e+02 
+23-05-17 21:04:54.481 : <epoch:149, iter:  12,000, lr:1.000e-04> G_loss: 6.872e+02 
+23-05-17 21:04:54.483 : Saving the model.
+23-05-17 21:04:59.939 : <epoch:151, iter:  12,100, lr:1.000e-04> G_loss: 8.547e+02 
+23-05-17 21:05:05.125 : <epoch:152, iter:  12,200, lr:1.000e-04> G_loss: 1.144e+03 
+23-05-17 21:05:10.546 : <epoch:153, iter:  12,300, lr:1.000e-04> G_loss: 6.765e+02 
+23-05-17 21:05:15.455 : <epoch:154, iter:  12,400, lr:1.000e-04> G_loss: 4.687e+02 
+23-05-17 21:05:20.988 : <epoch:156, iter:  12,500, lr:1.000e-04> G_loss: 4.987e+02 
+23-05-17 21:05:26.179 : <epoch:157, iter:  12,600, lr:1.000e-04> G_loss: 1.063e+03 
+23-05-17 21:05:31.477 : <epoch:158, iter:  12,700, lr:1.000e-04> G_loss: 6.481e+02 
+23-05-17 21:05:36.406 : <epoch:159, iter:  12,800, lr:1.000e-04> G_loss: 1.773e+03 
+23-05-17 21:05:41.834 : <epoch:161, iter:  12,900, lr:1.000e-04> G_loss: 5.877e+02 
+23-05-17 21:05:47.231 : <epoch:162, iter:  13,000, lr:1.000e-04> G_loss: 4.493e+02 
+23-05-17 21:05:52.503 : <epoch:163, iter:  13,100, lr:1.000e-04> G_loss: 4.651e+02 
+23-05-17 21:05:57.495 : <epoch:164, iter:  13,200, lr:1.000e-04> G_loss: 1.923e+03 
+23-05-17 21:06:02.979 : <epoch:166, iter:  13,300, lr:1.000e-04> G_loss: 1.945e+03 
+23-05-17 21:06:08.266 : <epoch:167, iter:  13,400, lr:1.000e-04> G_loss: 4.095e+02 
+23-05-17 21:06:13.419 : <epoch:168, iter:  13,500, lr:1.000e-04> G_loss: 1.337e+03 
+23-05-17 21:06:18.502 : <epoch:169, iter:  13,600, lr:1.000e-04> G_loss: 1.608e+03 
+23-05-17 21:06:24.082 : <epoch:171, iter:  13,700, lr:1.000e-04> G_loss: 1.023e+03 
+23-05-17 21:06:29.389 : <epoch:172, iter:  13,800, lr:1.000e-04> G_loss: 6.866e+02 
+23-05-17 21:06:34.529 : <epoch:173, iter:  13,900, lr:1.000e-04> G_loss: 1.685e+03 
+23-05-17 21:06:39.581 : <epoch:174, iter:  14,000, lr:1.000e-04> G_loss: 1.059e+03 
+23-05-17 21:06:39.582 : Saving the model.
+23-05-17 21:06:45.178 : <epoch:176, iter:  14,100, lr:1.000e-04> G_loss: 8.683e+02 
+23-05-17 21:06:50.449 : <epoch:177, iter:  14,200, lr:1.000e-04> G_loss: 7.234e+02 
+23-05-17 21:06:55.713 : <epoch:178, iter:  14,300, lr:1.000e-04> G_loss: 9.472e+02 
+23-05-17 21:07:00.666 : <epoch:179, iter:  14,400, lr:1.000e-04> G_loss: 5.413e+02 
+23-05-17 21:07:06.192 : <epoch:181, iter:  14,500, lr:1.000e-04> G_loss: 6.274e+02 
+23-05-17 21:07:11.474 : <epoch:182, iter:  14,600, lr:1.000e-04> G_loss: 5.812e+02 
+23-05-17 21:07:16.793 : <epoch:183, iter:  14,700, lr:1.000e-04> G_loss: 1.517e+03 
+23-05-17 21:07:21.950 : <epoch:184, iter:  14,800, lr:1.000e-04> G_loss: 7.324e+02 
+23-05-17 21:07:27.494 : <epoch:186, iter:  14,900, lr:1.000e-04> G_loss: 9.136e+02 
+23-05-17 21:07:32.796 : <epoch:187, iter:  15,000, lr:1.000e-04> G_loss: 7.039e+02 
+23-05-17 21:07:38.153 : <epoch:188, iter:  15,100, lr:1.000e-04> G_loss: 5.023e+02 
+23-05-17 21:07:43.525 : <epoch:189, iter:  15,200, lr:1.000e-04> G_loss: 6.085e+02 
+23-05-17 21:07:49.211 : <epoch:191, iter:  15,300, lr:1.000e-04> G_loss: 8.013e+02 
+23-05-17 21:07:54.548 : <epoch:192, iter:  15,400, lr:1.000e-04> G_loss: 1.190e+03 
+23-05-17 21:07:59.801 : <epoch:193, iter:  15,500, lr:1.000e-04> G_loss: 2.603e+03 
+23-05-17 21:08:05.068 : <epoch:194, iter:  15,600, lr:1.000e-04> G_loss: 1.901e+03 
+23-05-17 21:08:10.532 : <epoch:196, iter:  15,700, lr:1.000e-04> G_loss: 6.228e+02 
+23-05-17 21:08:15.816 : <epoch:197, iter:  15,800, lr:1.000e-04> G_loss: 7.881e+02 
+23-05-17 21:08:21.053 : <epoch:198, iter:  15,900, lr:1.000e-04> G_loss: 6.072e+02 
+23-05-17 21:08:26.328 : <epoch:199, iter:  16,000, lr:1.000e-04> G_loss: 8.842e+02 
+23-05-17 21:08:26.330 : Saving the model.
+23-05-17 21:08:31.568 : <epoch:201, iter:  16,100, lr:1.000e-04> G_loss: 1.872e+03 
+23-05-17 21:08:36.817 : <epoch:202, iter:  16,200, lr:1.000e-04> G_loss: 1.555e+03 
+23-05-17 21:08:42.139 : <epoch:203, iter:  16,300, lr:1.000e-04> G_loss: 1.410e+03 
+23-05-17 21:08:47.444 : <epoch:204, iter:  16,400, lr:1.000e-04> G_loss: 1.859e+03 
+23-05-17 21:08:52.934 : <epoch:206, iter:  16,500, lr:1.000e-04> G_loss: 1.197e+03 
+23-05-17 21:08:58.022 : <epoch:207, iter:  16,600, lr:1.000e-04> G_loss: 5.245e+02 
+23-05-17 21:09:03.256 : <epoch:208, iter:  16,700, lr:1.000e-04> G_loss: 1.059e+03 
+23-05-17 21:09:08.513 : <epoch:209, iter:  16,800, lr:1.000e-04> G_loss: 8.977e+02 
+23-05-17 21:09:14.004 : <epoch:211, iter:  16,900, lr:1.000e-04> G_loss: 8.084e+02 
+23-05-17 21:09:18.954 : <epoch:212, iter:  17,000, lr:1.000e-04> G_loss: 7.173e+02 
+23-05-17 21:09:24.158 : <epoch:213, iter:  17,100, lr:1.000e-04> G_loss: 6.318e+02 
+23-05-17 21:09:29.600 : <epoch:214, iter:  17,200, lr:1.000e-04> G_loss: 8.712e+02 
+23-05-17 21:09:35.086 : <epoch:216, iter:  17,300, lr:1.000e-04> G_loss: 1.848e+03 
+23-05-17 21:09:40.135 : <epoch:217, iter:  17,400, lr:1.000e-04> G_loss: 7.766e+02 
+23-05-17 21:09:45.324 : <epoch:218, iter:  17,500, lr:1.000e-04> G_loss: 1.088e+03 
+23-05-17 21:09:50.595 : <epoch:219, iter:  17,600, lr:1.000e-04> G_loss: 7.463e+02 
+23-05-17 21:09:56.078 : <epoch:221, iter:  17,700, lr:1.000e-04> G_loss: 5.157e+02 
+23-05-17 21:10:00.975 : <epoch:222, iter:  17,800, lr:1.000e-04> G_loss: 7.813e+02 
+23-05-17 21:10:06.251 : <epoch:223, iter:  17,900, lr:1.000e-04> G_loss: 9.011e+02 
+23-05-17 21:10:11.552 : <epoch:224, iter:  18,000, lr:1.000e-04> G_loss: 8.162e+02 
+23-05-17 21:10:11.553 : Saving the model.
+23-05-17 21:10:16.994 : <epoch:226, iter:  18,100, lr:1.000e-04> G_loss: 1.240e+03 
+23-05-17 21:10:22.048 : <epoch:227, iter:  18,200, lr:1.000e-04> G_loss: 9.248e+02 
+23-05-17 21:10:27.370 : <epoch:228, iter:  18,300, lr:1.000e-04> G_loss: 7.657e+02 
+23-05-17 21:10:32.571 : <epoch:229, iter:  18,400, lr:1.000e-04> G_loss: 1.269e+03 
+23-05-17 21:10:38.044 : <epoch:231, iter:  18,500, lr:1.000e-04> G_loss: 6.284e+02 
+23-05-17 21:10:43.188 : <epoch:232, iter:  18,600, lr:1.000e-04> G_loss: 1.103e+03 
+23-05-17 21:10:48.479 : <epoch:233, iter:  18,700, lr:1.000e-04> G_loss: 1.820e+03 
+23-05-17 21:10:53.646 : <epoch:234, iter:  18,800, lr:1.000e-04> G_loss: 1.118e+03 
+23-05-17 21:10:59.220 : <epoch:236, iter:  18,900, lr:1.000e-04> G_loss: 9.922e+02 
+23-05-17 21:11:04.690 : <epoch:237, iter:  19,000, lr:1.000e-04> G_loss: 5.456e+02 
+23-05-17 21:11:10.151 : <epoch:238, iter:  19,100, lr:1.000e-04> G_loss: 4.898e+02 
+23-05-17 21:11:15.520 : <epoch:239, iter:  19,200, lr:1.000e-04> G_loss: 3.906e+02 
+23-05-17 21:11:21.126 : <epoch:241, iter:  19,300, lr:1.000e-04> G_loss: 1.268e+03 
+23-05-17 21:11:26.462 : <epoch:242, iter:  19,400, lr:1.000e-04> G_loss: 5.598e+02 
+23-05-17 21:11:31.861 : <epoch:243, iter:  19,500, lr:1.000e-04> G_loss: 1.056e+03 
+23-05-17 21:11:37.305 : <epoch:244, iter:  19,600, lr:1.000e-04> G_loss: 5.377e+02 
+23-05-17 21:11:42.893 : <epoch:246, iter:  19,700, lr:1.000e-04> G_loss: 8.242e+02 
+23-05-17 21:11:48.299 : <epoch:247, iter:  19,800, lr:1.000e-04> G_loss: 6.509e+02 
+23-05-17 21:11:53.656 : <epoch:248, iter:  19,900, lr:1.000e-04> G_loss: 5.336e+02 
+23-05-17 21:11:59.074 : <epoch:249, iter:  20,000, lr:1.000e-04> G_loss: 8.045e+02 
+23-05-17 21:11:59.076 : Saving the model.
+23-05-17 21:12:04.395 : <epoch:251, iter:  20,100, lr:1.000e-04> G_loss: 7.621e+02 
+23-05-17 21:12:09.665 : <epoch:252, iter:  20,200, lr:1.000e-04> G_loss: 9.281e+02 
+23-05-17 21:12:14.923 : <epoch:253, iter:  20,300, lr:1.000e-04> G_loss: 1.512e+03 
+23-05-17 21:12:20.296 : <epoch:254, iter:  20,400, lr:1.000e-04> G_loss: 9.065e+02 
+23-05-17 21:12:25.372 : <epoch:256, iter:  20,500, lr:1.000e-04> G_loss: 7.953e+02 
+23-05-17 21:12:30.635 : <epoch:257, iter:  20,600, lr:1.000e-04> G_loss: 5.834e+02 
+23-05-17 21:12:35.917 : <epoch:258, iter:  20,700, lr:1.000e-04> G_loss: 1.468e+03 
+23-05-17 21:12:41.390 : <epoch:259, iter:  20,800, lr:1.000e-04> G_loss: 9.873e+02 
+23-05-17 21:12:46.654 : <epoch:261, iter:  20,900, lr:1.000e-04> G_loss: 1.434e+03 
+23-05-17 21:12:51.805 : <epoch:262, iter:  21,000, lr:1.000e-04> G_loss: 1.818e+03 
+23-05-17 21:12:57.092 : <epoch:263, iter:  21,100, lr:1.000e-04> G_loss: 1.389e+03 
+23-05-17 21:13:02.397 : <epoch:264, iter:  21,200, lr:1.000e-04> G_loss: 6.498e+02 
+23-05-17 21:13:07.658 : <epoch:266, iter:  21,300, lr:1.000e-04> G_loss: 1.120e+03 
+23-05-17 21:13:12.833 : <epoch:267, iter:  21,400, lr:1.000e-04> G_loss: 5.262e+02 
+23-05-17 21:13:18.220 : <epoch:268, iter:  21,500, lr:1.000e-04> G_loss: 6.130e+02 
+23-05-17 21:13:23.503 : <epoch:269, iter:  21,600, lr:1.000e-04> G_loss: 9.264e+02 
+23-05-17 21:13:28.857 : <epoch:271, iter:  21,700, lr:1.000e-04> G_loss: 4.753e+02 
+23-05-17 21:13:34.031 : <epoch:272, iter:  21,800, lr:1.000e-04> G_loss: 7.436e+02 
+23-05-17 21:13:39.464 : <epoch:273, iter:  21,900, lr:1.000e-04> G_loss: 5.140e+02 
+23-05-17 21:13:44.641 : <epoch:274, iter:  22,000, lr:1.000e-04> G_loss: 5.477e+02 
+23-05-17 21:13:44.642 : Saving the model.
+23-05-17 21:13:50.099 : <epoch:276, iter:  22,100, lr:1.000e-04> G_loss: 2.835e+03 
+23-05-17 21:13:55.255 : <epoch:277, iter:  22,200, lr:1.000e-04> G_loss: 1.072e+03 
+23-05-17 21:14:00.541 : <epoch:278, iter:  22,300, lr:1.000e-04> G_loss: 5.631e+02 
+23-05-17 21:14:05.797 : <epoch:279, iter:  22,400, lr:1.000e-04> G_loss: 1.199e+03 
+23-05-17 21:14:11.283 : <epoch:281, iter:  22,500, lr:1.000e-04> G_loss: 1.036e+03 
+23-05-17 21:14:16.540 : <epoch:282, iter:  22,600, lr:1.000e-04> G_loss: 6.159e+02 
+23-05-17 21:14:21.733 : <epoch:283, iter:  22,700, lr:1.000e-04> G_loss: 6.899e+02 
+23-05-17 21:14:27.030 : <epoch:284, iter:  22,800, lr:1.000e-04> G_loss: 8.284e+02 
+23-05-17 21:14:32.516 : <epoch:286, iter:  22,900, lr:1.000e-04> G_loss: 1.522e+03 
+23-05-17 21:14:37.874 : <epoch:287, iter:  23,000, lr:1.000e-04> G_loss: 1.575e+03 
+23-05-17 21:14:43.102 : <epoch:288, iter:  23,100, lr:1.000e-04> G_loss: 6.228e+02 
+23-05-17 21:14:48.329 : <epoch:289, iter:  23,200, lr:1.000e-04> G_loss: 1.180e+03 
+23-05-17 21:14:53.814 : <epoch:291, iter:  23,300, lr:1.000e-04> G_loss: 1.117e+03 
+23-05-17 21:14:59.145 : <epoch:292, iter:  23,400, lr:1.000e-04> G_loss: 1.143e+03 
+23-05-17 21:15:04.359 : <epoch:293, iter:  23,500, lr:1.000e-04> G_loss: 4.658e+02 
+23-05-17 21:15:09.318 : <epoch:294, iter:  23,600, lr:1.000e-04> G_loss: 1.183e+03 
+23-05-17 21:15:14.749 : <epoch:296, iter:  23,700, lr:1.000e-04> G_loss: 4.855e+02 
+23-05-17 21:15:19.942 : <epoch:297, iter:  23,800, lr:1.000e-04> G_loss: 1.583e+03 
+23-05-17 21:15:25.125 : <epoch:298, iter:  23,900, lr:1.000e-04> G_loss: 5.425e+02 
+23-05-17 21:15:30.052 : <epoch:299, iter:  24,000, lr:1.000e-04> G_loss: 1.073e+03 
+23-05-17 21:15:30.054 : Saving the model.
+23-05-17 21:15:35.636 : <epoch:301, iter:  24,100, lr:1.000e-04> G_loss: 8.347e+02 
+23-05-17 21:15:40.939 : <epoch:302, iter:  24,200, lr:1.000e-04> G_loss: 9.321e+02 
+23-05-17 21:15:46.200 : <epoch:303, iter:  24,300, lr:1.000e-04> G_loss: 1.004e+03 
+23-05-17 21:15:51.118 : <epoch:304, iter:  24,400, lr:1.000e-04> G_loss: 7.169e+02 
+23-05-17 21:15:56.600 : <epoch:306, iter:  24,500, lr:1.000e-04> G_loss: 8.465e+02 
+23-05-17 21:16:01.924 : <epoch:307, iter:  24,600, lr:1.000e-04> G_loss: 1.029e+03 
+23-05-17 21:16:07.224 : <epoch:308, iter:  24,700, lr:1.000e-04> G_loss: 6.639e+02 
+23-05-17 21:16:12.462 : <epoch:309, iter:  24,800, lr:1.000e-04> G_loss: 8.132e+02 
+23-05-17 21:16:17.984 : <epoch:311, iter:  24,900, lr:1.000e-04> G_loss: 8.284e+02 
+23-05-17 21:16:23.301 : <epoch:312, iter:  25,000, lr:1.000e-04> G_loss: 1.099e+03 
+23-05-17 21:16:28.747 : <epoch:313, iter:  25,100, lr:1.000e-04> G_loss: 1.464e+03 
+23-05-17 21:16:34.095 : <epoch:314, iter:  25,200, lr:1.000e-04> G_loss: 7.472e+02 
+23-05-17 21:16:39.763 : <epoch:316, iter:  25,300, lr:1.000e-04> G_loss: 5.769e+02 
+23-05-17 21:16:45.076 : <epoch:317, iter:  25,400, lr:1.000e-04> G_loss: 7.397e+02 
+23-05-17 21:16:50.357 : <epoch:318, iter:  25,500, lr:1.000e-04> G_loss: 9.839e+02 
+23-05-17 21:16:55.606 : <epoch:319, iter:  25,600, lr:1.000e-04> G_loss: 5.265e+02 
+23-05-17 21:17:01.007 : <epoch:321, iter:  25,700, lr:1.000e-04> G_loss: 8.669e+02 
+23-05-17 21:17:06.293 : <epoch:322, iter:  25,800, lr:1.000e-04> G_loss: 4.661e+02 
+23-05-17 21:17:11.534 : <epoch:323, iter:  25,900, lr:1.000e-04> G_loss: 4.581e+02 
+23-05-17 21:17:16.801 : <epoch:324, iter:  26,000, lr:1.000e-04> G_loss: 1.036e+03 
+23-05-17 21:17:16.803 : Saving the model.
+23-05-17 21:17:21.952 : <epoch:326, iter:  26,100, lr:1.000e-04> G_loss: 2.033e+03 
+23-05-17 21:17:27.239 : <epoch:327, iter:  26,200, lr:1.000e-04> G_loss: 1.173e+03 
+23-05-17 21:17:32.556 : <epoch:328, iter:  26,300, lr:1.000e-04> G_loss: 1.152e+03 
+23-05-17 21:17:37.867 : <epoch:329, iter:  26,400, lr:1.000e-04> G_loss: 1.153e+03 
+23-05-17 21:17:43.314 : <epoch:331, iter:  26,500, lr:1.000e-04> G_loss: 8.180e+02 
+23-05-17 21:17:48.411 : <epoch:332, iter:  26,600, lr:1.000e-04> G_loss: 6.410e+02 
+23-05-17 21:17:53.698 : <epoch:333, iter:  26,700, lr:1.000e-04> G_loss: 7.745e+02 
+23-05-17 21:17:58.938 : <epoch:334, iter:  26,800, lr:1.000e-04> G_loss: 1.327e+03 
+23-05-17 21:18:04.389 : <epoch:336, iter:  26,900, lr:1.000e-04> G_loss: 6.713e+02 
+23-05-17 21:18:09.329 : <epoch:337, iter:  27,000, lr:1.000e-04> G_loss: 4.845e+02 
+23-05-17 21:18:14.467 : <epoch:338, iter:  27,100, lr:1.000e-04> G_loss: 9.497e+02 
+23-05-17 21:18:19.916 : <epoch:339, iter:  27,200, lr:1.000e-04> G_loss: 7.824e+02 
+23-05-17 21:18:25.366 : <epoch:341, iter:  27,300, lr:1.000e-04> G_loss: 6.228e+02 
+23-05-17 21:18:30.385 : <epoch:342, iter:  27,400, lr:1.000e-04> G_loss: 5.950e+02 
+23-05-17 21:18:35.559 : <epoch:343, iter:  27,500, lr:1.000e-04> G_loss: 4.233e+02 
+23-05-17 21:18:40.801 : <epoch:344, iter:  27,600, lr:1.000e-04> G_loss: 6.905e+02 
+23-05-17 21:18:46.262 : <epoch:346, iter:  27,700, lr:1.000e-04> G_loss: 5.852e+02 
+23-05-17 21:18:50.992 : <epoch:347, iter:  27,800, lr:1.000e-04> G_loss: 7.928e+02 
+23-05-17 21:18:56.403 : <epoch:348, iter:  27,900, lr:1.000e-04> G_loss: 8.262e+02 
+23-05-17 21:19:01.575 : <epoch:349, iter:  28,000, lr:1.000e-04> G_loss: 5.487e+02 
+23-05-17 21:19:01.577 : Saving the model.
+23-05-17 21:19:07.062 : <epoch:351, iter:  28,100, lr:1.000e-04> G_loss: 1.658e+03 
+23-05-17 21:19:12.231 : <epoch:352, iter:  28,200, lr:1.000e-04> G_loss: 1.020e+03 
+23-05-17 21:19:17.604 : <epoch:353, iter:  28,300, lr:1.000e-04> G_loss: 1.544e+03 
+23-05-17 21:19:22.887 : <epoch:354, iter:  28,400, lr:1.000e-04> G_loss: 8.245e+02 
+23-05-17 21:19:28.449 : <epoch:356, iter:  28,500, lr:1.000e-04> G_loss: 5.840e+02 
+23-05-17 21:19:33.791 : <epoch:357, iter:  28,600, lr:1.000e-04> G_loss: 2.329e+03 
+23-05-17 21:19:39.310 : <epoch:358, iter:  28,700, lr:1.000e-04> G_loss: 1.254e+03 
+23-05-17 21:19:44.713 : <epoch:359, iter:  28,800, lr:1.000e-04> G_loss: 9.302e+02 
+23-05-17 21:19:50.194 : <epoch:361, iter:  28,900, lr:1.000e-04> G_loss: 2.020e+03 
+23-05-17 21:19:55.511 : <epoch:362, iter:  29,000, lr:1.000e-04> G_loss: 6.746e+02 
+23-05-17 21:20:00.789 : <epoch:363, iter:  29,100, lr:1.000e-04> G_loss: 1.080e+03 
+23-05-17 21:20:06.195 : <epoch:364, iter:  29,200, lr:1.000e-04> G_loss: 1.810e+03 
+23-05-17 21:20:11.735 : <epoch:366, iter:  29,300, lr:1.000e-04> G_loss: 6.685e+02 
+23-05-17 21:20:17.015 : <epoch:367, iter:  29,400, lr:1.000e-04> G_loss: 7.895e+02 
+23-05-17 21:20:22.280 : <epoch:368, iter:  29,500, lr:1.000e-04> G_loss: 6.487e+02 
+23-05-17 21:20:27.565 : <epoch:369, iter:  29,600, lr:1.000e-04> G_loss: 6.524e+02 
+23-05-17 21:20:33.005 : <epoch:371, iter:  29,700, lr:1.000e-04> G_loss: 1.473e+03 
+23-05-17 21:20:38.256 : <epoch:372, iter:  29,800, lr:1.000e-04> G_loss: 1.683e+03 
+23-05-17 21:20:43.442 : <epoch:373, iter:  29,900, lr:1.000e-04> G_loss: 7.906e+02 
+23-05-17 21:20:48.447 : <epoch:374, iter:  30,000, lr:2.500e-05> G_loss: 1.528e+03 
+23-05-17 21:20:48.448 : Saving the model.
+23-05-17 21:20:53.919 : <epoch:376, iter:  30,100, lr:5.000e-05> G_loss: 4.430e+02 
+23-05-17 21:20:59.083 : <epoch:377, iter:  30,200, lr:5.000e-05> G_loss: 1.310e+03 
+23-05-17 21:21:04.446 : <epoch:378, iter:  30,300, lr:5.000e-05> G_loss: 1.666e+03 
+23-05-17 21:21:09.267 : <epoch:379, iter:  30,400, lr:5.000e-05> G_loss: 8.027e+02 
+23-05-17 21:21:14.771 : <epoch:381, iter:  30,500, lr:5.000e-05> G_loss: 1.760e+03 
+23-05-17 21:21:19.990 : <epoch:382, iter:  30,600, lr:5.000e-05> G_loss: 6.742e+02 
+23-05-17 21:21:25.244 : <epoch:383, iter:  30,700, lr:5.000e-05> G_loss: 8.233e+02 
+23-05-17 21:21:30.184 : <epoch:384, iter:  30,800, lr:5.000e-05> G_loss: 4.986e+02 
+23-05-17 21:21:35.668 : <epoch:386, iter:  30,900, lr:5.000e-05> G_loss: 7.905e+02 
+23-05-17 21:21:41.067 : <epoch:387, iter:  31,000, lr:5.000e-05> G_loss: 6.943e+02 
+23-05-17 21:21:46.241 : <epoch:388, iter:  31,100, lr:5.000e-05> G_loss: 7.802e+02 
+23-05-17 21:21:51.144 : <epoch:389, iter:  31,200, lr:5.000e-05> G_loss: 6.483e+02 
+23-05-17 21:21:56.743 : <epoch:391, iter:  31,300, lr:5.000e-05> G_loss: 6.696e+02 
+23-05-17 21:22:02.052 : <epoch:392, iter:  31,400, lr:5.000e-05> G_loss: 5.508e+02 
+23-05-17 21:22:07.168 : <epoch:393, iter:  31,500, lr:5.000e-05> G_loss: 1.263e+03 
+23-05-17 21:22:12.132 : <epoch:394, iter:  31,600, lr:5.000e-05> G_loss: 1.622e+03 
+23-05-17 21:22:17.693 : <epoch:396, iter:  31,700, lr:5.000e-05> G_loss: 6.246e+02 
+23-05-17 21:22:22.934 : <epoch:397, iter:  31,800, lr:5.000e-05> G_loss: 7.896e+02 
+23-05-17 21:22:28.205 : <epoch:398, iter:  31,900, lr:5.000e-05> G_loss: 6.024e+02 
+23-05-17 21:22:33.182 : <epoch:399, iter:  32,000, lr:5.000e-05> G_loss: 6.765e+02 
+23-05-17 21:22:33.184 : Saving the model.
+23-05-17 21:22:38.691 : <epoch:401, iter:  32,100, lr:5.000e-05> G_loss: 1.109e+03 
+23-05-17 21:22:43.969 : <epoch:402, iter:  32,200, lr:5.000e-05> G_loss: 1.048e+03 
+23-05-17 21:22:49.273 : <epoch:403, iter:  32,300, lr:5.000e-05> G_loss: 1.192e+03 
+23-05-17 21:22:54.613 : <epoch:404, iter:  32,400, lr:5.000e-05> G_loss: 1.356e+03 
+23-05-17 21:23:00.388 : <epoch:406, iter:  32,500, lr:5.000e-05> G_loss: 2.174e+03 
+23-05-17 21:23:05.741 : <epoch:407, iter:  32,600, lr:5.000e-05> G_loss: 1.643e+03 
+23-05-17 21:23:11.106 : <epoch:408, iter:  32,700, lr:5.000e-05> G_loss: 5.222e+02 
+23-05-17 21:23:16.426 : <epoch:409, iter:  32,800, lr:5.000e-05> G_loss: 8.739e+02 
+23-05-17 21:23:22.035 : <epoch:411, iter:  32,900, lr:5.000e-05> G_loss: 4.387e+02 
+23-05-17 21:23:27.346 : <epoch:412, iter:  33,000, lr:5.000e-05> G_loss: 4.758e+02 
+23-05-17 21:23:32.586 : <epoch:413, iter:  33,100, lr:5.000e-05> G_loss: 8.122e+02 
+23-05-17 21:23:37.838 : <epoch:414, iter:  33,200, lr:5.000e-05> G_loss: 1.039e+03 
+23-05-17 21:23:43.322 : <epoch:416, iter:  33,300, lr:5.000e-05> G_loss: 5.360e+02 
+23-05-17 21:23:48.280 : <epoch:417, iter:  33,400, lr:5.000e-05> G_loss: 1.856e+03 
+23-05-17 21:23:53.575 : <epoch:418, iter:  33,500, lr:5.000e-05> G_loss: 9.844e+02 
+23-05-17 21:23:58.820 : <epoch:419, iter:  33,600, lr:5.000e-05> G_loss: 6.213e+02 
+23-05-17 21:24:04.378 : <epoch:421, iter:  33,700, lr:5.000e-05> G_loss: 1.184e+03 
+23-05-17 21:24:09.645 : <epoch:422, iter:  33,800, lr:5.000e-05> G_loss: 5.234e+02 
+23-05-17 21:24:14.909 : <epoch:423, iter:  33,900, lr:5.000e-05> G_loss: 7.777e+02 
+23-05-17 21:24:20.153 : <epoch:424, iter:  34,000, lr:5.000e-05> G_loss: 4.593e+02 
+23-05-17 21:24:20.154 : Saving the model.
+23-05-17 21:24:25.614 : <epoch:426, iter:  34,100, lr:5.000e-05> G_loss: 1.108e+03 
+23-05-17 21:24:30.892 : <epoch:427, iter:  34,200, lr:5.000e-05> G_loss: 8.297e+02 
+23-05-17 21:24:36.153 : <epoch:428, iter:  34,300, lr:5.000e-05> G_loss: 4.605e+02 
+23-05-17 21:24:41.448 : <epoch:429, iter:  34,400, lr:5.000e-05> G_loss: 4.995e+02 
+23-05-17 21:24:46.831 : <epoch:431, iter:  34,500, lr:5.000e-05> G_loss: 1.303e+03 
+23-05-17 21:24:52.071 : <epoch:432, iter:  34,600, lr:5.000e-05> G_loss: 8.863e+02 
+23-05-17 21:24:57.344 : <epoch:433, iter:  34,700, lr:5.000e-05> G_loss: 1.179e+03 
+23-05-17 21:25:02.662 : <epoch:434, iter:  34,800, lr:5.000e-05> G_loss: 6.235e+02 
+23-05-17 21:25:08.083 : <epoch:436, iter:  34,900, lr:5.000e-05> G_loss: 6.403e+02 
+23-05-17 21:25:13.301 : <epoch:437, iter:  35,000, lr:5.000e-05> G_loss: 5.988e+02 
+23-05-17 21:25:18.611 : <epoch:438, iter:  35,100, lr:5.000e-05> G_loss: 8.592e+02 
+23-05-17 21:25:23.920 : <epoch:439, iter:  35,200, lr:5.000e-05> G_loss: 9.122e+02 
+23-05-17 21:25:29.457 : <epoch:441, iter:  35,300, lr:5.000e-05> G_loss: 9.767e+02 
+23-05-17 21:25:34.480 : <epoch:442, iter:  35,400, lr:5.000e-05> G_loss: 6.298e+02 
+23-05-17 21:25:39.741 : <epoch:443, iter:  35,500, lr:5.000e-05> G_loss: 4.476e+02 
+23-05-17 21:25:45.016 : <epoch:444, iter:  35,600, lr:5.000e-05> G_loss: 4.978e+02 
+23-05-17 21:25:50.508 : <epoch:446, iter:  35,700, lr:5.000e-05> G_loss: 6.082e+02 
+23-05-17 21:25:55.508 : <epoch:447, iter:  35,800, lr:5.000e-05> G_loss: 8.066e+02 
+23-05-17 21:26:00.686 : <epoch:448, iter:  35,900, lr:5.000e-05> G_loss: 1.976e+03 
+23-05-17 21:26:06.119 : <epoch:449, iter:  36,000, lr:5.000e-05> G_loss: 1.145e+03 
+23-05-17 21:26:06.120 : Saving the model.
+23-05-17 21:26:11.602 : <epoch:451, iter:  36,100, lr:5.000e-05> G_loss: 5.401e+02 
+23-05-17 21:26:16.511 : <epoch:452, iter:  36,200, lr:5.000e-05> G_loss: 1.128e+03 
+23-05-17 21:26:21.685 : <epoch:453, iter:  36,300, lr:5.000e-05> G_loss: 4.907e+02 
+23-05-17 21:26:26.948 : <epoch:454, iter:  36,400, lr:5.000e-05> G_loss: 1.423e+03 
+23-05-17 21:26:32.456 : <epoch:456, iter:  36,500, lr:5.000e-05> G_loss: 1.037e+03 
+23-05-17 21:26:37.329 : <epoch:457, iter:  36,600, lr:5.000e-05> G_loss: 4.647e+02 
+23-05-17 21:26:42.745 : <epoch:458, iter:  36,700, lr:5.000e-05> G_loss: 5.858e+02 
+23-05-17 21:26:47.969 : <epoch:459, iter:  36,800, lr:5.000e-05> G_loss: 6.257e+02 
+23-05-17 21:26:53.501 : <epoch:461, iter:  36,900, lr:5.000e-05> G_loss: 5.211e+02 
+23-05-17 21:26:58.513 : <epoch:462, iter:  37,000, lr:5.000e-05> G_loss: 7.470e+02 
+23-05-17 21:27:03.817 : <epoch:463, iter:  37,100, lr:5.000e-05> G_loss: 6.686e+02 
+23-05-17 21:27:08.981 : <epoch:464, iter:  37,200, lr:5.000e-05> G_loss: 5.709e+02 
+23-05-17 21:27:14.409 : <epoch:466, iter:  37,300, lr:5.000e-05> G_loss: 1.068e+03 
+23-05-17 21:27:19.707 : <epoch:467, iter:  37,400, lr:5.000e-05> G_loss: 9.146e+02 
+23-05-17 21:27:25.029 : <epoch:468, iter:  37,500, lr:5.000e-05> G_loss: 4.376e+02 
+23-05-17 21:27:30.410 : <epoch:469, iter:  37,600, lr:5.000e-05> G_loss: 6.841e+02 
+23-05-17 21:27:36.066 : <epoch:471, iter:  37,700, lr:5.000e-05> G_loss: 1.541e+03 
+23-05-17 21:27:41.438 : <epoch:472, iter:  37,800, lr:5.000e-05> G_loss: 1.013e+03 
+23-05-17 21:27:46.938 : <epoch:473, iter:  37,900, lr:5.000e-05> G_loss: 1.482e+03 
+23-05-17 21:27:52.486 : <epoch:474, iter:  38,000, lr:5.000e-05> G_loss: 9.500e+02 
+23-05-17 21:27:52.487 : Saving the model.
+23-05-17 21:27:58.045 : <epoch:476, iter:  38,100, lr:5.000e-05> G_loss: 1.035e+03 
+23-05-17 21:28:03.393 : <epoch:477, iter:  38,200, lr:5.000e-05> G_loss: 9.097e+02 
+23-05-17 21:28:08.696 : <epoch:478, iter:  38,300, lr:5.000e-05> G_loss: 1.208e+03 
+23-05-17 21:28:14.238 : <epoch:479, iter:  38,400, lr:5.000e-05> G_loss: 1.469e+03 
+23-05-17 21:28:19.777 : <epoch:481, iter:  38,500, lr:5.000e-05> G_loss: 1.547e+03 
+23-05-17 21:28:25.045 : <epoch:482, iter:  38,600, lr:5.000e-05> G_loss: 1.237e+03 
+23-05-17 21:28:30.316 : <epoch:483, iter:  38,700, lr:5.000e-05> G_loss: 5.708e+02 
+23-05-17 21:28:35.616 : <epoch:484, iter:  38,800, lr:5.000e-05> G_loss: 4.092e+02 
+23-05-17 21:28:40.678 : <epoch:486, iter:  38,900, lr:5.000e-05> G_loss: 1.282e+03 
+23-05-17 21:28:45.947 : <epoch:487, iter:  39,000, lr:5.000e-05> G_loss: 6.591e+02 
+23-05-17 21:28:51.229 : <epoch:488, iter:  39,100, lr:5.000e-05> G_loss: 6.907e+02 
+23-05-17 21:28:56.594 : <epoch:489, iter:  39,200, lr:5.000e-05> G_loss: 9.312e+02 
+23-05-17 21:29:01.870 : <epoch:491, iter:  39,300, lr:5.000e-05> G_loss: 1.149e+03 
+23-05-17 21:29:07.125 : <epoch:492, iter:  39,400, lr:5.000e-05> G_loss: 6.129e+02 
+23-05-17 21:29:12.359 : <epoch:493, iter:  39,500, lr:5.000e-05> G_loss: 5.623e+02 
+23-05-17 21:29:17.694 : <epoch:494, iter:  39,600, lr:5.000e-05> G_loss: 7.323e+02 
+23-05-17 21:29:22.893 : <epoch:496, iter:  39,700, lr:5.000e-05> G_loss: 1.054e+03 
+23-05-17 21:29:28.103 : <epoch:497, iter:  39,800, lr:5.000e-05> G_loss: 1.386e+03 
+23-05-17 21:29:33.438 : <epoch:498, iter:  39,900, lr:5.000e-05> G_loss: 1.332e+03 
+23-05-17 21:29:38.696 : <epoch:499, iter:  40,000, lr:1.250e-05> G_loss: 7.556e+02 
+23-05-17 21:29:38.697 : Saving the model.
+23-05-17 21:29:43.813 : <epoch:501, iter:  40,100, lr:2.500e-05> G_loss: 6.013e+02 
+23-05-17 21:29:49.054 : <epoch:502, iter:  40,200, lr:2.500e-05> G_loss: 4.746e+02 
+23-05-17 21:29:54.307 : <epoch:503, iter:  40,300, lr:2.500e-05> G_loss: 1.004e+03 
+23-05-17 21:29:59.570 : <epoch:504, iter:  40,400, lr:2.500e-05> G_loss: 1.634e+03 
+23-05-17 21:30:04.729 : <epoch:506, iter:  40,500, lr:2.500e-05> G_loss: 1.157e+03 
+23-05-17 21:30:10.193 : <epoch:507, iter:  40,600, lr:2.500e-05> G_loss: 4.028e+02 
+23-05-17 21:30:15.336 : <epoch:508, iter:  40,700, lr:2.500e-05> G_loss: 5.210e+02 
+23-05-17 21:30:20.587 : <epoch:509, iter:  40,800, lr:2.500e-05> G_loss: 1.099e+03 
+23-05-17 21:30:25.877 : <epoch:511, iter:  40,900, lr:2.500e-05> G_loss: 6.493e+02 
+23-05-17 21:30:31.379 : <epoch:512, iter:  41,000, lr:2.500e-05> G_loss: 5.697e+02 
+23-05-17 21:30:36.582 : <epoch:513, iter:  41,100, lr:2.500e-05> G_loss: 1.090e+03 
+23-05-17 21:30:41.898 : <epoch:514, iter:  41,200, lr:2.500e-05> G_loss: 7.222e+02 
+23-05-17 21:30:47.338 : <epoch:516, iter:  41,300, lr:2.500e-05> G_loss: 5.620e+02 
+23-05-17 21:30:52.771 : <epoch:517, iter:  41,400, lr:2.500e-05> G_loss: 1.577e+03 
+23-05-17 21:30:57.930 : <epoch:518, iter:  41,500, lr:2.500e-05> G_loss: 1.210e+03 
+23-05-17 21:31:02.978 : <epoch:519, iter:  41,600, lr:2.500e-05> G_loss: 8.552e+02 
+23-05-17 21:31:08.473 : <epoch:521, iter:  41,700, lr:2.500e-05> G_loss: 1.417e+03 
+23-05-17 21:31:13.787 : <epoch:522, iter:  41,800, lr:2.500e-05> G_loss: 8.256e+02 
+23-05-17 21:31:19.012 : <epoch:523, iter:  41,900, lr:2.500e-05> G_loss: 4.299e+02 
+23-05-17 21:31:24.069 : <epoch:524, iter:  42,000, lr:2.500e-05> G_loss: 2.184e+03 
+23-05-17 21:31:24.070 : Saving the model.
+23-05-17 21:31:29.708 : <epoch:526, iter:  42,100, lr:2.500e-05> G_loss: 7.511e+02 
+23-05-17 21:31:34.963 : <epoch:527, iter:  42,200, lr:2.500e-05> G_loss: 1.004e+03 
+23-05-17 21:31:40.212 : <epoch:528, iter:  42,300, lr:2.500e-05> G_loss: 9.754e+02 
+23-05-17 21:31:45.065 : <epoch:529, iter:  42,400, lr:2.500e-05> G_loss: 5.568e+02 
+23-05-17 21:31:50.530 : <epoch:531, iter:  42,500, lr:2.500e-05> G_loss: 5.004e+02 
+23-05-17 21:31:55.821 : <epoch:532, iter:  42,600, lr:2.500e-05> G_loss: 1.079e+03 
+23-05-17 21:32:01.098 : <epoch:533, iter:  42,700, lr:2.500e-05> G_loss: 6.263e+02 
+23-05-17 21:32:06.315 : <epoch:534, iter:  42,800, lr:2.500e-05> G_loss: 7.807e+02 
+23-05-17 21:32:11.831 : <epoch:536, iter:  42,900, lr:2.500e-05> G_loss: 8.139e+02 
+23-05-17 21:32:17.138 : <epoch:537, iter:  43,000, lr:2.500e-05> G_loss: 1.090e+03 
+23-05-17 21:32:22.425 : <epoch:538, iter:  43,100, lr:2.500e-05> G_loss: 1.036e+03 
+23-05-17 21:32:27.669 : <epoch:539, iter:  43,200, lr:2.500e-05> G_loss: 7.713e+02 
+23-05-17 21:32:32.854 : <epoch:541, iter:  43,300, lr:2.500e-05> G_loss: 8.340e+02 
+23-05-17 21:32:38.183 : <epoch:542, iter:  43,400, lr:2.500e-05> G_loss: 1.013e+03 
+23-05-17 21:32:43.528 : <epoch:543, iter:  43,500, lr:2.500e-05> G_loss: 1.503e+03 
+23-05-17 21:32:48.853 : <epoch:544, iter:  43,600, lr:2.500e-05> G_loss: 7.324e+02 
+23-05-17 21:32:54.190 : <epoch:546, iter:  43,700, lr:2.500e-05> G_loss: 6.321e+02 
+23-05-17 21:32:59.427 : <epoch:547, iter:  43,800, lr:2.500e-05> G_loss: 8.024e+02 
+23-05-17 21:33:04.705 : <epoch:548, iter:  43,900, lr:2.500e-05> G_loss: 8.113e+02 
+23-05-17 21:33:09.988 : <epoch:549, iter:  44,000, lr:2.500e-05> G_loss: 5.855e+02 
+23-05-17 21:33:09.989 : Saving the model.
+23-05-17 21:33:15.555 : <epoch:551, iter:  44,100, lr:2.500e-05> G_loss: 4.814e+02 
+23-05-17 21:33:20.618 : <epoch:552, iter:  44,200, lr:2.500e-05> G_loss: 5.941e+02 
+23-05-17 21:33:25.874 : <epoch:553, iter:  44,300, lr:2.500e-05> G_loss: 7.256e+02 
+23-05-17 21:33:31.236 : <epoch:554, iter:  44,400, lr:2.500e-05> G_loss: 7.155e+02 
+23-05-17 21:33:36.716 : <epoch:556, iter:  44,500, lr:2.500e-05> G_loss: 1.676e+03 
+23-05-17 21:33:41.607 : <epoch:557, iter:  44,600, lr:2.500e-05> G_loss: 5.894e+02 
+23-05-17 21:33:46.874 : <epoch:558, iter:  44,700, lr:2.500e-05> G_loss: 1.463e+03 
+23-05-17 21:33:52.405 : <epoch:559, iter:  44,800, lr:2.500e-05> G_loss: 6.257e+02 
+23-05-17 21:33:57.705 : <epoch:561, iter:  44,900, lr:2.500e-05> G_loss: 1.884e+03 
+23-05-17 21:34:02.888 : <epoch:562, iter:  45,000, lr:2.500e-05> G_loss: 7.230e+02 
+23-05-17 21:34:08.148 : <epoch:563, iter:  45,100, lr:2.500e-05> G_loss: 1.330e+03 
+23-05-17 21:34:13.625 : <epoch:564, iter:  45,200, lr:2.500e-05> G_loss: 8.394e+02 
+23-05-17 21:34:18.999 : <epoch:566, iter:  45,300, lr:2.500e-05> G_loss: 6.376e+02 
+23-05-17 21:34:24.189 : <epoch:567, iter:  45,400, lr:2.500e-05> G_loss: 1.052e+03 
+23-05-17 21:34:29.460 : <epoch:568, iter:  45,500, lr:2.500e-05> G_loss: 1.194e+03 
+23-05-17 21:34:34.798 : <epoch:569, iter:  45,600, lr:2.500e-05> G_loss: 1.599e+03 
+23-05-17 21:34:40.319 : <epoch:571, iter:  45,700, lr:2.500e-05> G_loss: 9.408e+02 
+23-05-17 21:34:45.355 : <epoch:572, iter:  45,800, lr:2.500e-05> G_loss: 1.685e+03 
+23-05-17 21:34:50.583 : <epoch:573, iter:  45,900, lr:2.500e-05> G_loss: 1.273e+03 
+23-05-17 21:34:55.889 : <epoch:574, iter:  46,000, lr:2.500e-05> G_loss: 5.479e+02 
+23-05-17 21:34:55.890 : Saving the model.
+23-05-17 21:35:01.368 : <epoch:576, iter:  46,100, lr:2.500e-05> G_loss: 8.480e+02 
+23-05-17 21:35:06.339 : <epoch:577, iter:  46,200, lr:2.500e-05> G_loss: 1.929e+03 
+23-05-17 21:35:11.688 : <epoch:578, iter:  46,300, lr:2.500e-05> G_loss: 9.106e+02 
+23-05-17 21:35:16.968 : <epoch:579, iter:  46,400, lr:2.500e-05> G_loss: 2.027e+03 
+23-05-17 21:35:22.492 : <epoch:581, iter:  46,500, lr:2.500e-05> G_loss: 1.220e+03 
+23-05-17 21:35:27.490 : <epoch:582, iter:  46,600, lr:2.500e-05> G_loss: 8.902e+02 
+23-05-17 21:35:32.849 : <epoch:583, iter:  46,700, lr:2.500e-05> G_loss: 1.275e+03 
+23-05-17 21:35:38.029 : <epoch:584, iter:  46,800, lr:2.500e-05> G_loss: 7.517e+02 
+23-05-17 21:35:43.529 : <epoch:586, iter:  46,900, lr:2.500e-05> G_loss: 5.133e+02 
+23-05-17 21:35:48.621 : <epoch:587, iter:  47,000, lr:2.500e-05> G_loss: 7.395e+02 
+23-05-17 21:35:53.897 : <epoch:588, iter:  47,100, lr:2.500e-05> G_loss: 1.693e+03 
+23-05-17 21:35:59.054 : <epoch:589, iter:  47,200, lr:2.500e-05> G_loss: 5.066e+02 
+23-05-17 21:36:04.525 : <epoch:591, iter:  47,300, lr:2.500e-05> G_loss: 1.365e+03 
+23-05-17 21:36:09.993 : <epoch:592, iter:  47,400, lr:2.500e-05> G_loss: 1.067e+03 
+23-05-17 21:36:15.242 : <epoch:593, iter:  47,500, lr:2.500e-05> G_loss: 9.533e+02 
+23-05-17 21:36:20.430 : <epoch:594, iter:  47,600, lr:2.500e-05> G_loss: 7.222e+02 
+23-05-17 21:36:25.927 : <epoch:596, iter:  47,700, lr:2.500e-05> G_loss: 1.436e+03 
+23-05-17 21:36:31.435 : <epoch:597, iter:  47,800, lr:2.500e-05> G_loss: 1.230e+03 
+23-05-17 21:36:36.793 : <epoch:598, iter:  47,900, lr:2.500e-05> G_loss: 9.454e+02 
+23-05-17 21:36:42.153 : <epoch:599, iter:  48,000, lr:2.500e-05> G_loss: 9.604e+02 
+23-05-17 21:36:42.154 : Saving the model.
+23-05-17 21:36:47.735 : <epoch:601, iter:  48,100, lr:2.500e-05> G_loss: 7.906e+02 
+23-05-17 21:36:53.047 : <epoch:602, iter:  48,200, lr:2.500e-05> G_loss: 2.207e+03 
+23-05-17 21:36:58.545 : <epoch:603, iter:  48,300, lr:2.500e-05> G_loss: 7.047e+02 
+23-05-17 21:37:03.855 : <epoch:604, iter:  48,400, lr:2.500e-05> G_loss: 9.018e+02 
+23-05-17 21:37:09.281 : <epoch:606, iter:  48,500, lr:2.500e-05> G_loss: 6.690e+02 
+23-05-17 21:37:14.611 : <epoch:607, iter:  48,600, lr:2.500e-05> G_loss: 6.050e+02 
+23-05-17 21:37:20.110 : <epoch:608, iter:  48,700, lr:2.500e-05> G_loss: 9.946e+02 
+23-05-17 21:37:25.445 : <epoch:609, iter:  48,800, lr:2.500e-05> G_loss: 1.967e+03 
+23-05-17 21:37:30.817 : <epoch:611, iter:  48,900, lr:2.500e-05> G_loss: 7.710e+02 
+23-05-17 21:37:36.065 : <epoch:612, iter:  49,000, lr:2.500e-05> G_loss: 1.363e+03 
+23-05-17 21:37:41.253 : <epoch:613, iter:  49,100, lr:2.500e-05> G_loss: 9.459e+02 
+23-05-17 21:37:46.556 : <epoch:614, iter:  49,200, lr:2.500e-05> G_loss: 1.355e+03 
+23-05-17 21:37:51.910 : <epoch:616, iter:  49,300, lr:2.500e-05> G_loss: 3.818e+02 
+23-05-17 21:37:57.206 : <epoch:617, iter:  49,400, lr:2.500e-05> G_loss: 5.187e+02 
+23-05-17 21:38:02.178 : <epoch:618, iter:  49,500, lr:2.500e-05> G_loss: 9.840e+02 
+23-05-17 21:38:07.430 : <epoch:619, iter:  49,600, lr:2.500e-05> G_loss: 1.312e+03 
+23-05-17 21:38:12.893 : <epoch:621, iter:  49,700, lr:2.500e-05> G_loss: 1.571e+03 
+23-05-17 21:38:18.200 : <epoch:622, iter:  49,800, lr:2.500e-05> G_loss: 8.940e+02 
+23-05-17 21:38:23.195 : <epoch:623, iter:  49,900, lr:2.500e-05> G_loss: 1.087e+03 
+23-05-17 21:38:28.427 : <epoch:624, iter:  50,000, lr:6.250e-06> G_loss: 7.336e+02 
+23-05-17 21:38:28.429 : Saving the model.
+23-05-17 21:38:34.108 : <epoch:626, iter:  50,100, lr:1.250e-05> G_loss: 9.367e+02 
+23-05-17 21:38:39.239 : <epoch:627, iter:  50,200, lr:1.250e-05> G_loss: 9.888e+02 
+23-05-17 21:38:44.186 : <epoch:628, iter:  50,300, lr:1.250e-05> G_loss: 9.406e+02 
+23-05-17 21:38:49.413 : <epoch:629, iter:  50,400, lr:1.250e-05> G_loss: 1.205e+03 
+23-05-17 21:38:55.186 : <epoch:631, iter:  50,500, lr:1.250e-05> G_loss: 6.108e+02 
+23-05-17 21:39:00.404 : <epoch:632, iter:  50,600, lr:1.250e-05> G_loss: 1.302e+03 
+23-05-17 21:39:05.370 : <epoch:633, iter:  50,700, lr:1.250e-05> G_loss: 6.736e+02 
+23-05-17 21:39:10.682 : <epoch:634, iter:  50,800, lr:1.250e-05> G_loss: 9.420e+02 
+23-05-17 21:39:16.299 : <epoch:636, iter:  50,900, lr:1.250e-05> G_loss: 7.538e+02 
+23-05-17 21:39:21.536 : <epoch:637, iter:  51,000, lr:1.250e-05> G_loss: 4.726e+02 
+23-05-17 21:39:26.433 : <epoch:638, iter:  51,100, lr:1.250e-05> G_loss: 4.681e+02 
+23-05-17 21:39:31.735 : <epoch:639, iter:  51,200, lr:1.250e-05> G_loss: 2.243e+03 
+23-05-17 21:39:37.274 : <epoch:641, iter:  51,300, lr:1.250e-05> G_loss: 1.272e+03 
+23-05-17 21:39:42.609 : <epoch:642, iter:  51,400, lr:1.250e-05> G_loss: 1.535e+03 
+23-05-17 21:39:47.761 : <epoch:643, iter:  51,500, lr:1.250e-05> G_loss: 1.340e+03 
+23-05-17 21:39:52.999 : <epoch:644, iter:  51,600, lr:1.250e-05> G_loss: 1.636e+03 
+23-05-17 21:39:58.646 : <epoch:646, iter:  51,700, lr:1.250e-05> G_loss: 4.777e+02 
+23-05-17 21:40:03.979 : <epoch:647, iter:  51,800, lr:1.250e-05> G_loss: 5.486e+02 
+23-05-17 21:40:08.992 : <epoch:648, iter:  51,900, lr:1.250e-05> G_loss: 9.348e+02 
+23-05-17 21:40:14.258 : <epoch:649, iter:  52,000, lr:1.250e-05> G_loss: 1.389e+03 
+23-05-17 21:40:14.258 : Saving the model.
+23-05-17 21:40:19.714 : <epoch:651, iter:  52,100, lr:1.250e-05> G_loss: 7.247e+02 
+23-05-17 21:40:24.925 : <epoch:652, iter:  52,200, lr:1.250e-05> G_loss: 5.113e+02 
+23-05-17 21:40:30.207 : <epoch:653, iter:  52,300, lr:1.250e-05> G_loss: 4.755e+02 
+23-05-17 21:40:35.367 : <epoch:654, iter:  52,400, lr:1.250e-05> G_loss: 5.706e+02 
+23-05-17 21:40:40.825 : <epoch:656, iter:  52,500, lr:1.250e-05> G_loss: 6.844e+02 
+23-05-17 21:40:46.119 : <epoch:657, iter:  52,600, lr:1.250e-05> G_loss: 1.096e+03 
+23-05-17 21:40:51.232 : <epoch:658, iter:  52,700, lr:1.250e-05> G_loss: 7.862e+02 
+23-05-17 21:40:56.561 : <epoch:659, iter:  52,800, lr:1.250e-05> G_loss: 9.664e+02 
+23-05-17 21:41:02.089 : <epoch:661, iter:  52,900, lr:1.250e-05> G_loss: 9.797e+02 
+23-05-17 21:41:07.377 : <epoch:662, iter:  53,000, lr:1.250e-05> G_loss: 1.451e+03 
+23-05-17 21:41:12.408 : <epoch:663, iter:  53,100, lr:1.250e-05> G_loss: 1.163e+03 
+23-05-17 21:41:17.587 : <epoch:664, iter:  53,200, lr:1.250e-05> G_loss: 8.641e+02 
+23-05-17 21:41:23.071 : <epoch:666, iter:  53,300, lr:1.250e-05> G_loss: 1.028e+03 
+23-05-17 21:41:28.389 : <epoch:667, iter:  53,400, lr:1.250e-05> G_loss: 5.708e+02 
+23-05-17 21:41:33.701 : <epoch:668, iter:  53,500, lr:1.250e-05> G_loss: 4.974e+02 
+23-05-17 21:41:38.884 : <epoch:669, iter:  53,600, lr:1.250e-05> G_loss: 7.785e+02 
+23-05-17 21:41:44.376 : <epoch:671, iter:  53,700, lr:1.250e-05> G_loss: 1.228e+03 
+23-05-17 21:41:49.651 : <epoch:672, iter:  53,800, lr:1.250e-05> G_loss: 5.128e+02 
+23-05-17 21:41:55.107 : <epoch:673, iter:  53,900, lr:1.250e-05> G_loss: 1.049e+03 
+23-05-17 21:42:00.252 : <epoch:674, iter:  54,000, lr:1.250e-05> G_loss: 2.092e+03 
+23-05-17 21:42:00.253 : Saving the model.
+23-05-17 21:42:05.713 : <epoch:676, iter:  54,100, lr:1.250e-05> G_loss: 7.787e+02 
+23-05-17 21:42:10.828 : <epoch:677, iter:  54,200, lr:1.250e-05> G_loss: 2.091e+03 
+23-05-17 21:42:16.283 : <epoch:678, iter:  54,300, lr:1.250e-05> G_loss: 8.905e+02 
+23-05-17 21:42:21.489 : <epoch:679, iter:  54,400, lr:1.250e-05> G_loss: 5.768e+02 
+23-05-17 21:42:26.993 : <epoch:681, iter:  54,500, lr:1.250e-05> G_loss: 1.146e+03 
+23-05-17 21:42:32.363 : <epoch:682, iter:  54,600, lr:1.250e-05> G_loss: 5.529e+02 
+23-05-17 21:42:37.890 : <epoch:683, iter:  54,700, lr:1.250e-05> G_loss: 2.009e+03 
+23-05-17 21:42:43.250 : <epoch:684, iter:  54,800, lr:1.250e-05> G_loss: 7.468e+02 
+23-05-17 21:42:48.806 : <epoch:686, iter:  54,900, lr:1.250e-05> G_loss: 7.503e+02 
+23-05-17 21:42:54.105 : <epoch:687, iter:  55,000, lr:1.250e-05> G_loss: 1.007e+03 
+23-05-17 21:42:59.362 : <epoch:688, iter:  55,100, lr:1.250e-05> G_loss: 9.736e+02 
+23-05-17 21:43:04.740 : <epoch:689, iter:  55,200, lr:1.250e-05> G_loss: 5.625e+02 
+23-05-17 21:43:10.185 : <epoch:691, iter:  55,300, lr:1.250e-05> G_loss: 6.300e+02 
+23-05-17 21:43:15.431 : <epoch:692, iter:  55,400, lr:1.250e-05> G_loss: 9.683e+02 
+23-05-17 21:43:20.696 : <epoch:693, iter:  55,500, lr:1.250e-05> G_loss: 8.258e+02 
+23-05-17 21:43:25.647 : <epoch:694, iter:  55,600, lr:1.250e-05> G_loss: 1.749e+03 
+23-05-17 21:43:31.062 : <epoch:696, iter:  55,700, lr:1.250e-05> G_loss: 4.904e+02 
+23-05-17 21:43:36.311 : <epoch:697, iter:  55,800, lr:1.250e-05> G_loss: 1.785e+03 
+23-05-17 21:43:41.687 : <epoch:698, iter:  55,900, lr:1.250e-05> G_loss: 8.733e+02 
+23-05-17 21:43:46.649 : <epoch:699, iter:  56,000, lr:1.250e-05> G_loss: 8.590e+02 
+23-05-17 21:43:46.651 : Saving the model.
+23-05-17 21:43:52.130 : <epoch:701, iter:  56,100, lr:1.250e-05> G_loss: 1.239e+03 
+23-05-17 21:43:57.308 : <epoch:702, iter:  56,200, lr:1.250e-05> G_loss: 8.318e+02 
+23-05-17 21:44:02.552 : <epoch:703, iter:  56,300, lr:1.250e-05> G_loss: 1.449e+03 
+23-05-17 21:44:07.489 : <epoch:704, iter:  56,400, lr:1.250e-05> G_loss: 9.131e+02 
+23-05-17 21:44:12.927 : <epoch:706, iter:  56,500, lr:1.250e-05> G_loss: 7.010e+02 
+23-05-17 21:44:18.262 : <epoch:707, iter:  56,600, lr:1.250e-05> G_loss: 8.369e+02 
+23-05-17 21:44:23.543 : <epoch:708, iter:  56,700, lr:1.250e-05> G_loss: 3.896e+02 
+23-05-17 21:44:28.527 : <epoch:709, iter:  56,800, lr:1.250e-05> G_loss: 5.004e+02 
+23-05-17 21:44:34.025 : <epoch:711, iter:  56,900, lr:1.250e-05> G_loss: 1.310e+03 
+23-05-17 21:44:39.310 : <epoch:712, iter:  57,000, lr:1.250e-05> G_loss: 1.155e+03 
+23-05-17 21:44:44.499 : <epoch:713, iter:  57,100, lr:1.250e-05> G_loss: 1.857e+03 
+23-05-17 21:44:49.450 : <epoch:714, iter:  57,200, lr:1.250e-05> G_loss: 3.794e+02 
+23-05-17 21:44:55.099 : <epoch:716, iter:  57,300, lr:1.250e-05> G_loss: 4.154e+02 
+23-05-17 21:45:00.415 : <epoch:717, iter:  57,400, lr:1.250e-05> G_loss: 4.287e+02 
+23-05-17 21:45:05.590 : <epoch:718, iter:  57,500, lr:1.250e-05> G_loss: 7.170e+02 
+23-05-17 21:45:10.614 : <epoch:719, iter:  57,600, lr:1.250e-05> G_loss: 4.253e+02 
+23-05-17 21:45:16.049 : <epoch:721, iter:  57,700, lr:1.250e-05> G_loss: 5.718e+02 
+23-05-17 21:45:21.329 : <epoch:722, iter:  57,800, lr:1.250e-05> G_loss: 7.844e+02 
+23-05-17 21:45:26.592 : <epoch:723, iter:  57,900, lr:1.250e-05> G_loss: 7.312e+02 
+23-05-17 21:45:31.689 : <epoch:724, iter:  58,000, lr:1.250e-05> G_loss: 1.649e+03 
+23-05-17 21:45:31.690 : Saving the model.
+23-05-17 21:45:37.226 : <epoch:726, iter:  58,100, lr:1.250e-05> G_loss: 9.551e+02 
+23-05-17 21:45:42.541 : <epoch:727, iter:  58,200, lr:1.250e-05> G_loss: 5.468e+02 
+23-05-17 21:45:47.862 : <epoch:728, iter:  58,300, lr:1.250e-05> G_loss: 1.305e+03 
+23-05-17 21:45:53.066 : <epoch:729, iter:  58,400, lr:1.250e-05> G_loss: 8.698e+02 
+23-05-17 21:45:58.636 : <epoch:731, iter:  58,500, lr:1.250e-05> G_loss: 1.102e+03 
+23-05-17 21:46:03.948 : <epoch:732, iter:  58,600, lr:1.250e-05> G_loss: 1.786e+03 
+23-05-17 21:46:09.245 : <epoch:733, iter:  58,700, lr:1.250e-05> G_loss: 6.963e+02 
+23-05-17 21:46:14.486 : <epoch:734, iter:  58,800, lr:1.250e-05> G_loss: 1.341e+03 
+23-05-17 21:46:20.047 : <epoch:736, iter:  58,900, lr:1.250e-05> G_loss: 4.883e+02 
+23-05-17 21:46:25.354 : <epoch:737, iter:  59,000, lr:1.250e-05> G_loss: 6.038e+02 
+23-05-17 21:46:30.707 : <epoch:738, iter:  59,100, lr:1.250e-05> G_loss: 1.130e+03 
+23-05-17 21:46:36.045 : <epoch:739, iter:  59,200, lr:1.250e-05> G_loss: 2.019e+03 
+23-05-17 21:46:41.503 : <epoch:741, iter:  59,300, lr:1.250e-05> G_loss: 4.903e+02 
+23-05-17 21:46:46.736 : <epoch:742, iter:  59,400, lr:1.250e-05> G_loss: 1.432e+03 
+23-05-17 21:46:52.013 : <epoch:743, iter:  59,500, lr:1.250e-05> G_loss: 8.992e+02 
+23-05-17 21:46:57.290 : <epoch:744, iter:  59,600, lr:1.250e-05> G_loss: 7.168e+02 
+23-05-17 21:47:02.525 : <epoch:746, iter:  59,700, lr:1.250e-05> G_loss: 9.864e+02 
+23-05-17 21:47:07.849 : <epoch:747, iter:  59,800, lr:1.250e-05> G_loss: 6.873e+02 
+23-05-17 21:47:13.194 : <epoch:748, iter:  59,900, lr:1.250e-05> G_loss: 1.815e+03 
+23-05-17 21:47:18.518 : <epoch:749, iter:  60,000, lr:3.125e-06> G_loss: 1.227e+03 
+23-05-17 21:47:18.519 : Saving the model.
+23-05-17 21:47:23.899 : <epoch:751, iter:  60,100, lr:6.250e-06> G_loss: 2.085e+03 
+23-05-17 21:47:29.091 : <epoch:752, iter:  60,200, lr:6.250e-06> G_loss: 1.468e+03 
+23-05-17 21:47:34.332 : <epoch:753, iter:  60,300, lr:6.250e-06> G_loss: 1.182e+03 
+23-05-17 21:47:39.672 : <epoch:754, iter:  60,400, lr:6.250e-06> G_loss: 1.238e+03 
+23-05-17 21:47:45.264 : <epoch:756, iter:  60,500, lr:6.250e-06> G_loss: 8.708e+02 
+23-05-17 21:47:50.139 : <epoch:757, iter:  60,600, lr:6.250e-06> G_loss: 1.613e+03 
+23-05-17 21:47:55.404 : <epoch:758, iter:  60,700, lr:6.250e-06> G_loss: 8.311e+02 
+23-05-17 21:48:00.829 : <epoch:759, iter:  60,800, lr:6.250e-06> G_loss: 9.971e+02 
+23-05-17 21:48:06.321 : <epoch:761, iter:  60,900, lr:6.250e-06> G_loss: 1.612e+03 
+23-05-17 21:48:11.305 : <epoch:762, iter:  61,000, lr:6.250e-06> G_loss: 5.275e+02 
+23-05-17 21:48:16.540 : <epoch:763, iter:  61,100, lr:6.250e-06> G_loss: 1.047e+03 
+23-05-17 21:48:22.010 : <epoch:764, iter:  61,200, lr:6.250e-06> G_loss: 1.015e+03 
+23-05-17 21:48:27.460 : <epoch:766, iter:  61,300, lr:6.250e-06> G_loss: 7.629e+02 
+23-05-17 21:48:32.663 : <epoch:767, iter:  61,400, lr:6.250e-06> G_loss: 9.080e+02 
+23-05-17 21:48:37.910 : <epoch:768, iter:  61,500, lr:6.250e-06> G_loss: 5.130e+02 
+23-05-17 21:48:43.371 : <epoch:769, iter:  61,600, lr:6.250e-06> G_loss: 1.048e+03 
+23-05-17 21:48:48.730 : <epoch:771, iter:  61,700, lr:6.250e-06> G_loss: 1.228e+03 
+23-05-17 21:48:53.915 : <epoch:772, iter:  61,800, lr:6.250e-06> G_loss: 1.291e+03 
+23-05-17 21:48:59.161 : <epoch:773, iter:  61,900, lr:6.250e-06> G_loss: 9.680e+02 
+23-05-17 21:49:04.403 : <epoch:774, iter:  62,000, lr:6.250e-06> G_loss: 1.208e+03 
+23-05-17 21:49:04.404 : Saving the model.
+23-05-17 21:49:09.943 : <epoch:776, iter:  62,100, lr:6.250e-06> G_loss: 1.228e+03 
+23-05-17 21:49:15.208 : <epoch:777, iter:  62,200, lr:6.250e-06> G_loss: 6.260e+02 
+23-05-17 21:49:20.393 : <epoch:778, iter:  62,300, lr:6.250e-06> G_loss: 1.013e+03 
+23-05-17 21:49:25.675 : <epoch:779, iter:  62,400, lr:6.250e-06> G_loss: 6.848e+02 
+23-05-17 21:49:31.167 : <epoch:781, iter:  62,500, lr:6.250e-06> G_loss: 9.707e+02 
+23-05-17 21:49:36.321 : <epoch:782, iter:  62,600, lr:6.250e-06> G_loss: 1.116e+03 
+23-05-17 21:49:41.610 : <epoch:783, iter:  62,700, lr:6.250e-06> G_loss: 1.039e+03 
+23-05-17 21:49:46.883 : <epoch:784, iter:  62,800, lr:6.250e-06> G_loss: 1.625e+03 
+23-05-17 21:49:52.294 : <epoch:786, iter:  62,900, lr:6.250e-06> G_loss: 5.570e+02 
+23-05-17 21:49:57.513 : <epoch:787, iter:  63,000, lr:6.250e-06> G_loss: 7.909e+02 
+23-05-17 21:50:02.835 : <epoch:788, iter:  63,100, lr:6.250e-06> G_loss: 7.406e+02 
+23-05-17 21:50:08.085 : <epoch:789, iter:  63,200, lr:6.250e-06> G_loss: 8.694e+02 
+23-05-17 21:50:13.240 : <epoch:791, iter:  63,300, lr:6.250e-06> G_loss: 7.251e+02 
+23-05-17 21:50:18.617 : <epoch:792, iter:  63,400, lr:6.250e-06> G_loss: 1.300e+03 
+23-05-17 21:50:23.749 : <epoch:793, iter:  63,500, lr:6.250e-06> G_loss: 8.784e+02 
+23-05-17 21:50:29.008 : <epoch:794, iter:  63,600, lr:6.250e-06> G_loss: 8.643e+02 
+23-05-17 21:50:34.104 : <epoch:796, iter:  63,700, lr:6.250e-06> G_loss: 4.413e+02 
+23-05-17 21:50:39.537 : <epoch:797, iter:  63,800, lr:6.250e-06> G_loss: 5.582e+02 
+23-05-17 21:50:44.804 : <epoch:798, iter:  63,900, lr:6.250e-06> G_loss: 1.085e+03 
+23-05-17 21:50:50.033 : <epoch:799, iter:  64,000, lr:6.250e-06> G_loss: 1.717e+03 
+23-05-17 21:50:50.034 : Saving the model.
+23-05-17 21:50:55.301 : <epoch:801, iter:  64,100, lr:6.250e-06> G_loss: 8.565e+02 
+23-05-17 21:51:00.570 : <epoch:802, iter:  64,200, lr:6.250e-06> G_loss: 8.925e+02 
+23-05-17 21:51:05.820 : <epoch:803, iter:  64,300, lr:6.250e-06> G_loss: 9.552e+02 
+23-05-17 21:51:11.084 : <epoch:804, iter:  64,400, lr:6.250e-06> G_loss: 6.803e+02 
+23-05-17 21:51:16.678 : <epoch:806, iter:  64,500, lr:6.250e-06> G_loss: 9.231e+02 
+23-05-17 21:51:22.091 : <epoch:807, iter:  64,600, lr:6.250e-06> G_loss: 7.762e+02 
+23-05-17 21:51:27.418 : <epoch:808, iter:  64,700, lr:6.250e-06> G_loss: 4.462e+02 
+23-05-17 21:51:32.717 : <epoch:809, iter:  64,800, lr:6.250e-06> G_loss: 6.529e+02 
+23-05-17 21:51:38.279 : <epoch:811, iter:  64,900, lr:6.250e-06> G_loss: 2.226e+03 
+23-05-17 21:51:43.760 : <epoch:812, iter:  65,000, lr:6.250e-06> G_loss: 5.783e+02 
+23-05-17 21:51:49.097 : <epoch:813, iter:  65,100, lr:6.250e-06> G_loss: 5.864e+02 
+23-05-17 21:51:54.375 : <epoch:814, iter:  65,200, lr:6.250e-06> G_loss: 5.490e+02 
+23-05-17 21:51:59.690 : <epoch:816, iter:  65,300, lr:6.250e-06> G_loss: 7.225e+02 
+23-05-17 21:52:04.982 : <epoch:817, iter:  65,400, lr:6.250e-06> G_loss: 1.671e+03 
+23-05-17 21:52:10.232 : <epoch:818, iter:  65,500, lr:6.250e-06> G_loss: 1.040e+03 
+23-05-17 21:52:15.531 : <epoch:819, iter:  65,600, lr:6.250e-06> G_loss: 1.763e+03 
+23-05-17 21:52:20.878 : <epoch:821, iter:  65,700, lr:6.250e-06> G_loss: 1.095e+03 
+23-05-17 21:52:26.046 : <epoch:822, iter:  65,800, lr:6.250e-06> G_loss: 1.549e+03 
+23-05-17 21:52:31.326 : <epoch:823, iter:  65,900, lr:6.250e-06> G_loss: 1.020e+03 
+23-05-17 21:52:36.529 : <epoch:824, iter:  66,000, lr:6.250e-06> G_loss: 1.057e+03 
+23-05-17 21:52:36.531 : Saving the model.
+23-05-17 21:52:42.029 : <epoch:826, iter:  66,100, lr:6.250e-06> G_loss: 4.813e+02 
+23-05-17 21:52:47.051 : <epoch:827, iter:  66,200, lr:6.250e-06> G_loss: 7.250e+02 
+23-05-17 21:52:52.365 : <epoch:828, iter:  66,300, lr:6.250e-06> G_loss: 1.209e+03 
+23-05-17 21:52:57.624 : <epoch:829, iter:  66,400, lr:6.250e-06> G_loss: 1.150e+03 
+23-05-17 21:53:03.193 : <epoch:831, iter:  66,500, lr:6.250e-06> G_loss: 7.226e+02 
+23-05-17 21:53:08.140 : <epoch:832, iter:  66,600, lr:6.250e-06> G_loss: 1.309e+03 
+23-05-17 21:53:13.443 : <epoch:833, iter:  66,700, lr:6.250e-06> G_loss: 8.271e+02 
+23-05-17 21:53:18.758 : <epoch:834, iter:  66,800, lr:6.250e-06> G_loss: 1.368e+03 
+23-05-17 21:53:24.271 : <epoch:836, iter:  66,900, lr:6.250e-06> G_loss: 1.033e+03 
+23-05-17 21:53:29.295 : <epoch:837, iter:  67,000, lr:6.250e-06> G_loss: 8.244e+02 
+23-05-17 21:53:34.607 : <epoch:838, iter:  67,100, lr:6.250e-06> G_loss: 8.247e+02 
+23-05-17 21:53:39.923 : <epoch:839, iter:  67,200, lr:6.250e-06> G_loss: 7.208e+02 
+23-05-17 21:53:45.492 : <epoch:841, iter:  67,300, lr:6.250e-06> G_loss: 7.031e+02 
+23-05-17 21:53:50.704 : <epoch:842, iter:  67,400, lr:6.250e-06> G_loss: 1.924e+03 
+23-05-17 21:53:56.029 : <epoch:843, iter:  67,500, lr:6.250e-06> G_loss: 1.441e+03 
+23-05-17 21:54:01.325 : <epoch:844, iter:  67,600, lr:6.250e-06> G_loss: 7.489e+02 
+23-05-17 21:54:06.897 : <epoch:846, iter:  67,700, lr:6.250e-06> G_loss: 6.262e+02 
+23-05-17 21:54:12.004 : <epoch:847, iter:  67,800, lr:6.250e-06> G_loss: 1.215e+03 
+23-05-17 21:54:17.269 : <epoch:848, iter:  67,900, lr:6.250e-06> G_loss: 6.369e+02 
+23-05-17 21:54:22.603 : <epoch:849, iter:  68,000, lr:6.250e-06> G_loss: 7.648e+02 
+23-05-17 21:54:22.604 : Saving the model.
+23-05-17 21:54:28.157 : <epoch:851, iter:  68,100, lr:6.250e-06> G_loss: 2.373e+03 
+23-05-17 21:54:33.172 : <epoch:852, iter:  68,200, lr:6.250e-06> G_loss: 5.681e+02 
+23-05-17 21:54:38.381 : <epoch:853, iter:  68,300, lr:6.250e-06> G_loss: 8.415e+02 
+23-05-17 21:54:43.760 : <epoch:854, iter:  68,400, lr:6.250e-06> G_loss: 7.637e+02 
+23-05-17 21:54:49.226 : <epoch:856, iter:  68,500, lr:6.250e-06> G_loss: 6.824e+02 
+23-05-17 21:54:54.264 : <epoch:857, iter:  68,600, lr:6.250e-06> G_loss: 1.315e+03 
+23-05-17 21:54:59.442 : <epoch:858, iter:  68,700, lr:6.250e-06> G_loss: 7.880e+02 
+23-05-17 21:55:04.836 : <epoch:859, iter:  68,800, lr:6.250e-06> G_loss: 1.965e+03 
+23-05-17 21:55:10.296 : <epoch:861, iter:  68,900, lr:6.250e-06> G_loss: 8.675e+02 
+23-05-17 21:55:15.264 : <epoch:862, iter:  69,000, lr:6.250e-06> G_loss: 5.917e+02 
+23-05-17 21:55:20.526 : <epoch:863, iter:  69,100, lr:6.250e-06> G_loss: 1.203e+03 
+23-05-17 21:55:25.819 : <epoch:864, iter:  69,200, lr:6.250e-06> G_loss: 6.329e+02 
+23-05-17 21:55:31.302 : <epoch:866, iter:  69,300, lr:6.250e-06> G_loss: 1.022e+03 
+23-05-17 21:55:36.426 : <epoch:867, iter:  69,400, lr:6.250e-06> G_loss: 5.721e+02 
+23-05-17 21:55:41.784 : <epoch:868, iter:  69,500, lr:6.250e-06> G_loss: 7.710e+02 
+23-05-17 21:55:47.056 : <epoch:869, iter:  69,600, lr:6.250e-06> G_loss: 1.368e+03 
+23-05-17 21:55:52.550 : <epoch:871, iter:  69,700, lr:6.250e-06> G_loss: 3.860e+02 
+23-05-17 21:55:57.501 : <epoch:872, iter:  69,800, lr:6.250e-06> G_loss: 3.394e+02 
+23-05-17 21:56:03.034 : <epoch:873, iter:  69,900, lr:6.250e-06> G_loss: 8.174e+02 
+23-05-17 21:56:08.172 : <epoch:874, iter:  70,000, lr:6.250e-06> G_loss: 1.155e+03 
+23-05-17 21:56:08.173 : Saving the model.
+23-05-17 21:56:13.601 : <epoch:876, iter:  70,100, lr:6.250e-06> G_loss: 7.298e+02 
+23-05-17 21:56:18.690 : <epoch:877, iter:  70,200, lr:6.250e-06> G_loss: 8.974e+02 
+23-05-17 21:56:23.986 : <epoch:878, iter:  70,300, lr:6.250e-06> G_loss: 1.487e+03 
+23-05-17 21:56:29.156 : <epoch:879, iter:  70,400, lr:6.250e-06> G_loss: 1.180e+03 
+23-05-17 21:56:34.686 : <epoch:881, iter:  70,500, lr:6.250e-06> G_loss: 6.071e+02 
+23-05-17 21:56:40.143 : <epoch:882, iter:  70,600, lr:6.250e-06> G_loss: 1.590e+03 
+23-05-17 21:56:45.511 : <epoch:883, iter:  70,700, lr:6.250e-06> G_loss: 1.000e+03 
+23-05-17 21:56:50.860 : <epoch:884, iter:  70,800, lr:6.250e-06> G_loss: 1.804e+03 
+23-05-17 21:56:56.391 : <epoch:886, iter:  70,900, lr:6.250e-06> G_loss: 9.084e+02 
+23-05-17 21:57:01.836 : <epoch:887, iter:  71,000, lr:6.250e-06> G_loss: 3.916e+02 
+23-05-17 21:57:07.442 : <epoch:888, iter:  71,100, lr:6.250e-06> G_loss: 8.850e+02 
+23-05-17 21:57:12.905 : <epoch:889, iter:  71,200, lr:6.250e-06> G_loss: 5.881e+02 
+23-05-17 21:57:18.498 : <epoch:891, iter:  71,300, lr:6.250e-06> G_loss: 6.483e+02 
+23-05-17 21:57:23.914 : <epoch:892, iter:  71,400, lr:6.250e-06> G_loss: 5.767e+02 
+23-05-17 21:57:29.243 : <epoch:893, iter:  71,500, lr:6.250e-06> G_loss: 1.148e+03 
+23-05-17 21:57:34.626 : <epoch:894, iter:  71,600, lr:6.250e-06> G_loss: 6.629e+02 
+23-05-17 21:57:39.896 : <epoch:896, iter:  71,700, lr:6.250e-06> G_loss: 3.664e+02 
+23-05-17 21:57:45.170 : <epoch:897, iter:  71,800, lr:6.250e-06> G_loss: 7.470e+02 
+23-05-17 21:57:50.416 : <epoch:898, iter:  71,900, lr:6.250e-06> G_loss: 7.067e+02 
+23-05-17 21:57:55.762 : <epoch:899, iter:  72,000, lr:6.250e-06> G_loss: 1.256e+03 
+23-05-17 21:57:55.763 : Saving the model.
+23-05-17 21:58:00.926 : <epoch:901, iter:  72,100, lr:6.250e-06> G_loss: 6.884e+02 
+23-05-17 21:58:06.144 : <epoch:902, iter:  72,200, lr:6.250e-06> G_loss: 9.771e+02 
+23-05-17 21:58:11.428 : <epoch:903, iter:  72,300, lr:6.250e-06> G_loss: 1.192e+03 
+23-05-17 21:58:17.020 : <epoch:904, iter:  72,400, lr:6.250e-06> G_loss: 8.335e+02 
+23-05-17 21:58:22.243 : <epoch:906, iter:  72,500, lr:6.250e-06> G_loss: 8.337e+02 
+23-05-17 21:58:27.482 : <epoch:907, iter:  72,600, lr:6.250e-06> G_loss: 8.254e+02 
+23-05-17 21:58:32.772 : <epoch:908, iter:  72,700, lr:6.250e-06> G_loss: 7.650e+02 
+23-05-17 21:58:38.234 : <epoch:909, iter:  72,800, lr:6.250e-06> G_loss: 1.573e+03 
+23-05-17 21:58:43.455 : <epoch:911, iter:  72,900, lr:6.250e-06> G_loss: 1.311e+03 
+23-05-17 21:58:48.638 : <epoch:912, iter:  73,000, lr:6.250e-06> G_loss: 8.594e+02 
+23-05-17 21:58:53.901 : <epoch:913, iter:  73,100, lr:6.250e-06> G_loss: 1.197e+03 
+23-05-17 21:58:59.200 : <epoch:914, iter:  73,200, lr:6.250e-06> G_loss: 4.060e+02 
+23-05-17 21:59:04.350 : <epoch:916, iter:  73,300, lr:6.250e-06> G_loss: 2.018e+03 
+23-05-17 21:59:09.592 : <epoch:917, iter:  73,400, lr:6.250e-06> G_loss: 1.132e+03 
+23-05-17 21:59:15.013 : <epoch:918, iter:  73,500, lr:6.250e-06> G_loss: 8.113e+02 
+23-05-17 21:59:20.287 : <epoch:919, iter:  73,600, lr:6.250e-06> G_loss: 6.789e+02 
+23-05-17 21:59:25.416 : <epoch:921, iter:  73,700, lr:6.250e-06> G_loss: 1.129e+03 
+23-05-17 21:59:30.740 : <epoch:922, iter:  73,800, lr:6.250e-06> G_loss: 4.819e+02 
+23-05-17 21:59:35.956 : <epoch:923, iter:  73,900, lr:6.250e-06> G_loss: 1.143e+03 
+23-05-17 21:59:41.285 : <epoch:924, iter:  74,000, lr:6.250e-06> G_loss: 5.797e+02 
+23-05-17 21:59:41.286 : Saving the model.
+23-05-17 21:59:46.454 : <epoch:926, iter:  74,100, lr:6.250e-06> G_loss: 1.157e+03 
+23-05-17 21:59:51.869 : <epoch:927, iter:  74,200, lr:6.250e-06> G_loss: 1.094e+03 
+23-05-17 21:59:57.007 : <epoch:928, iter:  74,300, lr:6.250e-06> G_loss: 3.865e+02 
+23-05-17 22:00:02.281 : <epoch:929, iter:  74,400, lr:6.250e-06> G_loss: 8.890e+02 
+23-05-17 22:00:07.723 : <epoch:931, iter:  74,500, lr:6.250e-06> G_loss: 1.143e+03 
+23-05-17 22:00:13.149 : <epoch:932, iter:  74,600, lr:6.250e-06> G_loss: 6.397e+02 
+23-05-17 22:00:18.305 : <epoch:933, iter:  74,700, lr:6.250e-06> G_loss: 4.721e+02 
+23-05-17 22:00:23.400 : <epoch:934, iter:  74,800, lr:6.250e-06> G_loss: 1.323e+03 
+23-05-17 22:00:28.837 : <epoch:936, iter:  74,900, lr:6.250e-06> G_loss: 9.786e+02 
+23-05-17 22:00:34.116 : <epoch:937, iter:  75,000, lr:6.250e-06> G_loss: 7.321e+02 
+23-05-17 22:00:39.371 : <epoch:938, iter:  75,100, lr:6.250e-06> G_loss: 6.303e+02 
+23-05-17 22:00:44.517 : <epoch:939, iter:  75,200, lr:6.250e-06> G_loss: 1.249e+03 
+23-05-17 22:00:50.072 : <epoch:941, iter:  75,300, lr:6.250e-06> G_loss: 6.867e+02 
+23-05-17 22:00:55.344 : <epoch:942, iter:  75,400, lr:6.250e-06> G_loss: 7.266e+02 
+23-05-17 22:01:00.657 : <epoch:943, iter:  75,500, lr:6.250e-06> G_loss: 1.769e+03 
+23-05-17 22:01:05.596 : <epoch:944, iter:  75,600, lr:6.250e-06> G_loss: 9.740e+02 
+23-05-17 22:01:11.239 : <epoch:946, iter:  75,700, lr:6.250e-06> G_loss: 1.251e+03 
+23-05-17 22:01:16.503 : <epoch:947, iter:  75,800, lr:6.250e-06> G_loss: 7.892e+02 
+23-05-17 22:01:21.782 : <epoch:948, iter:  75,900, lr:6.250e-06> G_loss: 5.783e+02 
+23-05-17 22:01:26.695 : <epoch:949, iter:  76,000, lr:6.250e-06> G_loss: 1.063e+03 
+23-05-17 22:01:26.696 : Saving the model.
+23-05-17 22:01:32.499 : <epoch:951, iter:  76,100, lr:6.250e-06> G_loss: 5.384e+02 
+23-05-17 22:01:37.764 : <epoch:952, iter:  76,200, lr:6.250e-06> G_loss: 9.399e+02 
+23-05-17 22:01:43.020 : <epoch:953, iter:  76,300, lr:6.250e-06> G_loss: 4.659e+02 
+23-05-17 22:01:48.097 : <epoch:954, iter:  76,400, lr:6.250e-06> G_loss: 9.096e+02 
+23-05-17 22:01:53.859 : <epoch:956, iter:  76,500, lr:6.250e-06> G_loss: 1.571e+03 
+23-05-17 22:01:59.274 : <epoch:957, iter:  76,600, lr:6.250e-06> G_loss: 6.300e+02 
+23-05-17 22:02:04.669 : <epoch:958, iter:  76,700, lr:6.250e-06> G_loss: 4.073e+02 
+23-05-17 22:02:10.044 : <epoch:959, iter:  76,800, lr:6.250e-06> G_loss: 1.057e+03 
+23-05-17 22:02:15.566 : <epoch:961, iter:  76,900, lr:6.250e-06> G_loss: 8.146e+02 
+23-05-17 22:02:21.112 : <epoch:962, iter:  77,000, lr:6.250e-06> G_loss: 5.247e+02 
+23-05-17 22:02:26.441 : <epoch:963, iter:  77,100, lr:6.250e-06> G_loss: 1.544e+03 
+23-05-17 22:02:31.750 : <epoch:964, iter:  77,200, lr:6.250e-06> G_loss: 5.423e+02 
+23-05-17 22:02:37.228 : <epoch:966, iter:  77,300, lr:6.250e-06> G_loss: 8.628e+02 
+23-05-17 22:02:42.608 : <epoch:967, iter:  77,400, lr:6.250e-06> G_loss: 1.288e+03 
+23-05-17 22:02:47.926 : <epoch:968, iter:  77,500, lr:6.250e-06> G_loss: 6.144e+02 
+23-05-17 22:02:53.194 : <epoch:969, iter:  77,600, lr:6.250e-06> G_loss: 5.795e+02 
+23-05-17 22:02:58.567 : <epoch:971, iter:  77,700, lr:6.250e-06> G_loss: 6.540e+02 
+23-05-17 22:03:03.929 : <epoch:972, iter:  77,800, lr:6.250e-06> G_loss: 1.357e+03 
+23-05-17 22:03:09.210 : <epoch:973, iter:  77,900, lr:6.250e-06> G_loss: 5.116e+02 
+23-05-17 22:03:14.487 : <epoch:974, iter:  78,000, lr:6.250e-06> G_loss: 1.263e+03 
+23-05-17 22:03:14.488 : Saving the model.
+23-05-17 22:03:19.894 : <epoch:976, iter:  78,100, lr:6.250e-06> G_loss: 1.828e+03 
+23-05-17 22:03:24.905 : <epoch:977, iter:  78,200, lr:6.250e-06> G_loss: 7.060e+02 
+23-05-17 22:03:30.194 : <epoch:978, iter:  78,300, lr:6.250e-06> G_loss: 6.595e+02 
+23-05-17 22:03:35.461 : <epoch:979, iter:  78,400, lr:6.250e-06> G_loss: 8.199e+02 
+23-05-17 22:03:41.011 : <epoch:981, iter:  78,500, lr:6.250e-06> G_loss: 1.021e+03 
+23-05-17 22:03:45.915 : <epoch:982, iter:  78,600, lr:6.250e-06> G_loss: 1.099e+03 
+23-05-17 22:03:51.193 : <epoch:983, iter:  78,700, lr:6.250e-06> G_loss: 5.805e+02 
+23-05-17 22:03:56.478 : <epoch:984, iter:  78,800, lr:6.250e-06> G_loss: 9.762e+02 
+23-05-17 22:04:02.077 : <epoch:986, iter:  78,900, lr:6.250e-06> G_loss: 1.405e+03 
+23-05-17 22:04:06.939 : <epoch:987, iter:  79,000, lr:6.250e-06> G_loss: 5.769e+02 
+23-05-17 22:04:12.245 : <epoch:988, iter:  79,100, lr:6.250e-06> G_loss: 1.030e+03 
+23-05-17 22:04:17.567 : <epoch:989, iter:  79,200, lr:6.250e-06> G_loss: 7.389e+02 
+23-05-17 22:04:23.133 : <epoch:991, iter:  79,300, lr:6.250e-06> G_loss: 7.511e+02 
+23-05-17 22:04:28.257 : <epoch:992, iter:  79,400, lr:6.250e-06> G_loss: 1.185e+03 
+23-05-17 22:04:33.547 : <epoch:993, iter:  79,500, lr:6.250e-06> G_loss: 4.901e+02 
+23-05-17 22:04:38.854 : <epoch:994, iter:  79,600, lr:6.250e-06> G_loss: 1.124e+03 
+23-05-17 22:04:44.428 : <epoch:996, iter:  79,700, lr:6.250e-06> G_loss: 1.031e+03 
+23-05-17 22:04:49.637 : <epoch:997, iter:  79,800, lr:6.250e-06> G_loss: 7.239e+02 
+23-05-17 22:04:54.910 : <epoch:998, iter:  79,900, lr:6.250e-06> G_loss: 9.767e+02 
+23-05-17 22:05:00.128 : <epoch:999, iter:  80,000, lr:6.250e-06> G_loss: 8.553e+02 
+23-05-17 22:05:00.129 : Saving the model.
+23-05-17 22:05:05.757 : <epoch:1001, iter:  80,100, lr:6.250e-06> G_loss: 7.964e+02 
+23-05-17 22:05:10.656 : <epoch:1002, iter:  80,200, lr:6.250e-06> G_loss: 8.569e+02 
+23-05-17 22:05:15.835 : <epoch:1003, iter:  80,300, lr:6.250e-06> G_loss: 1.381e+03 
+23-05-17 22:05:21.235 : <epoch:1004, iter:  80,400, lr:6.250e-06> G_loss: 6.434e+02 
+23-05-17 22:05:26.710 : <epoch:1006, iter:  80,500, lr:6.250e-06> G_loss: 9.671e+02 
+23-05-17 22:05:31.257 : <epoch:1007, iter:  80,600, lr:6.250e-06> G_loss: 7.902e+02 
+23-05-17 22:05:36.599 : <epoch:1008, iter:  80,700, lr:6.250e-06> G_loss: 7.926e+02 
+23-05-17 22:05:41.879 : <epoch:1009, iter:  80,800, lr:6.250e-06> G_loss: 1.225e+03 
+23-05-17 22:05:47.313 : <epoch:1011, iter:  80,900, lr:6.250e-06> G_loss: 1.130e+03 
+23-05-17 22:05:52.269 : <epoch:1012, iter:  81,000, lr:6.250e-06> G_loss: 5.381e+02 
+23-05-17 22:05:57.736 : <epoch:1013, iter:  81,100, lr:6.250e-06> G_loss: 7.097e+02 
+23-05-17 22:06:02.899 : <epoch:1014, iter:  81,200, lr:6.250e-06> G_loss: 1.053e+03 
+23-05-17 22:06:08.344 : <epoch:1016, iter:  81,300, lr:6.250e-06> G_loss: 8.284e+02 
+23-05-17 22:06:13.431 : <epoch:1017, iter:  81,400, lr:6.250e-06> G_loss: 6.153e+02 
+23-05-17 22:06:18.733 : <epoch:1018, iter:  81,500, lr:6.250e-06> G_loss: 4.699e+02 
+23-05-17 22:06:23.903 : <epoch:1019, iter:  81,600, lr:6.250e-06> G_loss: 1.533e+03 
+23-05-17 22:06:29.386 : <epoch:1021, iter:  81,700, lr:6.250e-06> G_loss: 8.253e+02 
+23-05-17 22:06:34.650 : <epoch:1022, iter:  81,800, lr:6.250e-06> G_loss: 1.220e+03 
+23-05-17 22:06:39.973 : <epoch:1023, iter:  81,900, lr:6.250e-06> G_loss: 6.473e+02 
+23-05-17 22:06:45.222 : <epoch:1024, iter:  82,000, lr:6.250e-06> G_loss: 1.253e+03 
+23-05-17 22:06:45.223 : Saving the model.
+23-05-17 22:06:50.804 : <epoch:1026, iter:  82,100, lr:6.250e-06> G_loss: 1.104e+03 
+23-05-17 22:06:56.183 : <epoch:1027, iter:  82,200, lr:6.250e-06> G_loss: 8.531e+02 
+23-05-17 22:07:01.618 : <epoch:1028, iter:  82,300, lr:6.250e-06> G_loss: 8.585e+02 
+23-05-17 22:07:06.923 : <epoch:1029, iter:  82,400, lr:6.250e-06> G_loss: 1.617e+03 
+23-05-17 22:07:12.319 : <epoch:1031, iter:  82,500, lr:6.250e-06> G_loss: 3.709e+03 
+23-05-17 22:07:17.595 : <epoch:1032, iter:  82,600, lr:6.250e-06> G_loss: 7.289e+02 
+23-05-17 22:07:22.910 : <epoch:1033, iter:  82,700, lr:6.250e-06> G_loss: 2.235e+03 
+23-05-17 22:07:28.175 : <epoch:1034, iter:  82,800, lr:6.250e-06> G_loss: 1.418e+03 
+23-05-17 22:07:33.530 : <epoch:1036, iter:  82,900, lr:6.250e-06> G_loss: 5.887e+02 
+23-05-17 22:07:38.851 : <epoch:1037, iter:  83,000, lr:6.250e-06> G_loss: 1.255e+03 
+23-05-17 22:07:43.779 : <epoch:1038, iter:  83,100, lr:6.250e-06> G_loss: 1.988e+03 
+23-05-17 22:07:49.092 : <epoch:1039, iter:  83,200, lr:6.250e-06> G_loss: 6.086e+02 
+23-05-17 22:07:54.571 : <epoch:1041, iter:  83,300, lr:6.250e-06> G_loss: 1.318e+03 
+23-05-17 22:07:59.892 : <epoch:1042, iter:  83,400, lr:6.250e-06> G_loss: 1.185e+03 
+23-05-17 22:08:04.923 : <epoch:1043, iter:  83,500, lr:6.250e-06> G_loss: 1.526e+03 
+23-05-17 22:08:10.190 : <epoch:1044, iter:  83,600, lr:6.250e-06> G_loss: 1.214e+03 
+23-05-17 22:08:15.680 : <epoch:1046, iter:  83,700, lr:6.250e-06> G_loss: 5.829e+02 
+23-05-17 22:08:20.840 : <epoch:1047, iter:  83,800, lr:6.250e-06> G_loss: 5.864e+02 
+23-05-17 22:08:25.835 : <epoch:1048, iter:  83,900, lr:6.250e-06> G_loss: 9.551e+02 
+23-05-17 22:08:31.161 : <epoch:1049, iter:  84,000, lr:6.250e-06> G_loss: 5.329e+02 
+23-05-17 22:08:31.162 : Saving the model.
+23-05-17 22:08:36.732 : <epoch:1051, iter:  84,100, lr:6.250e-06> G_loss: 7.154e+02 
+23-05-17 22:08:41.886 : <epoch:1052, iter:  84,200, lr:6.250e-06> G_loss: 1.007e+03 
+23-05-17 22:08:46.800 : <epoch:1053, iter:  84,300, lr:6.250e-06> G_loss: 8.262e+02 
+23-05-17 22:08:52.107 : <epoch:1054, iter:  84,400, lr:6.250e-06> G_loss: 1.101e+03 
+23-05-17 22:08:57.594 : <epoch:1056, iter:  84,500, lr:6.250e-06> G_loss: 7.427e+02 
+23-05-17 22:09:02.883 : <epoch:1057, iter:  84,600, lr:6.250e-06> G_loss: 6.416e+02 
+23-05-17 22:09:07.961 : <epoch:1058, iter:  84,700, lr:6.250e-06> G_loss: 8.366e+02 
+23-05-17 22:09:13.151 : <epoch:1059, iter:  84,800, lr:6.250e-06> G_loss: 1.000e+03 
+23-05-17 22:09:18.703 : <epoch:1061, iter:  84,900, lr:6.250e-06> G_loss: 8.517e+02 
+23-05-17 22:09:24.022 : <epoch:1062, iter:  85,000, lr:6.250e-06> G_loss: 7.032e+02 
+23-05-17 22:09:29.325 : <epoch:1063, iter:  85,100, lr:6.250e-06> G_loss: 1.278e+03 
+23-05-17 22:09:34.229 : <epoch:1064, iter:  85,200, lr:6.250e-06> G_loss: 6.571e+02 
+23-05-17 22:09:39.694 : <epoch:1066, iter:  85,300, lr:6.250e-06> G_loss: 7.963e+02 
+23-05-17 22:09:45.027 : <epoch:1067, iter:  85,400, lr:6.250e-06> G_loss: 8.560e+02 
+23-05-17 22:09:50.283 : <epoch:1068, iter:  85,500, lr:6.250e-06> G_loss: 9.177e+02 
+23-05-17 22:09:55.584 : <epoch:1069, iter:  85,600, lr:6.250e-06> G_loss: 1.031e+03 
+23-05-17 22:10:01.156 : <epoch:1071, iter:  85,700, lr:6.250e-06> G_loss: 8.382e+02 
+23-05-17 22:10:06.481 : <epoch:1072, iter:  85,800, lr:6.250e-06> G_loss: 5.377e+02 
+23-05-17 22:10:11.807 : <epoch:1073, iter:  85,900, lr:6.250e-06> G_loss: 4.471e+02 
+23-05-17 22:10:17.125 : <epoch:1074, iter:  86,000, lr:6.250e-06> G_loss: 1.300e+03 
+23-05-17 22:10:17.126 : Saving the model.
+23-05-17 22:10:22.718 : <epoch:1076, iter:  86,100, lr:6.250e-06> G_loss: 1.081e+03 
+23-05-17 22:10:28.016 : <epoch:1077, iter:  86,200, lr:6.250e-06> G_loss: 1.357e+03 
+23-05-17 22:10:33.320 : <epoch:1078, iter:  86,300, lr:6.250e-06> G_loss: 8.814e+02 
+23-05-17 22:10:38.651 : <epoch:1079, iter:  86,400, lr:6.250e-06> G_loss: 9.427e+02 
+23-05-17 22:10:44.100 : <epoch:1081, iter:  86,500, lr:6.250e-06> G_loss: 4.834e+02 
+23-05-17 22:10:49.385 : <epoch:1082, iter:  86,600, lr:6.250e-06> G_loss: 1.223e+03 
+23-05-17 22:10:54.689 : <epoch:1083, iter:  86,700, lr:6.250e-06> G_loss: 1.792e+03 
+23-05-17 22:10:59.967 : <epoch:1084, iter:  86,800, lr:6.250e-06> G_loss: 1.375e+03 
+23-05-17 22:11:05.186 : <epoch:1086, iter:  86,900, lr:6.250e-06> G_loss: 1.455e+03 
+23-05-17 22:11:10.451 : <epoch:1087, iter:  87,000, lr:6.250e-06> G_loss: 4.756e+02 
+23-05-17 22:11:15.775 : <epoch:1088, iter:  87,100, lr:6.250e-06> G_loss: 9.168e+02 
+23-05-17 22:11:21.104 : <epoch:1089, iter:  87,200, lr:6.250e-06> G_loss: 4.671e+02 
+23-05-17 22:11:26.558 : <epoch:1091, iter:  87,300, lr:6.250e-06> G_loss: 1.070e+03 
+23-05-17 22:11:31.813 : <epoch:1092, iter:  87,400, lr:6.250e-06> G_loss: 5.405e+02 
+23-05-17 22:11:37.099 : <epoch:1093, iter:  87,500, lr:6.250e-06> G_loss: 5.519e+02 
+23-05-17 22:11:42.380 : <epoch:1094, iter:  87,600, lr:6.250e-06> G_loss: 9.729e+02 
+23-05-17 22:11:47.920 : <epoch:1096, iter:  87,700, lr:6.250e-06> G_loss: 7.597e+02 
+23-05-17 22:11:52.779 : <epoch:1097, iter:  87,800, lr:6.250e-06> G_loss: 5.045e+02 
+23-05-17 22:11:58.046 : <epoch:1098, iter:  87,900, lr:6.250e-06> G_loss: 6.146e+02 
+23-05-17 22:12:03.479 : <epoch:1099, iter:  88,000, lr:6.250e-06> G_loss: 5.411e+02 
+23-05-17 22:12:03.481 : Saving the model.
+23-05-17 22:12:08.984 : <epoch:1101, iter:  88,100, lr:6.250e-06> G_loss: 2.435e+03 
+23-05-17 22:12:13.931 : <epoch:1102, iter:  88,200, lr:6.250e-06> G_loss: 5.841e+02 
+23-05-17 22:12:19.206 : <epoch:1103, iter:  88,300, lr:6.250e-06> G_loss: 8.392e+02 
+23-05-17 22:12:24.691 : <epoch:1104, iter:  88,400, lr:6.250e-06> G_loss: 6.533e+02 
+23-05-17 22:12:30.058 : <epoch:1106, iter:  88,500, lr:6.250e-06> G_loss: 4.788e+02 
+23-05-17 22:12:35.208 : <epoch:1107, iter:  88,600, lr:6.250e-06> G_loss: 4.918e+02 
+23-05-17 22:12:40.419 : <epoch:1108, iter:  88,700, lr:6.250e-06> G_loss: 1.239e+03 
+23-05-17 22:12:45.730 : <epoch:1109, iter:  88,800, lr:6.250e-06> G_loss: 6.165e+02 
+23-05-17 22:12:50.890 : <epoch:1111, iter:  88,900, lr:6.250e-06> G_loss: 1.745e+03 
+23-05-17 22:12:56.147 : <epoch:1112, iter:  89,000, lr:6.250e-06> G_loss: 1.237e+03 
+23-05-17 22:13:01.463 : <epoch:1113, iter:  89,100, lr:6.250e-06> G_loss: 6.550e+02 
+23-05-17 22:13:06.753 : <epoch:1114, iter:  89,200, lr:6.250e-06> G_loss: 1.550e+03 
+23-05-17 22:13:11.961 : <epoch:1116, iter:  89,300, lr:6.250e-06> G_loss: 5.159e+02 
+23-05-17 22:13:17.253 : <epoch:1117, iter:  89,400, lr:6.250e-06> G_loss: 1.641e+03 
+23-05-17 22:13:22.412 : <epoch:1118, iter:  89,500, lr:6.250e-06> G_loss: 7.583e+02 
+23-05-17 22:13:27.690 : <epoch:1119, iter:  89,600, lr:6.250e-06> G_loss: 1.246e+03 
+23-05-17 22:13:32.877 : <epoch:1121, iter:  89,700, lr:6.250e-06> G_loss: 1.391e+03 
+23-05-17 22:13:38.288 : <epoch:1122, iter:  89,800, lr:6.250e-06> G_loss: 2.033e+03 
+23-05-17 22:13:43.507 : <epoch:1123, iter:  89,900, lr:6.250e-06> G_loss: 8.870e+02 
+23-05-17 22:13:48.657 : <epoch:1124, iter:  90,000, lr:6.250e-06> G_loss: 1.248e+03 
+23-05-17 22:13:48.658 : Saving the model.
+23-05-17 22:13:53.743 : <epoch:1126, iter:  90,100, lr:6.250e-06> G_loss: 8.111e+02 
+23-05-17 22:13:59.039 : <epoch:1127, iter:  90,200, lr:6.250e-06> G_loss: 1.103e+03 
+23-05-17 22:14:04.346 : <epoch:1128, iter:  90,300, lr:6.250e-06> G_loss: 8.729e+02 
+23-05-17 22:14:09.723 : <epoch:1129, iter:  90,400, lr:6.250e-06> G_loss: 8.190e+02 
+23-05-17 22:14:15.284 : <epoch:1131, iter:  90,500, lr:6.250e-06> G_loss: 1.480e+03 
+23-05-17 22:14:20.754 : <epoch:1132, iter:  90,600, lr:6.250e-06> G_loss: 6.363e+02 
+23-05-17 22:14:26.052 : <epoch:1133, iter:  90,700, lr:6.250e-06> G_loss: 8.732e+02 
+23-05-17 22:14:31.291 : <epoch:1134, iter:  90,800, lr:6.250e-06> G_loss: 6.132e+02 
+23-05-17 22:14:36.660 : <epoch:1136, iter:  90,900, lr:6.250e-06> G_loss: 1.271e+03 
+23-05-17 22:14:42.046 : <epoch:1137, iter:  91,000, lr:6.250e-06> G_loss: 8.576e+02 
+23-05-17 22:14:46.877 : <epoch:1138, iter:  91,100, lr:6.250e-06> G_loss: 1.427e+03 
+23-05-17 22:14:52.132 : <epoch:1139, iter:  91,200, lr:6.250e-06> G_loss: 1.336e+03 
+23-05-17 22:14:57.598 : <epoch:1141, iter:  91,300, lr:6.250e-06> G_loss: 1.138e+03 
+23-05-17 22:15:02.947 : <epoch:1142, iter:  91,400, lr:6.250e-06> G_loss: 6.482e+02 
+23-05-17 22:15:08.248 : <epoch:1143, iter:  91,500, lr:6.250e-06> G_loss: 6.843e+02 
+23-05-17 22:15:13.584 : <epoch:1144, iter:  91,600, lr:6.250e-06> G_loss: 7.067e+02 
+23-05-17 22:15:18.973 : <epoch:1146, iter:  91,700, lr:6.250e-06> G_loss: 7.825e+02 
+23-05-17 22:15:24.298 : <epoch:1147, iter:  91,800, lr:6.250e-06> G_loss: 2.697e+03 
+23-05-17 22:15:29.600 : <epoch:1148, iter:  91,900, lr:6.250e-06> G_loss: 1.313e+03 
+23-05-17 22:15:34.868 : <epoch:1149, iter:  92,000, lr:6.250e-06> G_loss: 9.551e+02 
+23-05-17 22:15:34.869 : Saving the model.
+23-05-17 22:15:40.257 : <epoch:1151, iter:  92,100, lr:6.250e-06> G_loss: 5.420e+02 
+23-05-17 22:15:45.518 : <epoch:1152, iter:  92,200, lr:6.250e-06> G_loss: 8.283e+02 
+23-05-17 22:15:50.771 : <epoch:1153, iter:  92,300, lr:6.250e-06> G_loss: 9.814e+02 
+23-05-17 22:15:56.022 : <epoch:1154, iter:  92,400, lr:6.250e-06> G_loss: 6.328e+02 
+23-05-17 22:16:01.526 : <epoch:1156, iter:  92,500, lr:6.250e-06> G_loss: 6.431e+02 
+23-05-17 22:16:06.701 : <epoch:1157, iter:  92,600, lr:6.250e-06> G_loss: 6.043e+02 
+23-05-17 22:16:11.611 : <epoch:1158, iter:  92,700, lr:6.250e-06> G_loss: 5.147e+02 
+23-05-17 22:16:16.866 : <epoch:1159, iter:  92,800, lr:6.250e-06> G_loss: 7.709e+02 
+23-05-17 22:16:22.515 : <epoch:1161, iter:  92,900, lr:6.250e-06> G_loss: 1.245e+03 
+23-05-17 22:16:27.638 : <epoch:1162, iter:  93,000, lr:6.250e-06> G_loss: 9.223e+02 
+23-05-17 22:16:32.918 : <epoch:1163, iter:  93,100, lr:6.250e-06> G_loss: 1.169e+03 
+23-05-17 22:16:38.184 : <epoch:1164, iter:  93,200, lr:6.250e-06> G_loss: 8.926e+02 
+23-05-17 22:16:43.793 : <epoch:1166, iter:  93,300, lr:6.250e-06> G_loss: 8.698e+02 
+23-05-17 22:16:49.013 : <epoch:1167, iter:  93,400, lr:6.250e-06> G_loss: 1.156e+03 
+23-05-17 22:16:54.268 : <epoch:1168, iter:  93,500, lr:6.250e-06> G_loss: 4.075e+02 
+23-05-17 22:16:59.520 : <epoch:1169, iter:  93,600, lr:6.250e-06> G_loss: 4.558e+02 
+23-05-17 22:17:04.979 : <epoch:1171, iter:  93,700, lr:6.250e-06> G_loss: 1.199e+03 
+23-05-17 22:17:10.183 : <epoch:1172, iter:  93,800, lr:6.250e-06> G_loss: 9.826e+02 
+23-05-17 22:17:15.378 : <epoch:1173, iter:  93,900, lr:6.250e-06> G_loss: 1.310e+03 
+23-05-17 22:17:20.700 : <epoch:1174, iter:  94,000, lr:6.250e-06> G_loss: 9.317e+02 
+23-05-17 22:17:20.701 : Saving the model.
+23-05-17 22:17:26.214 : <epoch:1176, iter:  94,100, lr:6.250e-06> G_loss: 4.806e+02 
+23-05-17 22:17:31.477 : <epoch:1177, iter:  94,200, lr:6.250e-06> G_loss: 1.523e+03 
+23-05-17 22:17:36.711 : <epoch:1178, iter:  94,300, lr:6.250e-06> G_loss: 1.102e+03 
+23-05-17 22:17:42.032 : <epoch:1179, iter:  94,400, lr:6.250e-06> G_loss: 4.080e+02 
+23-05-17 22:17:47.567 : <epoch:1181, iter:  94,500, lr:6.250e-06> G_loss: 6.920e+02 
+23-05-17 22:17:52.837 : <epoch:1182, iter:  94,600, lr:6.250e-06> G_loss: 1.063e+03 
+23-05-17 22:17:57.991 : <epoch:1183, iter:  94,700, lr:6.250e-06> G_loss: 8.651e+02 
+23-05-17 22:18:03.306 : <epoch:1184, iter:  94,800, lr:6.250e-06> G_loss: 6.043e+02 
+23-05-17 22:18:08.963 : <epoch:1186, iter:  94,900, lr:6.250e-06> G_loss: 8.998e+02 
+23-05-17 22:18:14.197 : <epoch:1187, iter:  95,000, lr:6.250e-06> G_loss: 1.353e+03 
+23-05-17 22:18:19.136 : <epoch:1188, iter:  95,100, lr:6.250e-06> G_loss: 1.335e+03 
+23-05-17 22:18:24.397 : <epoch:1189, iter:  95,200, lr:6.250e-06> G_loss: 1.120e+03 
+23-05-17 22:18:29.857 : <epoch:1191, iter:  95,300, lr:6.250e-06> G_loss: 8.647e+02 
+23-05-17 22:18:35.121 : <epoch:1192, iter:  95,400, lr:6.250e-06> G_loss: 9.163e+02 
+23-05-17 22:18:40.127 : <epoch:1193, iter:  95,500, lr:6.250e-06> G_loss: 9.263e+02 
+23-05-17 22:18:45.469 : <epoch:1194, iter:  95,600, lr:6.250e-06> G_loss: 4.590e+02 
+23-05-17 22:18:50.941 : <epoch:1196, iter:  95,700, lr:6.250e-06> G_loss: 9.498e+02 
+23-05-17 22:18:56.187 : <epoch:1197, iter:  95,800, lr:6.250e-06> G_loss: 4.537e+02 
+23-05-17 22:19:01.147 : <epoch:1198, iter:  95,900, lr:6.250e-06> G_loss: 9.465e+02 
+23-05-17 22:19:06.314 : <epoch:1199, iter:  96,000, lr:6.250e-06> G_loss: 8.099e+02 
+23-05-17 22:19:06.315 : Saving the model.
+23-05-17 22:19:11.798 : <epoch:1201, iter:  96,100, lr:6.250e-06> G_loss: 8.957e+02 
+23-05-17 22:19:17.068 : <epoch:1202, iter:  96,200, lr:6.250e-06> G_loss: 6.052e+02 
+23-05-17 22:19:22.415 : <epoch:1203, iter:  96,300, lr:6.250e-06> G_loss: 6.424e+02 
+23-05-17 22:19:27.749 : <epoch:1204, iter:  96,400, lr:6.250e-06> G_loss: 1.375e+03 
+23-05-17 22:19:33.321 : <epoch:1206, iter:  96,500, lr:6.250e-06> G_loss: 9.808e+02 
+23-05-17 22:19:38.631 : <epoch:1207, iter:  96,600, lr:6.250e-06> G_loss: 1.871e+03 
+23-05-17 22:19:43.927 : <epoch:1208, iter:  96,700, lr:6.250e-06> G_loss: 9.270e+02 
+23-05-17 22:19:49.386 : <epoch:1209, iter:  96,800, lr:6.250e-06> G_loss: 1.225e+03 
+23-05-17 22:19:54.839 : <epoch:1211, iter:  96,900, lr:6.250e-06> G_loss: 9.462e+02 
+23-05-17 22:20:00.099 : <epoch:1212, iter:  97,000, lr:6.250e-06> G_loss: 6.114e+02 
+23-05-17 22:20:05.357 : <epoch:1213, iter:  97,100, lr:6.250e-06> G_loss: 9.386e+02 
+23-05-17 22:20:10.652 : <epoch:1214, iter:  97,200, lr:6.250e-06> G_loss: 1.423e+03 
+23-05-17 22:20:16.024 : <epoch:1216, iter:  97,300, lr:6.250e-06> G_loss: 7.620e+02 
+23-05-17 22:20:21.270 : <epoch:1217, iter:  97,400, lr:6.250e-06> G_loss: 9.502e+02 
+23-05-17 22:20:26.587 : <epoch:1218, iter:  97,500, lr:6.250e-06> G_loss: 5.993e+02 
+23-05-17 22:20:31.462 : <epoch:1219, iter:  97,600, lr:6.250e-06> G_loss: 9.252e+02 
+23-05-17 22:20:36.929 : <epoch:1221, iter:  97,700, lr:6.250e-06> G_loss: 1.453e+03 
+23-05-17 22:20:42.069 : <epoch:1222, iter:  97,800, lr:6.250e-06> G_loss: 5.985e+02 
+23-05-17 22:20:47.526 : <epoch:1223, iter:  97,900, lr:6.250e-06> G_loss: 1.316e+03 
+23-05-17 22:20:52.590 : <epoch:1224, iter:  98,000, lr:6.250e-06> G_loss: 8.540e+02 
+23-05-17 22:20:52.591 : Saving the model.
+23-05-17 22:20:58.106 : <epoch:1226, iter:  98,100, lr:6.250e-06> G_loss: 1.288e+03 
+23-05-17 22:21:03.237 : <epoch:1227, iter:  98,200, lr:6.250e-06> G_loss: 6.524e+02 
+23-05-17 22:21:08.533 : <epoch:1228, iter:  98,300, lr:6.250e-06> G_loss: 8.515e+02 
+23-05-17 22:21:13.513 : <epoch:1229, iter:  98,400, lr:6.250e-06> G_loss: 8.129e+02 
+23-05-17 22:21:19.022 : <epoch:1231, iter:  98,500, lr:6.250e-06> G_loss: 8.155e+02 
+23-05-17 22:21:24.351 : <epoch:1232, iter:  98,600, lr:6.250e-06> G_loss: 8.075e+02 
+23-05-17 22:21:29.644 : <epoch:1233, iter:  98,700, lr:6.250e-06> G_loss: 1.489e+03 
+23-05-17 22:21:34.604 : <epoch:1234, iter:  98,800, lr:6.250e-06> G_loss: 5.950e+02 
+23-05-17 22:21:40.074 : <epoch:1236, iter:  98,900, lr:6.250e-06> G_loss: 1.246e+03 
+23-05-17 22:21:45.522 : <epoch:1237, iter:  99,000, lr:6.250e-06> G_loss: 7.693e+02 
+23-05-17 22:21:50.709 : <epoch:1238, iter:  99,100, lr:6.250e-06> G_loss: 1.082e+03 
+23-05-17 22:21:55.578 : <epoch:1239, iter:  99,200, lr:6.250e-06> G_loss: 5.343e+02 
+23-05-17 22:22:01.181 : <epoch:1241, iter:  99,300, lr:6.250e-06> G_loss: 1.427e+03 
+23-05-17 22:22:06.477 : <epoch:1242, iter:  99,400, lr:6.250e-06> G_loss: 4.890e+02 
+23-05-17 22:22:11.682 : <epoch:1243, iter:  99,500, lr:6.250e-06> G_loss: 1.268e+03 
+23-05-17 22:22:16.579 : <epoch:1244, iter:  99,600, lr:6.250e-06> G_loss: 7.155e+02 
+23-05-17 22:22:22.162 : <epoch:1246, iter:  99,700, lr:6.250e-06> G_loss: 8.478e+02 
+23-05-17 22:22:27.442 : <epoch:1247, iter:  99,800, lr:6.250e-06> G_loss: 6.927e+02 
+23-05-17 22:22:32.761 : <epoch:1248, iter:  99,900, lr:6.250e-06> G_loss: 6.485e+02 
+23-05-17 22:22:37.703 : <epoch:1249, iter: 100,000, lr:6.250e-06> G_loss: 2.186e+03 
+23-05-17 22:22:37.704 : Saving the model.
