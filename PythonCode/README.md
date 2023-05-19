@@ -4,7 +4,12 @@
 
 ## 1. Training
 
-To train the a super-resolution model with PRS-SIM 
+An example code to train the denoising model with PRS-SIM is:
+
+```python
+#!/usr/bin/python3
+print("Hello, World!");
+```
 
 ****
 ## 2. Denoising
