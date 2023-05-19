@@ -97,3 +97,11 @@ For PRS-SIM model training, we provide realigned images dataset which can direct
 
 - Of note, you can also press **Export Model** during training to export the lastest saved model without disposing the training progress.
 - The model saved in training progress can be used in predict progress directly.
+
+****
+## 5. Examples
+    
+
+The examples noisy image and denoised image of CCPs and Microtubules is located at the folder './Examples-CCPs' and './Examples-Microtubules'.
+Due to the storage limination of Github, we upload the example training dataset on Google drive at https://drive.google.com/drive/folders/1nYSQ5K94SqkoG65_N3Tn2zPL4dt0T0yX?usp=share_link.
+
