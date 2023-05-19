@@ -2,3 +2,8 @@ Due to the storage limitation of Github, the example raw SIM data of Microtubule
 
 The raw file is saved in '.mrc' format, which is a common-used format for saving microscopy data. The example IO code for reading '.mrc' file is located in folder 'XxMatlabUtils'.
 
+>├─ cell_name_X  
+>│    ├─ view1.tif  
+>│    ├─ view2.tif  
+>│    ├─ view3.tif  
+>│    └─ view4.tif
