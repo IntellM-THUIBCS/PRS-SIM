@@ -1,3 +1,7 @@
+# Introduction of the Matlab code for pixel-realignment
+
+***
+
 To apply pixel-realignment strategy to the raw SIM images, just execute the script 'Create_training_dataset.m' in Matlab.
 
 The raw data should be saved in folder 'raw_data' and the realigned images will be output in a new folder 'realigned_data'.
