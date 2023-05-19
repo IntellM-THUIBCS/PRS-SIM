@@ -35,15 +35,13 @@ import tifffile
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--gpu_id', type=str, default='1', help='the id of GPU')
+parser.add_argument('--gpu_id', type=str, default='0', help='the id of GPU')
 
 parser.add_argument('--smpl_dir', type=str, default='./SIM_data', help='the folder saveing the sample data')
-# parser.add_argument('--smpl_name', type=str, default='Microtubules_test', help='the name of the sample')
-parser.add_argument('--smpl_name', type=str, default='CCPs_test', help='the name of the sample')
+parser.add_argument('--smpl_name', type=str, default='Microtubules_test', help='the name of the sample')
 parser.add_argument('--net_type', type=str, default='unet', help='network type') 
 
-# parser.add_argument('--model_dir', type=str, default='./pretrained_models/Microtubules_unet_0/models', help='the folder saveing the model file')
-parser.add_argument('--model_dir', type=str, default='./pretrained_models/CCPs_unet_0/models', help='the folder saveing the model file')
+parser.add_argument('--model_dir', type=str, default='./pretrained_models/Microtubules_unet_0/models', help='the folder saveing the model file')
 parser.add_argument('--model_name', type=str, default='100000_G', help='the name of the model file (.pth)')
 
 parser.add_argument('--test_patch_size', type=int, default=1004, help='the crop size of the image')
