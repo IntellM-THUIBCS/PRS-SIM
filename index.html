@@ -1,0 +1,176 @@
+---
+layout: default
+title: Home
+---
+
+<div class="page">
+
+	
+	<header>
+		<h1 class="landing-title" style="margin:15px">PRS-SIM: a self-supervised denoising methods for structured illumination microscopy</h1>		
+	</header>
+  
+	<center><h1 style="color:white;">I. Introduction of PRS-SIM</h1></center>
+	<p>
+	Structured illumination microscopy (SIM) is a wide-used super-resolution (SR) technique for fluorescence imaging. 
+	Its main principle is to collect a series of wide-field (WF) images under different illumination patterns, 
+	then computationally reconstruct a super-resolution image with ~2-fold resolution improvement.
+	The characteristic of high spatiotemporal resolution and low optical invasion makes SIM suitable for live-cell imaging. 
+	However, because the reconstruction algorithm consist of the separation and re-combination operations of the low- and and high- order frequency information,
+	<b>the noise-induced artifact substantially degrades the quality of SIM images</b>.
+	This artifact will overwhelm the effective sample information, and strictly limit SIM application in long-term observation of the cellular organelles and dynamics.
+	</p>
+	<p>
+	Several optimized reconstruction algorithms have been developed to improve SIM based on the specific assumption of the noise distribution. 
+	However, since to retrieve the noise-free information from low-SNR images is an ill-posed problem, 
+	the denoising performance of these algorithms faces a bottleneck. 
+	Recently, deep neural networks (DNNs) have shown outstanding performance in image denoising and restoration task, and several deep-learning based SIM denoising method have been proposed.
+	However, to the best of our knowledge, existing methods still face the following shortages:
+	</p>
+	<p>1. The deep-learning based image super-resolution (DLSR)<sup>[1]</sup> methods does not fully utilize the pattern modulation information, resulting in the loss of resolution and fidelity</p>
+	<p>2. The supervised training scheme, e.g. U-Net-SIM<sup>[2]</sup>, DFCAN<sup>[3]</sup> and rDL-SIM<sup>[4]</sup>, requires a large amount of noisy-free data, which is costly and not feasible for sample with low fluorescent efficiency.</p>
+	<p>3. Some unsupervised method utilizes blind-spot principle, e.g. noise2void<sup>[5]</sup>, whicn is not applicable for SIM since the reconstruction process will break the spatial distribution of the raw images.</p>
+	
+	<p> To address these problems, we proposed <b>PRS-SIM</b>, a self-supervised deep-learning denoising method for structured illumination microscopy.
+	The underlying mechanism of PRS-SIM is to employ a pixel-realignment strategy to generate the training dataset for the super-resolution denoising network 
+	from only the low-SNR raw SIM data (detailedly discussed in the <a href="{{ site.baseurl }}/Principle/">Principle</a> page). 
+		
+	<center><h1 style="color:white;">II. Main advantages of PRS-SIM </h1></center>
+	<h2 style="color:white;">1. Super-resolution reconstruction with 10-fold fewer collected photons</h2>
+	<p>
+	We validated the performance of PRS-SIM on the open-source dataset BioSR<sup>[3]</sup>, in which the matched raw SIM images of different SNRs and the corresponding ground-truth (GT) image are provided.
+	The training dataset is generated only with the data of signal level 1 to signal level 4, whose effective collected photons is ~10-fold fewer than that used in noise-free GT-SIM images. 
+	Although conventional SIM images are substantially degraded, RES-SIM is capable to remove most artifacts and achieve comparable resolution and quality as GT-SIM does,	
+	which proves the denoising power of RES-SIM.
+	</p>
+	<center>
+	<div id="slider1" class="beer-slider" data-beer-label="Conv. SIM" data-start="50">
+		<img src="images/CCPs_R_l.png?raw=true" width="500">
+		<div class="beer-reveal" data-beer-label="PRS-SIM">
+			<img src="images/CCPs_E_l.png?raw=true" width="500">
+		</div>
+	</div>
+	<div id="slider2" class="beer-slider" data-beer-label="Conv. SIM" data-start="50">
+		<img src="images/Microtubules_R_l.png?raw=true" width="500">
+		<div class="beer-reveal" data-beer-label="PRS-SIM">
+			<img src="images/Microtubules_E_l.png?raw=true" width="500">
+		</div>
+	</div>
+	</center>
+	
+	<h2 style="color:white;">2. Trained with only single-shot low-SNR data</h2>
+	<p>
+	We demonstrated an example data of the PRS-SIM training dataset. 
+	Each data item (an input-target image pair) was generated with only <b>one</b> raw noisy SIM image stack,
+	so that no high-SNR data nor repeated acquisition is needed.
+	By iteratively optimizing the loss function between each image pair, the fine-trained model will gain the denoising ability for SIM images.
+	<br>
+	<center><img src="images/Figure-website-trainingset.png?raw=true" width="1050" align="middle" /></center>
+	</p>
+	<h2 style="color:white;">3. Compatibility with multiple SIM systems</h2>
+	<p>
+	Due to the similarity of data processing flowchart (including the separating, filtering, and stitching operations in Fourier domain), 
+	RES-SIM is compatible with different SIM systems, e.g. TIRF-SIM, Non-linear-SIM, 3D-SIM, LLS-SIM, GI-SIM<sup>[6,7,8,9]</sup>. 
+	Here we validated PRS-SIM on 3D-SIM (left) and LLS-SIM (right) system for volumetric imaging,
+	and found that PRS-SIM is able to remove the artifact and improve both the lateral and axial resolution.
+	</p>
+	<center>
+	<div id="slider3" class="beer-slider" data-beer-label="WF" data-start="50">
+		<img src="images/Ensconsin-R_mip.png?raw=true" width="500">
+		<div class="beer-reveal" data-beer-label="PRS-SIM">
+			<img src="images/Ensconsin-E_mip.png?raw=true" width="500">
+		</div>
+	</div>
+	<div id="slider4" class="beer-slider" data-beer-label="WF" data-start="50">
+		<img src="images/TOMM20-R_mip.png?raw=true" width="500">
+		<div class="beer-reveal" data-beer-label="PRS-SIM">
+			<img src="images/TOMM20-E_mip.png?raw=true" width="500">
+		</div>
+	</div>
+	</center>
+	
+	<h2 style="color:white;">4. No requirement of pre-trained model in adaptive training mode</h2>
+	<p>
+	For long-term imaging with adequate frames, PRS-SIM can be performed in the adaptive training mode, where the noisy collected image sequence itself is used to generate the training dataset.
+	Here we validated the adaptively trained PRS-SIM model via synthetic filaments and compared it with the classical denoising method noise2noise (N2N)<sup>[10]</sup>. 
+	Since the filaments are in continuous motion, the N2N result contained severe motion blur, degrading the resolution and fidelity, 
+	while PRS-SIM is still capable to remove most artifact with no motion effect. 
+	<br>
+	<center><img src="images/Figure-website-adaptivetraining.png?raw=true" width="1050" align="middle" /></center>
+	</p>
+	
+	<center><h1 style="color:white;">III. Live-cell experiments</h1></center>
+	<h2 style="color:white;">1. Long-term super-resolution observation of formation, maturation, and internalization of CCPs. </h2>
+	<center><video src="images/TIRF-SIM-CCP.mp4?raw=true" controls="controls" width="100%" height="auto"/></center>
+	<p><i> The entire data acquisition time is ~40 minutes for 5000 frames. 
+	To prevent the photo-toxicity, the raw images are captured with 30-fold fewer collected photons than those used for artifact-free images. 
+	The inner hollow is blurred in WF images due to the limited resolution
+	and the ring structure is severely distorted in conventional SIM images due to the noise-induced artifact. 
+	In contrast, PRS-SIM is able to resolve the organelles at high resolution and fidelity. 
+	Benefitting from the RES-SIM enhanced images, the tracking algorithm (Trackmate plugin in Fiji)
+	can be successfully applied to investigate the spatial regulation of CCP nucleation sites (details in our manuscript).
+	</i></p>
+	
+	<h2 style="color:white;">2. Dynamic interactions between CCPs and F-actin in the growth process. </h2>
+	<center><video src="images/TIRF-SIM-CCP-Factin.mp4?raw=true" controls="controls" width="100%" height="auto"/></center>
+	<p><i>
+	The cell is imaged with 10-fold less excitation power compared to that used in regular imaging. 
+	Since the illumination-induced photo-toxicity is low, the cell is kept in health status and the whole growth process is captured. 
+	Benefitting from the removal of artifact and contrast enhancement,
+	the segmentation algorithm (e.g. Weka segmentation plugin in Fiji) can be effectively applied for PRS-SIM images,
+	enabling the further study of the interaction between the celluar organelles and cytoskeleton (details in our manuscript). 
+	</p></i>
+	<h2 style="color:white;">3. Long-term volumetric visualization of interactions between lysosomes and cytoskeleton with PRS-SIM enhanced 3D-SIM. </h2>
+	<center><video src="images/3D-SIM-MT-Lyso.avi?raw=true" controls="controls" width="100%" height="auto"/></center>
+	<p><i>
+	RES-SIM enables high-quality long-term volumetric imaging with 3D-SIM system. The whole data acquisition last for ~40 minutes for 400 frames. 
+	Benefitting the improved SNR and resolution (both lateral and axial), both structures are resolved at high defination,
+	so that the interactions of the organelles can be observed, e.g. the movement of lysosome along the microtubule filament and the deformation of microtubule filament forced by lysosome.
+	</p></i>
+	
+	<h2 style="color:white;">4. Volumetric interactions between mitochondria and microtubules imaged by PRS-SIM enhanced LLS-SIM. </h2>
+	<center><video src="images/LLS-SIM-Mito-MT.avi?raw=true" controls="controls" width="100%" height="auto"/></center>
+	<p><i>
+	We demonstrated the long-term imaging of the subcellular dynamics and interaction of the mitochondria and microtubules via adaptive trained PRS-SIM. 
+	The training dataset is generated only with the time-lapsed image. Without any pre-trained model, 
+	PRS-SIM is still capable to significantly remove the artifact, indicating its great potential to discover unseen biological phenomenon.
+	</p></i>
+
+		
+	<center><h1 style="color:white;">Reference </h1></center>
+	<p>
+	[1] Wang, Zhihao, et al. "Deep learning for image super-resolution: A survey." IEEE transactions on pattern analysis and machine intelligence 43.10 (2020): 3365-3387.
+	[2] Jin, Luhong, et al. "Deep learning enables structured illumination microscopy with low light levels and enhanced speed." Nature communications 11.1 (2020): 1934.<br>
+	[3] Qiao, Chang, et al. Evaluation and development of deep neural networks for image super-resolution in optical microscopy[J]. Nature Methods, 2021, 18(2): 194-202.<br>
+	[4] Qiao, Chang, et al. "Rationalized deep learning super-resolution microscopy for sustained live imaging of rapid subcellular processes." Nature biotechnology (2022): 1-11.<br>
+	[5] Krull, Alexander, et al. "Noise2void-learning denoising from single noisy images." Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. 2019.<br>
+	[6] Gustafsson, Mats GL. "Surpassing the lateral resolution limit by a factor of two using structured illumination microscopy." Journal of microscopy 198.2 (2000): 82-87.<br> 
+	[7] Gustafsson, Mats GL, et al. "Three-dimensional resolution doubling in wide-field fluorescence microscopy by structured illumination." Biophysical journal 94.12 (2008): 4957-4970.<br>
+	[8] Chen, Bi-Chang, et al. "Lattice light-sheet microscopy: imaging molecules to embryos at high spatiotemporal resolution." Science 346.6208 (2014): 1257998.<br>
+	[9] Guo, Yuting, et al. "Visualizing intracellular organelle and cytoskeletal interactions at nanoscale resolution on millisecond timescales." Cell 175.5 (2018): 1430-1442.<br>
+	[10] Lehtinen, Jaakko, et al. "Noise2Noise: Learning image restoration without clean data." arXiv preprint arXiv:1803.04189 (2018).<br>
+	</p>
+
+	<script src="{{ site.baseurl }}/css/BeerSlider.js"></script>
+	<script>
+	  var slider = new BeerSlider( document.getElementById( "slider1" ) );
+	  var slider = new BeerSlider( document.getElementById( "slider2" ) );
+	  var slider = new BeerSlider( document.getElementById( "slider3" ) );
+	  var slider = new BeerSlider( document.getElementById( "slider4" ) );
+	  var slider = new BeerSlider( document.getElementById( "slider5" ) );
+	  var slider = new BeerSlider( document.getElementById( "slider6" ) );
+	  var slider = new BeerSlider( document.getElementById( "slider7" ) );
+	</script>
+	
+ 
+</div>
+
+
+
+
+<!--
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br><br>
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br><br>
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br><br>
+<center><video src="https://github.com/TristaZeng/ZS-DeconvNet/blob/master/video/SuppVideo5_Mitosis_Mito_HeLa.mp4?raw=true" controls="controls" width="100%" height="auto"/></center>
+-->

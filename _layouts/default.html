@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  {% include head.html %}
+
+  <body>
+    <nav class="nav-main">
+      <ul style="margin-bottom: 0rem;">
+		<!--
+        <li class="hvr-underline-reveal"><a href="{{ site.baseurl }}">Main</a></li>
+		<li class="main-page"><a class="hvr-underline-reveal" href="{{ site.baseurl }}">Main</a></li>
+		-->
+		<li class="hvr-underline-reveal"><a href="{{ site.baseurl }}/Principle/">Principle</a></li>
+        <li class="hvr-underline-reveal"><a href="{{ site.baseurl }}/Tutorial/">Tutorial</a></li>
+		<li class="logo"><a class="hvr-ripple-out" href="{{ site.baseurl }}/">H</a></li>
+        <li class="hvr-underline-reveal"><a href="{{ site.baseurl }}/Dataset/">Dataset</a></li>
+        <li class="hvr-underline-reveal"><a href="{{ site.baseurl }}/Team/">Team</a></li>
+      </ul>
+    </nav>
+
+    <div class="container content">
+      <main>
+        {{ content }}
+      </main>
+	  <!--
+      <footer class="footer">
+        </small>
+        <div class="ftr-links">
+          <a href="https://github.com/cabooster/DeepCAD-RT"><i class="fa fa-github-alt"></i></a>
+        </div>
+      </footer>
+	  -->
+	  
+    </div>
+	<script type="text/javascript" id="MathJax-script" async
+		src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+
+    <script>
+	  MathJax = {
+		tex: {
+		  inlineMath: [['$', '$']]
+		}
+	  };
+	</script>
+
+  </body>
+</html>
