@@ -14,34 +14,34 @@ title: Home
 	<p>
 	Structured illumination microscopy (SIM) is a wide-used super-resolution (SR) technique for fluorescence imaging. 
 	Its main principle is to collect a series of wide-field (WF) images under different illumination patterns, 
-	then computationally reconstruct a super-resolution image with ~2-fold resolution improvement.
+	then computationally reconstruct a super-resolution image with ~2-fold resolution improvement (even hige in non-linear situation).
 	The characteristic of high spatiotemporal resolution and low optical invasion makes SIM suitable for live-cell imaging. 
-	However, because the reconstruction algorithm consist of the separation and re-combination operations of the low- and and high- order frequency information,
+	However, because the reconstruction algorithm consists of the separation and re-combination of the low- and and high- order frequency information,
 	<b>the noise-induced artifact substantially degrades the quality of SIM images</b>.
 	This artifact will overwhelm the effective sample information, and strictly limit SIM application in long-term observation of the cellular organelles and dynamics.
 	</p>
 	<p>
 	Several optimized reconstruction algorithms have been developed to improve SIM based on the specific assumption of the noise distribution. 
 	However, since to retrieve the noise-free information from low-SNR images is an ill-posed problem, 
-	the denoising performance of these algorithms faces a bottleneck. 
+	their performance faces a bottleneck. 
 	Recently, deep neural networks (DNNs) have shown outstanding performance in image denoising and restoration task, and several deep-learning based SIM denoising method have been proposed.
 	However, to the best of our knowledge, existing methods still face the following shortages:
 	</p>
-	<p>1. The deep-learning based image super-resolution (DLSR)<sup>[1]</sup> methods does not fully utilize the pattern modulation information, resulting in the loss of resolution and fidelity</p>
+	<p>1. The deep-learning based image super-resolution (DLSR)<sup>[1]</sup> methods does not fully utilize the modulation information of the illumination patterns, resulting in the loss of resolution.</p>
 	<p>2. The supervised training scheme, e.g. U-Net-SIM<sup>[2]</sup>, DFCAN<sup>[3]</sup> and rDL-SIM<sup>[4]</sup>, requires a large amount of noisy-free data, which is costly and not feasible for sample with low fluorescent efficiency.</p>
 	<p>3. Some unsupervised method utilizes blind-spot principle, e.g. noise2void<sup>[5]</sup>, whicn is not applicable for SIM since the reconstruction process will break the spatial distribution of the raw images.</p>
 	
 	<p> To address these problems, we proposed <b>PRS-SIM</b>, a self-supervised deep-learning denoising method for structured illumination microscopy.
-	The underlying mechanism of PRS-SIM is to employ a pixel-realignment strategy to generate the training dataset for the super-resolution denoising network 
+	The underlying mechanism of PRS-SIM is to employ a pixel-realignment strategy to generate the training dataset  
 	from only the low-SNR raw SIM data (detailedly discussed in the <a href="{{ site.baseurl }}/Principle/">Principle</a> page). 
 		
 	<center><h1 style="color:white;">II. Main advantages of PRS-SIM </h1></center>
 	<h2 style="color:white;">1. Super-resolution reconstruction with 10-fold fewer collected photons</h2>
 	<p>
-	We validated the performance of PRS-SIM on the open-source dataset BioSR<sup>[3]</sup>, in which the matched raw SIM images of different SNRs and the corresponding ground-truth (GT) image are provided.
-	The training dataset is generated only with the data of signal level 1 to signal level 4, whose effective collected photons is ~10-fold fewer than that used in noise-free GT-SIM images. 
-	Although conventional SIM images are substantially degraded, RES-SIM is capable to remove most artifacts and achieve comparable resolution and quality as GT-SIM does,	
-	which proves the denoising power of RES-SIM.
+	We validated the performance of PRS-SIM on the open-source dataset BioSR<sup>[3]</sup>, in which the raw SIM images of different SNRs and the corresponding ground-truth (GT) image are provided.
+	The training dataset is generated only with the raw data from signal level 1 to signal level 4, whose effective collected photons is ~10-fold fewer than that used in noise-free GT-SIM images. 
+	Although conventional SIM images are substantially degraded, PRS-SIM is capable to remove most artifacts and achieve comparable resolution and quality as GT-SIM does,	
+	which proves the denoising power of PRS-SIM.
 	</p>
 	<center>
 	<div id="slider1" class="beer-slider" data-beer-label="Conv. SIM" data-start="50">
@@ -60,19 +60,19 @@ title: Home
 	
 	<h2 style="color:white;">2. Trained with only single-shot low-SNR data</h2>
 	<p>
-	We demonstrated an example data of the PRS-SIM training dataset. 
-	Each data item (an input-target image pair) was generated with only <b>one</b> raw noisy SIM image stack,
+	We demonstrated an example of the PRS-SIM training dataset. 
+	Each data item (4 matched realigned images) was generated from only <b>one</b> raw noisy SIM image stack,
 	so that no high-SNR data nor repeated acquisition is needed.
-	By iteratively optimizing the loss function between each image pair, the fine-trained model will gain the denoising ability for SIM images.
+	By iteratively optimizing the loss function, the fine-trained model will gain the denoising ability for SIM images.
 	<br>
 	<center><img src="images/Figure-website-trainingset.png?raw=true" width="1050" align="middle" /></center>
 	</p>
 	<h2 style="color:white;">3. Compatibility with multiple SIM systems</h2>
 	<p>
 	Due to the similarity of data processing flowchart (including the separating, filtering, and stitching operations in Fourier domain), 
-	RES-SIM is compatible with different SIM systems, e.g. TIRF-SIM, Non-linear-SIM, 3D-SIM, LLS-SIM, GI-SIM<sup>[6,7,8,9]</sup>. 
+	PRS-SIM is compatible with different SIM systems, e.g. TIRF-SIM, Non-linear-SIM, 3D-SIM, LLS-SIM, GI-SIM<sup>[6,7,8,9]</sup>. 
 	Here we validated PRS-SIM on 3D-SIM (left) and LLS-SIM (right) system for volumetric imaging,
-	and found that PRS-SIM is able to remove the artifact and improve both the lateral and axial resolution.
+	and found that PRS-SIM is able to remove most artifact and improve both the lateral and axial resolution.
 	</p>
 	<center>
 	<div id="slider3" class="beer-slider" data-beer-label="WF" data-start="50">
@@ -91,7 +91,7 @@ title: Home
 	
 	<h2 style="color:white;">4. No requirement of pre-trained model in adaptive training mode</h2>
 	<p>
-	For long-term imaging with adequate frames, PRS-SIM can be performed in the adaptive training mode, where the noisy collected image sequence itself is used to generate the training dataset.
+	For long-term imaging, PRS-SIM can be performed in the adaptive training mode, where the noisy collected image sequence itself is enough to generate the training dataset.
 	Here we validated the adaptively trained PRS-SIM model via synthetic filaments and compared it with the classical denoising method noise2noise (N2N)<sup>[10]</sup>. 
 	Since the filaments are in continuous motion, the N2N result contained severe motion blur, degrading the resolution and fidelity, 
 	while PRS-SIM is still capable to remove most artifact with no motion effect. 
@@ -107,7 +107,7 @@ title: Home
 	The inner hollow is blurred in WF images due to the limited resolution
 	and the ring structure is severely distorted in conventional SIM images due to the noise-induced artifact. 
 	In contrast, PRS-SIM is able to resolve the organelles at high resolution and fidelity. 
-	Benefitting from the RES-SIM enhanced images, the tracking algorithm (Trackmate plugin in Fiji)
+	Benefitting from the PRS-SIM enhanced images, the tracking algorithm (Trackmate plugin in Fiji)
 	can be successfully applied to investigate the spatial regulation of CCP nucleation sites (details in our manuscript).
 	</i></p>
 	
@@ -116,14 +116,14 @@ title: Home
 	<p><i>
 	The cell is imaged with 10-fold less excitation power compared to that used in regular imaging. 
 	Since the illumination-induced photo-toxicity is low, the cell is kept in health status and the whole growth process is captured. 
-	Benefitting from the removal of artifact and contrast enhancement,
-	the segmentation algorithm (e.g. Weka segmentation plugin in Fiji) can be effectively applied for PRS-SIM images,
+	Benefitting from the removal of artifact,
+	the segmentation algorithm (e.g. Weka segmentation plugin in Fiji) can be successfully applied for PRS-SIM images,
 	enabling the further study of the interaction between the celluar organelles and cytoskeleton (details in our manuscript). 
 	</p></i>
 	<h2 style="color:white;">3. Long-term volumetric visualization of interactions between lysosomes and cytoskeleton with PRS-SIM enhanced 3D-SIM. </h2>
 	<center><video src="images/3D-SIM-MT-Lyso.avi?raw=true" controls="controls" width="100%" height="auto"/></center>
 	<p><i>
-	RES-SIM enables high-quality long-term volumetric imaging with 3D-SIM system. The whole data acquisition last for ~40 minutes for 400 frames. 
+	PRS-SIM enables high-quality long-term volumetric imaging with 3D-SIM system. The whole data acquisition last for ~40 minutes for 400 frames. 
 	Benefitting the improved SNR and resolution (both lateral and axial), both structures are resolved at high defination,
 	so that the interactions of the organelles can be observed, e.g. the movement of lysosome along the microtubule filament and the deformation of microtubule filament forced by lysosome.
 	</p></i>
@@ -165,12 +165,3 @@ title: Home
  
 </div>
 
-
-
-
-<!--
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br><br>
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br><br>
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br><br>
-<center><video src="https://github.com/TristaZeng/ZS-DeconvNet/blob/master/video/SuppVideo5_Mitosis_Mito_HeLa.mp4?raw=true" controls="controls" width="100%" height="auto"/></center>
--->
