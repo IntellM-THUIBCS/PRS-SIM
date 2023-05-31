@@ -31,27 +31,6 @@ then input it to the pre-trained model. The final denoised SR image will be outp
 In this part, we provide a brief proof of  effectiveness of PRS-SIM for super-resolution denoising SIM images
 (more details will be discussed in our manuscript).
 
-
-<h3 style="color:white;" >Noise distribution of the microscopy image</h3>
-Both the imaging environment and the photoelectric equipment bring the noise to the detected microscopy images.
-Two typical type of noise is the additive readout noise and the signal-related shot noise,
-which typically follows the Gaussian distribution and Poisson distribution, respectively.
-Based on the mixed Gaussian-Poisson assumption, the detected image can be represented as:
-<center>
-$$
-\mathbf{y}=\beta_1\mathcal{P}(\mathbf{x})+\mathcal{N}(0,\beta_2^2) \tag{1}
-$$
-</center>
-Note that a Poisson function $\mathcal{P}(\mathbf{\lambda})$
-can be approximated by a Gaussian function as $\mathcal{N}(\lambda,\lambda)$ with low error when the value of $\lambda$ is not too low (e.g. 5% error rates for $\mathbf{\lambda}$ greater than 3).
-Therefore, for a regular microscopy image with adequate photon budget, Eq. 3 can be simplified as:<br>
-<center>
-$$
-\mathbf{y}=\mathbf{x}+\mathcal{N}(0,\beta_1\mathbf{x}+\beta_2^2) \tag{2}
-$$
-</center>
-All the following discussion will based on this simplified noise model.
-
 <h3 style="color:white;" >Denoising regular images without clean data</h3>
 
 To prove PRS-SIM, we firstly provided a brief review of the classical deep-learning based image denoising method N2N<sup>[1]</sup>,
