@@ -1,0 +1,5 @@
+opencv-python==4.5.3.56
+scikit-image==0.18.1
+tensorboardX==2.4
+tifffile==2021.10.12
+matplotlib==3.4.2
