@@ -9,7 +9,7 @@
   , "dataroot": "X"
   ,
   "path": {
-    "root": "/home/bbnc/Documents/harddrive4/Materials-s2s/ReleaseCode/PythonCode/pretrained_models"
+    "root": "./pretrained_models"
     , "pretrained_netG": null      // path of pretrained model
   }
 
