@@ -10,9 +10,7 @@ from torch.nn import init
 """
 
 
-# --------------------------------------------
-# Generator, netG, G
-# --------------------------------------------
+
 def define_G(opt):
     opt_net = opt['netG']
     net_type = opt_net['net_type']
@@ -22,9 +20,7 @@ def define_G(opt):
         net_para1 = opt_net['net_para1']
     if opt_net['net_para2'] is not None:
         net_para2 = opt_net['net_para2']
-    # ----------------------------------------
-    # UNet + DFCAN
-    # ----------------------------------------
+
     if net_type == 'unet':  # U-net
         from models.network_unet import UNet as net
         netG = net(in_nc=opt_net['in_nc'],
