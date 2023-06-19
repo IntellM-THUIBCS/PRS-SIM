@@ -40,11 +40,11 @@ The default folder to save SIM data is './SIM_data/smpl_name', in which each sub
 The example code to train the denoising model with PRS-SIM is:
 
 ``` for 2D-SIM
-python Main_train.py --gpu_id 0 --smpl_dir ./SIM_data --smpl_name Microtubules --net_type unet --save_suffix _0 --test_patch_size 128 --max_iter 100000 --preload_data_flag
+python Main_train_3D.py --gpu_id 0 --smpl_dir ./SIM_data --smpl_name Microtubules --net_type unet --save_suffix _0 --test_patch_size 128 --test_z_size 8 --max_iter 100000 --preload_data_flag
 ```
 
 ``` for 3D-SIM
-python Main_train_3D.py --gpu_id 0 --smpl_dir ./SIM_data --smpl_name Microtubules --net_type unet --save_suffix _0 --test_patch_size 128 --test_z_size 8 --max_iter 100000 --preload_data_flag
+python Main_train.py --gpu_id 0 --smpl_dir ./SIM_data --smpl_name Microtubules --net_type unet --save_suffix _0 --test_patch_size 128 --max_iter 100000 --preload_data_flag
 ```
 
 ****
