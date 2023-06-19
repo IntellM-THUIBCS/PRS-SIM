@@ -14,7 +14,7 @@ title: Tutorial
 <h2 style="color:white;" id="Matlab">1. Matlab source code</h2>
 <h3 style="color:white;">Create the training dataset</h3>
 <p>
-Each data item in PRS-SIM training dataset is an super-resolution (SR) image pair generated from a low-SNR raw image group (3*3 for a 2D/TIRF-SIM image, 3*5*z_num for a 3D-SIM volume, and 1*3 for a LLS-SIM slice). 
+Each data item in PRS-SIM training dataset is a super-resolution (SR) image pair generated from a low-SNR raw image group (3*3 for a 2D/TIRF-SIM image, 3*5*z_num for a 3D-SIM volume, and 1*3 for a LLS-SIM slice). 
 For each raw image group, we first employ the pixel-realignment strategy form 4 realigned image stack, then apply convention SIM algorithm to generate 4 SR images.
 During the training process, 2 of which are randomly selected and arranged as the input data and target data, respectively.
 By repeating this operations to each image stack, the final training dataset is formulated. 
@@ -59,7 +59,7 @@ from several the open-source packages, e.g. fairSIM<sup>[1]</sup>, Hifi-SIM<sup>
 <h2 style="color:white;" id="Python">2. Python source code</h2>
 
 <p>
-The python code is written for training and inference of the network. To accelerate the training process, a GPU equipped work station is required.
+The python code is written for training and inference of the network based on the Pytorch framework. To accelerate the training process, a GPU is required.
 </p>
 
 <h3 style="color:white;">Environment installation</h3>
@@ -68,39 +68,45 @@ The python code is written for training and inference of the network. To acceler
 To avoid the version incompatiblility, we highly recommend to install PRS-SIM in a CONDA vitual environment as 
 </p>
 <code style="background-color:#393939;">
-conda create -n ressim python=3.7
+conda create -n PRSSIM python=3.7
 </code><br>
 <p>
-The packages required for PRS-SIM are listed in file 'requirements.txt', which can be installed by pip or conda package management command. 
-Pleased note that the suggested version information is only validated on our working station, and some modification is possible to implement in your specific environment. 
-Some necessary packages are listed as:
+
+To install Pytorch framework, please follow the instruction on the Pytorch website <a href="https://pytorch.org/get-started/locally/#windows-anaconda">https://pytorch.org/get-started/locally/#windows-anaconda</a>
+based on the exact type and version the hardware of your computer. 
+An example command for Pytorch is (may be replaced by your own configuration)
 </p>
 <code style="background-color:#393939;">
-conda install pytorch torchvision torchaudio pytorch-cuda==11.6 -c pytorch -c nvidia<br>
-pip install tifffile<br>
-pip install tensorboardX<br>
-</code><br>
+conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia
+</code>
+
+Other required packages are listed in file 'requirements.txt', which can be installed by pip command as.
+
+<code style="background-color:#393939;">
+pip install -r requirements.txt
+</code>
+ 
+Pleased note that the suggested version information is only validated on our working station, and some modification is possibly needed for your specific environment. 
 
 <p>
 To begin the training or inference processing, just activate the vitual environment  as:
 </p>
 <code style="background-color:#393939;">
-conda activate ressim<br>
+conda activate PRSSIM<br>
 </code><br>
 
 <h3 style="color:white;">Network training</h3>
 <p>
-Before the training, we need to organize the folder of training dataset in the following architecture (if the dataset is generated with aforementioned Matlab code, this requirement will be already satisfied):
+The default folder to save SIM data is './SIM_data/smpl_name'.Before the training, we need to organize the sub-folder in the following architecture.
+
 </p>
-* root_dir
-   * input       --- to save the input data for training
-   * target      --- to save the target data for training
-   * val_raw     --- to save the input data for validation
-   * infer_raw   --- to save the input data for denoising inference
-<br>
+* Cell X
+   * view1.tif
+   * view2.tif
+   * view3.tif
+   * view4.tif
 <p>
-Please note that the files in *input* folder and *target* folder should be strictly paired (We highly recommended to name the paired files with the same name, e.g. '000001.npy', to avoid the mismatching), 
-otherwise a warning window will appear and the training will be paused. If your want to change the dataset architecture, please re-write the data IO code in 'dataset.py'. <br>
+where 'viewX.tif' denotes the reailgned SIM images, which is reconstructed from the reailgned raw images by SIM algorithm, e.g. fairSIM<sup>[1]</sup>, Hifi-SIM<sup>[2]</sup>, and OpenSIM<sup>[3]</sup>.<br>
 </p>
 
 <p>
@@ -174,9 +180,9 @@ To run the training script, the following parameters need to be assigned as:<br>
 		<td><font color=black>The name of the sub folder saving the sample data</font></td>
 	</tr>
 	<tr>
-		<td><font color=white>data_format</font></td>
+		<td><font color=white>gpu_id</font></td>
 		<td><font color=white>str</font></td>
-		<td><font color=white>  The format of the raw data file, e.g. 'npy', 'mat', 'tif', default is 'npy'</font></td>
+		<td><font color=white>  The specific gpu device assigned for training, default is '0'</font></td>
 	</tr>
 	<tr>
 		<td><font color=black>network_type</font></td>
@@ -199,9 +205,9 @@ To run the training script, the following parameters need to be assigned as:<br>
 		<td><font color=white>The logial variable indicating whether to pre-load all data in memory to accerlate the training, default is False</font></td>
 	</tr>
 	<tr>
-		<td><font color=black>load_model_iter</font></td>
+		<td><font color=black>max_iter</font></td>
 		<td><font color=black>int</font></td>
-		<td><font color=black>The iteration of the pre-trained model to load, default is 0 (to train a new model) </font></td>
+		<td><font color=black>The maximum iteration to train the model </font></td>
 	</tr>
 </table>
 
@@ -211,7 +217,7 @@ The example code for training is :
 
 <code style="background-color:#393939;">
 cd ./<br>
-python Main_train.py --smpl_dir dataset --smpl_name microtubules --data_format npy  --network_type unet --gpu_id 0 --save_suffix _1  --preload_data_flag --load_model_iter 0<br>
+python Main_train.py --gpu_id 0 --smpl_dir ./SIM_data --smpl_name Microtubules --net_type unet --save_suffix _0 --test_patch_size 128 --max_iter 100000 --preload_data_flag<br>
 </code><br>
 
 <h3 style="color:white;">Denoising</h3>
@@ -253,14 +259,14 @@ To implement the denoising with the trained model, the following parameters need
 		<td><font color=white>  The specific gpu device assigned for training, default is '0'</font></td>
 	</tr>
 	<tr>
-		<td><font color=black>model_suffix</font></td>
+		<td><font color=black>model_name</font></td>
 		<td><font color=black>str</font></td>
-		<td><font color=black>The suffix of the pre-trained model</font></td>
+		<td><font color=black>The name of the model files (in '.pth' format)</font></td>
 	</tr>
 	<tr>
-		<td><font color=white>load_model_iter</font></td>
+		<td><font color=white>overlap_ratio</font></td>
 		<td><font color=white>int</font></td>
-		<td><font color=white>The iteration of the pre-trained model to load, default is 0 (to train a new model) </font></td>
+		<td><font color=white>The ratio between adjacent patches </font></td>
 	</tr>
 	<tr>
 		<td><font color=black>test_patch_size</font></td>
@@ -278,7 +284,7 @@ An example code to perform the denoising is:
 </p>
 
 <code style="background-color:#393939;">
-python Main_test.py --smpl_dir data --smpl_name Microtubules --model_suffix _1 --data_format npy --network_type unet --gpu_id 0 --load_model_iter -1 
+python Main_test_3D.py --gpu_id 0 --smpl_dir ./SIM_data --smpl_name Lyso_test --net_type unet --model_name 100000_G --test_patch_size 1004 --model_patch_size 128 --overlap_ratio 0.2
 </code><br>
 
 <h3 style="color:white;">Examples</h3>
