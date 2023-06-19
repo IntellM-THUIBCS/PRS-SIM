@@ -40,11 +40,11 @@ The default folder to save SIM data is './SIM_data/smpl_name', in which each sub
 The example code to train the denoising model with PRS-SIM is:
 
 ``` for 2D-SIM
-python Main_train_3D.py --gpu_id 0 --smpl_dir ./SIM_data --smpl_name Microtubules --net_type unet --save_suffix _0 --test_patch_size 128 --test_z_size 8 --max_iter 100000 --preload_data_flag
+python Main_train.py --gpu_id 0 --smpl_dir ./SIM_data --smpl_name Microtubules --net_type unet --save_suffix _0 --test_patch_size 128 --max_iter 100000 --preload_data_flag
 ```
 
 ``` for 3D-SIM
-python Main_train.py --gpu_id 0 --smpl_dir ./SIM_data --smpl_name Microtubules --net_type unet --save_suffix _0 --test_patch_size 128 --max_iter 100000 --preload_data_flag
+python Main_train_3D.py --gpu_id 0 --smpl_dir ./SIM_data --smpl_name Microtubules --net_type unet --save_suffix _0 --test_patch_size 128 --test_z_size 8 --max_iter 100000 --preload_data_flag
 ```
 
 ****
@@ -54,11 +54,11 @@ python Main_train.py --gpu_id 0 --smpl_dir ./SIM_data --smpl_name Microtubules -
 The example code to denoise the noisy image with a pre-trained PRS-SIM model is:
 
 ``` for 2D-SIM
-python Main_test.py --gpu_id 0 --smpl_dir ./SIM_data --smpl_name Microtubules_test --net_type unet --model_name 100000_G --test_patch_size 1024 --model_z_size 8 --model_patch_size 128 --overlap_ratio 0.2
+python Main_test_3D.py --gpu_id 0 --smpl_dir ./SIM_data --smpl_name Lyso_test --net_type unet --model_name 100000_G --test_patch_size 1004 --model_patch_size 128 --overlap_ratio 0.2
 ```
 
 ``` for 3D-SIM
-python Main_test_3D.py --gpu_id 0 --smpl_dir ./SIM_data --smpl_name Lyso_test --net_type unet --model_name 100000_G --test_patch_size 1004 --model_patch_size 128 --overlap_ratio 0.2
+python Main_test.py --gpu_id 0 --smpl_dir ./SIM_data --smpl_name Microtubules_test --net_type unet --model_name 100000_G --test_patch_size 1024 --model_z_size 8 --model_patch_size 128 --overlap_ratio 0.2
 ```
 
 ****
