@@ -67,6 +67,7 @@ The python code is written for training and inference of the network based on th
 <p>
 To avoid the version incompatiblility, we highly recommend to install PRS-SIM in a CONDA vitual environment as 
 </p>
+
 <code style="background-color:#393939;">
 conda create -n PRSSIM python=3.7
 </code><br>
@@ -75,6 +76,7 @@ conda create -n PRSSIM python=3.7
 To install Pytorch framework, please follow the instruction on the Pytorch website <a href="https://pytorch.org/get-started/locally/#windows-anaconda">https://pytorch.org/get-started/locally/#windows-anaconda</a>
 based on the exact type and version the hardware of your computer. 
 An example command for Pytorch is (may be replaced by your own configuration)
+
 </p>
 <code style="background-color:#393939;">
 conda install pytorch==1.9.1 torchvision==0.10.1 torchaudio==0.9.1 cudatoolkit=11.3 -c pytorch -c conda-forge
