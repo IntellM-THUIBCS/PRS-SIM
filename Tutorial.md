@@ -77,7 +77,7 @@ based on the exact type and version the hardware of your computer.
 An example command for Pytorch is (may be replaced by your own configuration)
 </p>
 <code style="background-color:#393939;">
-conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia
+conda install pytorch==1.9.1 torchvision==0.10.1 torchaudio==0.9.1 cudatoolkit=11.3 -c pytorch -c conda-forge
 </code>
 
 Other required packages are listed in file 'requirements.txt', which can be installed by pip command as.
