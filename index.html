@@ -36,10 +36,10 @@ title: Home
 	from only the low-SNR raw SIM data (detailedly discussed in the <a href="{{ site.baseurl }}/Principle/">Principle</a> page). 
 		
 	<center><h1 style="color:white;">II. Main advantages of PRS-SIM </h1></center>
-	<h2 style="color:white;">1. Super-resolution reconstruction with 10-fold fewer collected photons</h2>
+	<h2 style="color:white;">1. Super-resolution reconstruction with ~20-fold fewer collected photons</h2>
 	<p>
 	We validated the performance of PRS-SIM on the open-source dataset BioSR<sup>[3]</sup>, in which the raw SIM images of different SNRs and the corresponding ground-truth (GT) image are provided.
-	The training dataset is generated only with the raw data from signal level 1 to signal level 4, whose effective collected photons is ~10-fold fewer than that used in noise-free GT-SIM images. 
+	The training dataset is generated only with the raw data from signal level 1 to signal level 4, whose effective collected photons is ~20-fold fewer than that used in noise-free GT-SIM images. 
 	Although conventional SIM images are substantially degraded, PRS-SIM is capable to remove most artifacts and achieve comparable resolution and quality as GT-SIM does,	
 	which proves the denoising power of PRS-SIM.
 	</p>
@@ -103,7 +103,7 @@ title: Home
 	<h2 style="color:white;">1. Long-term super-resolution observation of formation, maturation, and internalization of CCPs. </h2>
 	<center><video src="images/TIRF-SIM-CCP.mp4?raw=true" controls="controls" width="100%" height="auto"/></center>
 	<p><i> The entire data acquisition time is ~40 minutes for 5000 frames. 
-	To prevent the photo-toxicity, the raw images are captured with 30-fold fewer collected photons than those used for artifact-free images. 
+	To prevent the photo-toxicity, the raw images are captured with ~20-fold fewer collected photons than those used for artifact-free images. 
 	The inner hollow is blurred in WF images due to the limited resolution
 	and the ring structure is severely distorted in conventional SIM images due to the noise-induced artifact. 
 	In contrast, PRS-SIM is able to resolve the organelles at high resolution and fidelity. 
@@ -114,7 +114,7 @@ title: Home
 	<h2 style="color:white;">2. Dynamic interactions between CCPs and F-actin in the growth process. </h2>
 	<center><video src="images/TIRF-SIM-CCP-Factin.mp4?raw=true" controls="controls" width="100%" height="auto"/></center>
 	<p><i>
-	The cell is imaged with 10-fold less excitation power compared to that used in regular imaging. 
+	The cell is imaged with ~20-fold less excitation power compared to that used in regular imaging. 
 	Since the illumination-induced photo-toxicity is low, the cell is kept in health status and the whole growth process is captured. 
 	Benefitting from the removal of artifact,
 	the segmentation algorithm (e.g. Weka segmentation plugin in Fiji) can be successfully applied for PRS-SIM images,
