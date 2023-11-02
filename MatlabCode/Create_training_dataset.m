@@ -41,6 +41,9 @@ if ~exist(Save_file_dir,'dir')
     mkdir(Save_file_dir);
 end
 
+%% Upsampling mode
+upsampling_mode = 1; % 1 for nearest, 2 for bilinear, 3 for bicubic, default is nearest
+
 file_list = dir([File_dir,'/*.mrc']);
 
 file_count = length(file_list);
@@ -80,8 +83,17 @@ for file_id = 1: 1: file_count
         else
             print('view id cannot be larger than 4');
         end
-
-        img_raw_v = imresize(img_raw_v,2,'nearest');
+        
+        if upsampling_mode == 1
+            img_raw_v = imresize(img_raw_v,2,'nearest');
+        elseif upsampling_mode == 2
+            img_raw_v = imresize(img_raw_v,2,'bilinear');
+        elseif upsampling_mode == 3
+            img_raw_v = imresize(img_raw_v,2,'bicubic');
+        else
+            img_raw_v = imresize(img_raw_v,2,'nearest');
+        end
+        
 
         if view_id == 1
             img_raw_v = imtranslate(img_raw_v,[-0.5,-0.5]);
