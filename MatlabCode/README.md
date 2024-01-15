@@ -20,7 +20,7 @@ Citation:
 
 [1] Gustafsson, Mats GL, et al. "Three-dimensional resolution doubling in wide-field fluorescence microscopy by structured illumination." Biophysical journal 94.12 (2008): 4957-4970.<br>
 
-[2] Müller M, Mönkemöller V, Hennig S, et al. Open-source image reconstruction of super-resolution structured illumination microscopy data in ImageJ[J]. Nature communications, 2016, 7(1): 1-6.<br>
+[2] Müller, Marcel, et al. "Open-source image reconstruction of super-resolution structured illumination microscopy data in ImageJ." Nature communications 7.1 (2016): 10980.<br>
 
 [3] Cao, Ruijie, et al. "Open-3DSIM: an open-source three-dimensional structured illumination microscopy reconstruction platform." Nature Methods 20.8 (2023): 1183-1186.<br>
 
