@@ -393,11 +393,6 @@ In the latter method, please organize directory structure of your data as below.
 
 <h2 style="color:white;">Reference</h2>
 <p>
-[1] Müller M, Mönkemöller V, Hennig S, et al. Open-source image reconstruction of super-resolution structured illumination microscopy data in ImageJ[J]. Nature communications, 2016, 7(1): 1-6.<br>
-[2] Wen G, Li S, Wang L, et al. High-fidelity structured illumination microscopy by point-spread-function engineering[J]. Light: Science & Applications, 2021, 10(1): 1-12.<br>
-[3] Lal A, Shan C, Xi P. Structured illumination microscopy image reconstruction algorithm[J]. IEEE Journal of Selected Topics in Quantum Electronics, 2016, 22(4): 50-63.<br>
-[4] Cao R, Li Y, Chen X, et al. Open-3DSIM: an open-source three-dimensional structured illumination microscopy reconstruction platform[J]. Nature Methods, 2023, 20: 1183–1186.<br>
-
 [1] Gustafsson, Mats GL, et al. "Three-dimensional resolution doubling in wide-field fluorescence microscopy by structured illumination." Biophysical journal 94.12 (2008): 4957-4970.<br>
 [2] Müller, Marcel, et al. "Open-source image reconstruction of super-resolution structured illumination microscopy data in ImageJ." Nature communications 7.1 (2016): 10980.<br>
 [3] Cao, Ruijie, et al. "Open-3DSIM: an open-source three-dimensional structured illumination microscopy reconstruction platform." Nature Methods 20.8 (2023): 1183-1186.<br>
