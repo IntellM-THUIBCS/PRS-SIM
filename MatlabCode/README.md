@@ -13,7 +13,7 @@ To further generate SR-SIM image, please apply conventional SIM algorithm on the
 
 Due to the storage limitation of Github, the example raw SIM data of Microtubules (TIRF-SIM) and Lysosome (3D-SIM) are uploaded on Google drive https://drive.google.com/drive/folders/1SW7Lt3G5I-D6D-7KFyruIoZX7Cc9Nm_V?usp=sharing .
 
-The detailed tutorial of PRS-SIM is available on our website https://intellm-thuibcs.github.io/PRS-SIM .
+The detailed tutorial of PRS-SIM is available on our website https://intellm-thuibcs.github.io/PRS-SIM.
 
 
 Citation:
