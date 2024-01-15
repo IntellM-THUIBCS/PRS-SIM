@@ -9,7 +9,7 @@ The raw data should be saved in folder 'raw_data' and the realigned images will 
 The raw image file is saved in '.mrc' format, which is a common-used format for saving microscopy data. The example IO code for reading '.mrc' file is located in folder 'XxMatlabUtils'.
 The detailed information about the image, e.g., the pixel number, the pixel size, the time point number is saved in the variable 'header'.
 
-To further generate SR-SIM image, please apply conventional SIM algorithm on the realigned images, which can be acquired from several the open-source packages, e.g. 3-beam-SIM<sup>[1]</sup>, fairSIM<sup>[2]</sup>, Open-3DSIM<sup>[3]</sup>, and PCA-SIM<sup>[4]</sup>.
+To further generate SR-SIM image, please apply conventional SIM algorithm on the realigned images, which can be acquired from several the open-source packages, e.g. 3-beam-SIM<sup>[1]</sup> (https://github.com/scopetools/cudasirecon), fairSIM<sup>[2]</sup> (https://github.com/fairSIM/fairSIM), Open-3DSIM<sup>[3]</sup> (https://github.com/Cao-ruijie/Open3DSIM), and PCA-SIM<sup>[4]</sup> (https://link.springer.com/article/10.1186/s43593-022-00035-x).
 
 Due to the storage limitation of Github, the example raw SIM data of Microtubules (TIRF-SIM) and Lysosome (3D-SIM) are uploaded on Google drive https://drive.google.com/drive/folders/1SW7Lt3G5I-D6D-7KFyruIoZX7Cc9Nm_V?usp=sharing .
 
