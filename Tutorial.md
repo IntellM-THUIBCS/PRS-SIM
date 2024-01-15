@@ -18,7 +18,7 @@ Each data item in PRS-SIM training dataset is a super-resolution (SR) image pair
 For each raw image group, we first employ the pixel-realignment strategy form 4 realigned image stack, then apply convention SIM algorithm to generate 4 SR images.
 During the training process, 2 of which are randomly selected and arranged as the input data and target data, respectively.
 By repeating this operations to each image stack, the final training dataset is formulated. 
-Typically, ~30 individual image stacks is adequate for a successful training.
+Typically, no less than 5 individual image stacks is adequate for a successful training.
 </p>
 
 <p>
