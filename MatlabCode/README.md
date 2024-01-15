@@ -11,7 +11,7 @@ The detailed information about the image, e.g., the pixel number, the pixel size
 
 To further generate SR-SIM image, please apply conventional SIM algorithm on the realigned images, which can be acquired from several the open-source packages, e.g. 3-beam-SIM<sup>[1]</sup> (https://github.com/scopetools/cudasirecon), fairSIM<sup>[2]</sup> (https://github.com/fairSIM/fairSIM), Open-3DSIM<sup>[3]</sup> (https://github.com/Cao-ruijie/Open3DSIM), and PCA-SIM<sup>[4]</sup> (https://link.springer.com/article/10.1186/s43593-022-00035-x).
 
-Due to the storage limitation of Github, the example raw SIM data of Microtubules (TIRF-SIM) and Lysosome (3D-SIM) are uploaded on Google drive https://drive.google.com/drive/folders/1SW7Lt3G5I-D6D-7KFyruIoZX7Cc9Nm_V?usp=sharing .
+Due to the storage limitation of Github, the example raw SIM data of Microtubules (TIRF-SIM) and Lysosome (3D-SIM) are uploaded on Google drive https://drive.google.com/drive/folders/1SW7Lt3G5I-D6D-7KFyruIoZX7Cc9Nm_V?usp=sharing.
 
 The detailed tutorial of PRS-SIM is available on our website https://intellm-thuibcs.github.io/PRS-SIM.
 
