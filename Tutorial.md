@@ -108,7 +108,8 @@ The default folder to save SIM data is './SIM_data/smpl_name'.Before the trainin
    * view3.tif
    * view4.tif
 <p>
-where 'viewX.tif' denotes the reailgned SIM images, which is reconstructed from the reailgned raw images by SIM algorithm, e.g. fairSIM<sup>[1]</sup>, Hifi-SIM<sup>[2]</sup>, and Open-(3D)SIM<sup>[3][4]</sup>.<br>
+where 'viewX.tif' denotes the reailgned SIM images, which is reconstructed from the reailgned raw images by SIM algorithm, e.g. 3-beam-SIM<sup>[1]</sup> (https://github.com/scopetools/cudasirecon), fairSIM<sup>[2]</sup> (https://github.com/fairSIM/fairSIM), Open-3DSIM<sup>[3]</sup> (https://github.com/Cao-ruijie/Open3DSIM), and PCA-SIM<sup>[4]</sup> (https://link.springer.com/article/10.1186/s43593-022-00035-x).<br>
+ 
 </p>
 
 <p>
@@ -396,6 +397,12 @@ In the latter method, please organize directory structure of your data as below.
 [2] Wen G, Li S, Wang L, et al. High-fidelity structured illumination microscopy by point-spread-function engineering[J]. Light: Science & Applications, 2021, 10(1): 1-12.<br>
 [3] Lal A, Shan C, Xi P. Structured illumination microscopy image reconstruction algorithm[J]. IEEE Journal of Selected Topics in Quantum Electronics, 2016, 22(4): 50-63.<br>
 [4] Cao R, Li Y, Chen X, et al. Open-3DSIM: an open-source three-dimensional structured illumination microscopy reconstruction platform[J]. Nature Methods, 2023, 20: 1183–1186.<br>
+
+[1] Gustafsson, Mats GL, et al. "Three-dimensional resolution doubling in wide-field fluorescence microscopy by structured illumination." Biophysical journal 94.12 (2008): 4957-4970.<br>
+[2] Müller, Marcel, et al. "Open-source image reconstruction of super-resolution structured illumination microscopy data in ImageJ." Nature communications 7.1 (2016): 10980.<br>
+[3] Cao, Ruijie, et al. "Open-3DSIM: an open-source three-dimensional structured illumination microscopy reconstruction platform." Nature Methods 20.8 (2023): 1183-1186.<br>
+[4] Qian, Jiaming, et al. "Structured illumination microscopy based on principal component analysis." eLight 3.1 (2023): 4.3.<br>
+ 
 </p>
 
 
